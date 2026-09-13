@@ -1,21 +1,4 @@
-/* =========================================================
-   EcoPestDB - v3
-   Cambios respecto a v2:
-   - Entidad.nombreEmpresa: columna nueva y obligatoria.
-       * Si tipo = 'Empresa'         -> nombreEmpresa = nombre (la propia empresa).
-       * Si tipo = 'Establecimiento' -> nombreEmpresa = nombre de la empresa raiz
-         a la que pertenece (heredado, no editable a mano).
-     Se mantiene sincronizada con un trigger, para que cualquier
-     pantalla o reporte pueda mostrar el nombre de la empresa sin
-     tener que resolver la jerarquia con un JOIN recursivo.
 
-   Cambios respecto a v1 (ya incluidos en v2):
-   - Tabla Rol separada (Spring Security)
-   - Empresa + Establecimiento unificados en Entidad
-   - Datos meteorologicos y operaciones apuntan a Entidad
-   - Triggers de jerarquia corregidos (arriba y abajo)
-   - Indices faltantes en claves foraneas
-   ========================================================= */
 
 USE EcoPestDB;
 GO
