@@ -1,96 +1,55 @@
 package pe.edu.upc.ecopest.entities;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "recommendations")
 public class Recommendation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_recommendation")
     private Long idRecommendation;
-    private String descriptionRecommendation;
-    private String originRecommendation;
-    private LocalDate dateRecommendation;
-    private boolean statusRecommendation;
+
+    @Column(name = "description", length = 1000, nullable = false)
+    private String description;
+
+    @Column(name = "origin", length = 20, nullable = false)
+    private String origin;
+
+    @Column(name = "generation_date", nullable = false)
+    private LocalDateTime generationDate;
+
+    @Column(name = "status", length = 20, nullable = false)
+    private String status;
 
     @ManyToOne
-    @JoinColumn(name = "idIncidencia")
-    private Incidencia incidencia;
+    @JoinColumn(name = "id_incident", nullable = false)
+    private Incident incident;
 
     @ManyToOne
-    @JoinColumn(name = "idUsuario")
-    private Usuario usuario;
+    @JoinColumn(name = "id_responsible_user")
+    private User responsibleUser;
 
-    public Recommendation() {
+    public Recommendation() {}
+
+    @PrePersist
+    public void prePersist() {
+        if (generationDate == null) generationDate = LocalDateTime.now();
     }
 
-    public Recommendation(Long idRecommendation, String descriptionRecommendation, String originRecommendation, LocalDate dateRecommendation, boolean statusRecommendation, Incidencia incidencia, Usuario usuario) {
-        this.idRecommendation = idRecommendation;
-        this.descriptionRecommendation = descriptionRecommendation;
-        this.originRecommendation = originRecommendation;
-        this.dateRecommendation = dateRecommendation;
-        this.statusRecommendation = statusRecommendation;
-        this.incidencia = incidencia;
-        this.usuario = usuario;
-    }
-
-    public Long getIdRecommendation() {
-        return idRecommendation;
-    }
-
-    public void setIdRecommendation(Long idRecommendation) {
-        this.idRecommendation = idRecommendation;
-    }
-
-    public String getDescriptionRecommendation() {
-        return descriptionRecommendation;
-    }
-
-    public void setDescriptionRecommendation(String descriptionRecommendation) {
-        this.descriptionRecommendation = descriptionRecommendation;
-    }
-
-    public String getOriginRecommendation() {
-        return originRecommendation;
-    }
-
-    public void setOriginRecommendation(String originRecommendation) {
-        this.originRecommendation = originRecommendation;
-    }
-
-    public LocalDate getDateRecommendation() {
-        return dateRecommendation;
-    }
-
-    public void setDateRecommendation(LocalDate dateRecommendation) {
-        this.dateRecommendation = dateRecommendation;
-    }
-
-    public boolean isStatusRecommendation() {
-        return statusRecommendation;
-    }
-
-    public void setStatusRecommendation(boolean statusRecommendation) {
-        this.statusRecommendation = statusRecommendation;
-    }
-
-    public Incidencia getIncidencia() {
-        return incidencia;
-    }
-
-    public void setIncidencia(Incidencia incidencia) {
-        this.incidencia = incidencia;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    public Long getIdRecommendation() { return idRecommendation; }
+    public void setIdRecommendation(Long idRecommendation) { this.idRecommendation = idRecommendation; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getOrigin() { return origin; }
+    public void setOrigin(String origin) { this.origin = origin; }
+    public LocalDateTime getGenerationDate() { return generationDate; }
+    public void setGenerationDate(LocalDateTime generationDate) { this.generationDate = generationDate; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public Incident getIncident() { return incident; }
+    public void setIncident(Incident incident) { this.incident = incident; }
+    public User getResponsibleUser() { return responsibleUser; }
+    public void setResponsibleUser(User responsibleUser) { this.responsibleUser = responsibleUser; }
 }
-
