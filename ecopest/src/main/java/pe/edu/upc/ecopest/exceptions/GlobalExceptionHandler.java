@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex, HttpServletRequest request) {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .findFirst().orElse("Error de validacion");
+                .findFirst().orElse("Validation error");
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(), message, request.getRequestURI());
         return ResponseEntity.badRequest().body(error);
