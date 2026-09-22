@@ -12,7 +12,7 @@
     <artifactId>ecopest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ecopest</name>
-    <description>EcoPest - Sistema de gestion preventiva de plagas</description>
+    <description>EcoPest - Preventive pest management system</description>
     <properties>
         <java.version>21</java.version>
     </properties>
