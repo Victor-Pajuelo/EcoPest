@@ -14,4 +14,4 @@ Ejecuta primero `sql/bd_ecopest_v3.sql` para crear la base `EcoPestDB` y sus tab
 
 ## Aplicacion
 
-Abre el proyecto `ecopest/` desde tu IDE y ejecuta la clase principal `EcoPestApplication`.
+Abre el proyecto `ecopest/` desde tu IDE y ejecuta la clase principal `EcoPestApplication` para iniciar el sistema.
