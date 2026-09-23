@@ -17,7 +17,6 @@ import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
 import pe.edu.upc.ecopest.servicesinterfaces.IBusinessEntityService;
 import pe.edu.upc.ecopest.servicesinterfaces.IInspectionService;
 import pe.edu.upc.ecopest.servicesinterfaces.IUserService;
-
 import java.net.URI;
 import java.util.List;
 
@@ -95,7 +94,6 @@ public class InspectionController {
         return ResponseEntity.ok(items);
     }
 
-    // NUEVO: Método GET con JOIN explícito
     @Operation(summary = "Obtener inspecciones con incidentes pendientes por empresa (JOIN)", description = "Realiza una consulta JPQL JOIN para obtener inspecciones vinculadas a incidentes según su estado y el nombre de la empresa.")
     @GetMapping("/pending-by-company")
     public ResponseEntity<List<InspectionDTO>> findWithPendingIncidentsByCompany(@RequestParam String incidentStatus, @RequestParam String companyName) {
@@ -105,7 +103,6 @@ public class InspectionController {
         return ResponseEntity.ok(items);
     }
 
-    // NUEVO: Método DELETE por estado
     @Operation(summary = "Eliminar inspecciones por estado", description = "Elimina de la base de datos todas las inspecciones filtradas por un estado específico.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Inspecciones eliminadas correctamente")

@@ -17,7 +17,6 @@ import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
 import pe.edu.upc.ecopest.servicesinterfaces.IIncidentService;
 import pe.edu.upc.ecopest.servicesinterfaces.IInspectionService;
 import pe.edu.upc.ecopest.servicesinterfaces.IPestTypeService;
-
 import java.net.URI;
 import java.util.List;
 
@@ -84,7 +83,6 @@ public class IncidentController {
         return ResponseEntity.ok(items);
     }
 
-    // NUEVO: Método GET con JOIN explícito por Nombre de Plaga y Empresa
     @Operation(summary = "Obtener incidentes por plaga y empresa (JOIN)", description = "Realiza una consulta avanzada con JOIN filtrando por nombre de plaga y nombre de empresa.")
     @GetMapping("/by-pest-and-company")
     public ResponseEntity<List<IncidentDTO>> findByPestNameAndCompany(@RequestParam String pestName, @RequestParam String companyName) {
@@ -94,7 +92,6 @@ public class IncidentController {
         return ResponseEntity.ok(items);
     }
 
-    // NUEVO: Método DELETE por Entidad de Negocio
     @Operation(summary = "Eliminar incidentes por ID de empresa", description = "Elimina de la base de datos todos los incidentes asociados a una entidad de negocio.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Incidentes eliminados correctamente")

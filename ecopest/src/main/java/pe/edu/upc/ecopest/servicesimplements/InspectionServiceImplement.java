@@ -49,7 +49,7 @@ public class InspectionServiceImplement implements IInspectionService {
 
     @Override
     public List<Inspection> findWithPendingIncidentsByCompany(String incidentStatus, String companyName) {
-        return repository.findInspectionsWithPendingIncidentsByCompany(incidentStatus, companyName);
+        return repository.findWithPendingIncidentsByCompany(incidentStatus, companyName);
     }
 
     @Override
