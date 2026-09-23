@@ -10,7 +10,7 @@ Sistema de gestion preventiva de plagas desarrollado con Spring Boot y SQL Serve
 
 ## Base de datos
 
-Ejecuta primero `sql/bd_ecopest_v3.sql` para crear la base `EcoPestDB` y sus tablas.
+Ejecuta primero `sql/bd_ecopest_v3.sql` para crear la base `EcoPestDB` y sus tablas principales.
 
 ## Aplicacion
 
