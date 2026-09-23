@@ -10,4 +10,8 @@ public interface IIncidentService {
     List<Incident> listByBusinessEntity(Long businessEntityId);
     Optional<Incident> findById(Long id);
     List<Object[]> countIncidentsByPestType();
+
+    // Nuevos métodos para JOIN y DeleteBy
+    List<Incident> findByPestNameAndCompany(String pestName, String companyName);
+    void deleteByBusinessEntity(Long businessEntityId);
 }

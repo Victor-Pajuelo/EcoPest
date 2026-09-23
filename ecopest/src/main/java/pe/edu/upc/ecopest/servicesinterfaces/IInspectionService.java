@@ -11,4 +11,8 @@ public interface IInspectionService {
     Optional<Inspection> findById(Long id);
     void update(Inspection inspection);
     List<Object[]> countInspectionsByCompany();
+
+    // Nuevos métodos para JOIN y DeleteBy
+    List<Inspection> findWithPendingIncidentsByCompany(String incidentStatus, String companyName);
+    void deleteByStatus(String status);
 }
