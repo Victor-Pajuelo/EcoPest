@@ -5,7 +5,7 @@ Sistema de gestion preventiva de plagas desarrollado con Spring Boot y SQL Serve
 ## Estructura
 
 - `ecopest/` codigo fuente de la aplicacion principal
-- `sql/` scripts de base de datos
+- `sql/` scripts SQL de base de datos
 - `sql/bd_ecopest_v3.sql` script principal de la base de datos
 
 ## Base de datos
