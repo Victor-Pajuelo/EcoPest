@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.dtos.UsuarioDTO;
+import pe.edu.upc.ecopest.dtos.UserResponseDTO;
 import pe.edu.upc.ecopest.entities.Entidad;
 import pe.edu.upc.ecopest.entities.Rol;
 import pe.edu.upc.ecopest.entities.Usuario;
@@ -30,14 +31,14 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> listar() {
-        List<UsuarioDTO> lista = uS.list()
-                .stream().map(u -> modelMapper.map(u, UsuarioDTO.class)).toList();
+    public ResponseEntity<List<UserResponseDTO>> listar() {
+        List<UserResponseDTO> lista = uS.list()
+                .stream().map(this::toResponseDTO).toList();
         return ResponseEntity.ok(lista);
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> registrar(@Valid @RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UserResponseDTO> registrar(@Valid @RequestBody UsuarioDTO dto) {
         Rol rol = rS.listId(dto.getIdRol())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encuentra el rol"));
         Entidad entidad = eS.listId(dto.getIdEntidad())
@@ -46,7 +47,7 @@ public class UsuarioController {
         usuario.setRol(rol);
         usuario.setEntidad(entidad);
         uS.insert(usuario);
-        UsuarioDTO responseDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        UserResponseDTO responseDTO = toResponseDTO(usuario);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(usuario.getIdUsuario()).toUri();
@@ -54,9 +55,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/por-entidad")
-    public ResponseEntity<List<UsuarioDTO>> buscarPorEntidad(@RequestParam Long idEntidad) {
-        List<UsuarioDTO> lista = uS.listByEntidad(idEntidad)
-                .stream().map(u -> modelMapper.map(u, UsuarioDTO.class)).toList();
+    public ResponseEntity<List<UserResponseDTO>> buscarPorEntidad(@RequestParam Long idEntidad) {
+        List<UserResponseDTO> lista = uS.listByEntidad(idEntidad)
+                .stream().map(this::toResponseDTO).toList();
         return ResponseEntity.ok(lista);
+    }
+
+    private UserResponseDTO toResponseDTO(Usuario usuario) {
+        UserResponseDTO dto = new UserResponseDTO();
+        dto.setIdUsuario(usuario.getIdUsuario());
+        dto.setNameUsuario(usuario.getNameUsuario());
+        dto.setEmailUsuario(usuario.getEmailUsuario());
+        if (usuario.getRol() != null) {
+            dto.setIdRol(usuario.getRol().getIdRol());
+            dto.setNombreRol(usuario.getRol().getNameRol());
+        }
+        return dto;
     }
 }
