@@ -1,5 +1,7 @@
 # EcoPest
 
+Repositorio principal del proyecto EcoPest.
+
 Sistema de gestion preventiva de plagas desarrollado con Spring Boot y SQL Server.
 
 ## Estructura
