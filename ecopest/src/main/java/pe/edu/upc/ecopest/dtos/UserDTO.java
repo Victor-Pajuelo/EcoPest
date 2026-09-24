@@ -17,9 +17,9 @@ public class UserDTO {
     private String email;
 
     @NotBlank(message = "The password is required")
-    @Size(min = 8, max = 100, message = "The password must be between 8 and 100 characters")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+@Size(min = 8, max = 100, message = "The password must be between 8 and 100 characters")
+@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+private String password;
 
     @NotNull(message = "The active status is required")
     private boolean active;

@@ -1,0 +1,6 @@
+# Configuracion de IntelliJ
+.idea/
+*.iml
+
+# Archivos compilados
+target/

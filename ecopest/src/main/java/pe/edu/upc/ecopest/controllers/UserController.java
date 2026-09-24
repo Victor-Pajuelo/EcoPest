@@ -1,6 +1,7 @@
 package pe.edu.upc.ecopest.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,14 @@ public class UserController {
     private final IRoleService roleService;
     private final IBusinessEntityService businessEntityService;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(IUserService userService, IRoleService roleService, IBusinessEntityService businessEntityService, ModelMapper modelMapper) {
-        this.userService = userService; this.roleService = roleService; this.businessEntityService = businessEntityService; this.modelMapper = modelMapper;
+    public UserController(IUserService userService, IRoleService roleService, IBusinessEntityService businessEntityService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.businessEntityService = businessEntityService;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -41,6 +47,7 @@ public class UserController {
         User user = modelMapper.map(dto, User.class);
         user.setRole(role);
         user.setBusinessEntity(businessEntity);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userService.insert(user);
         UserDTO responseDTO = modelMapper.map(user, UserDTO.class);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getIdUser()).toUri();

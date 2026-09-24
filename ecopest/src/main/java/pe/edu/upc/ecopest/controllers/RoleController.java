@@ -25,10 +25,10 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<RoleInsertDTO> register(@Valid @RequestBody RoleInsertDTO dto) {
+    public ResponseEntity<RoleDTO> register(@Valid @RequestBody RoleInsertDTO dto) {
         Role role = modelMapper.map(dto, Role.class);
         service.insert(role);
-        RoleInsertDTO responseDTO = modelMapper.map(role, RoleInsertDTO.class);
+        RoleDTO responseDTO = modelMapper.map(role, RoleDTO.class);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(role.getIdRole()).toUri();
         return ResponseEntity.created(location).body(responseDTO);
     }
