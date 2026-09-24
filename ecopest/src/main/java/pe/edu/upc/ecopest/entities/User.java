@@ -1,5 +1,7 @@
 package pe.edu.upc.ecopest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -38,7 +40,9 @@ public class User {
     public void setName(String name) { this.name = name; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    @JsonIgnore
     public String getPassword() { return password; }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public void setPassword(String password) { this.password = password; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
