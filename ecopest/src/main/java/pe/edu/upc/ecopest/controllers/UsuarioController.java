@@ -68,7 +68,7 @@ public class UsuarioController {
         dto.setEmailUsuario(usuario.getEmailUsuario());
         if (usuario.getRol() != null) {
             dto.setIdRol(usuario.getRol().getIdRol());
-            dto.setNombreRol(usuario.getRol().getNameRol());
+            dto.setNombreRol(usuario.getRol().getName());
         }
         return dto;
     }
