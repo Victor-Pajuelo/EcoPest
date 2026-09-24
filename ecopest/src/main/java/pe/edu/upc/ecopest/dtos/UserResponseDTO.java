@@ -5,7 +5,7 @@ public class UserResponseDTO {
     private String nameUsuario;
     private String emailUsuario;
     private Long idRol;
-    private String nameRol;
+    private String nombreRol;
 
     public Long getIdUsuario() { return idUsuario; }
     public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
@@ -15,6 +15,6 @@ public class UserResponseDTO {
     public void setEmailUsuario(String emailUsuario) { this.emailUsuario = emailUsuario; }
     public Long getIdRol() { return idRol; }
     public void setIdRol(Long idRol) { this.idRol = idRol; }
-    public String getNameRol() { return nameRol; }
-    public void setNameRol(String nameRol) { this.nameRol = nameRol; }
+    public String getNombreRol() { return nombreRol; }
+    public void setNombreRol(String nombreRol) { this.nombreRol = nombreRol; }
 }
