@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class UserDTO {
     private Long idUser;
@@ -16,6 +17,7 @@ public class UserDTO {
     private String email;
 
     @NotBlank(message = "The password is required")
+    @Size(min = 8, max = 100, message = "The password must be between 8 and 100 characters")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
