@@ -1,7 +1,6 @@
 package pe.edu.upc.ecopest.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class BusinessEntityDTO {
     private Long idBusinessEntity;
@@ -10,7 +9,6 @@ public class BusinessEntityDTO {
     @NotBlank(message = "The business entity type is required")
     private String type;
     private String companyName;
-    @NotNull(message = "The active status is required")
     private boolean active;
     private Long parentBusinessEntityId;
 
