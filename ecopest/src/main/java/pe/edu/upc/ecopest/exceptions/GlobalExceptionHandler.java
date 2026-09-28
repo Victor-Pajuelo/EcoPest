@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pe.edu.upc.ecopest.dtos.ErrorResponse;
 
+import java.util.stream.Collectors;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
@@ -34,7 +36,11 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex, HttpServletRequest request) {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .findFirst().orElse("Validation error");
+                .distinct()
+                .collect(Collectors.joining("; "));
+        if (message.isEmpty()) {
+            message = "Validation error";
+        }
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(), message, request.getRequestURI());
         return ResponseEntity.badRequest().body(error);

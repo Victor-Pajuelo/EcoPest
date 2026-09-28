@@ -40,6 +40,8 @@ class LoginControllerTest {
                                 """))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value(
+                        "username: The username is required; password: The password is required"))
                 .andExpect(jsonPath("$.path").value("/login"));
     }
 
