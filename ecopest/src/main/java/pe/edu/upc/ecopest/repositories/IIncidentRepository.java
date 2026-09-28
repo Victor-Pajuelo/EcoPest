@@ -25,7 +25,8 @@ public interface IIncidentRepository extends JpaRepository<Incident, Long> {
     @Query("SELECT i FROM Incident i " +
             "JOIN i.pestType pt " +
             "JOIN i.inspection insp " +
-            "WHERE pt.name = :pestName")
+            "JOIN insp.businessEntity be " +
+            "WHERE pt.name = :pestName AND be.companyName = :companyName")
     List<Incident> findIncidentsByPestNameAndCompany(@Param("pestName") String pestName,
                                                      @Param("companyName") String companyName);
 }
