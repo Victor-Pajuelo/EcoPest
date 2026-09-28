@@ -21,7 +21,6 @@ public class UserDTO {
 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 private String password;
 
-    @NotNull(message = "The active status is required")
     private boolean active;
 
     @NotNull(message = "The role id is required")

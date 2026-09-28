@@ -1,7 +1,6 @@
 package pe.edu.upc.ecopest.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class RoleInsertDTO {
     private Long idRole;
@@ -9,7 +8,6 @@ public class RoleInsertDTO {
     private String name;
     @NotBlank(message = "The role description is required")
     private String description;
-    @NotNull(message = "The active status is required")
     private boolean active;
 
     public Long getIdRole() { return idRole; }
