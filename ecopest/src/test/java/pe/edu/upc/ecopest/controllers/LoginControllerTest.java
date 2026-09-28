@@ -56,4 +56,15 @@ class LoginControllerTest {
                 .andExpect(jsonPath("$.status").value(401))
                 .andExpect(jsonPath("$.message").value("Invalid username or password"));
     }
+
+    @Test
+    void returnsStructuredBadRequestForMalformedJson() throws Exception {
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content("{"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Malformed or invalid request body"))
+                .andExpect(jsonPath("$.path").value("/login"));
+    }
 }
