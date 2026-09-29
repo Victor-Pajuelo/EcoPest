@@ -70,4 +70,32 @@ public class RecommendationController {
         }).toList();
         return ResponseEntity.ok(items);
     }
+    @PutMapping
+    public ResponseEntity<RecommendationDTO> update(@Valid @RequestBody RecommendationDTO dto) {
+        Recommendation existing = recommendationService.findById(dto.getIdRecommendation())
+                .orElseThrow(() -> new ResourceNotFoundException("Recommendation not found with id: " + dto.getIdRecommendation()));
+        Incident incident = incidentService.findById(dto.getIncidentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found"));
+        existing.setDescription(dto.getDescription());
+        existing.setOrigin(dto.getOrigin());
+        existing.setStatus(dto.getStatus());
+        existing.setIncident(incident);
+        if (dto.getResponsibleUserId() != null) {
+            User responsibleUser = userService.findById(dto.getResponsibleUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Responsible user not found"));
+            existing.setResponsibleUser(responsibleUser);
+        } else {
+            existing.setResponsibleUser(null);
+        }
+        recommendationService.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, RecommendationDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        recommendationService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recommendation not found"));
+        recommendationService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
