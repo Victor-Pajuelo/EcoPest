@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.dtos.RoleDTO;
 import pe.edu.upc.ecopest.dtos.RoleInsertDTO;
 import pe.edu.upc.ecopest.entities.Role;
+import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
 import pe.edu.upc.ecopest.servicesinterfaces.IRoleService;
 import java.net.URI;
 import java.util.List;
@@ -31,6 +32,30 @@ public class RoleController {
         RoleDTO responseDTO = modelMapper.map(role, RoleDTO.class);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(role.getIdRole()).toUri();
         return ResponseEntity.created(location).body(responseDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RoleDTO> findById(@PathVariable Long id) {
+        Role role = service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        return ResponseEntity.ok(modelMapper.map(role, RoleDTO.class));
+    }
+
+    @PutMapping
+    public ResponseEntity<RoleDTO> update(@Valid @RequestBody RoleInsertDTO dto) {
+        Role existing = service.findById(dto.getIdRole())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + dto.getIdRole()));
+        existing.setName(dto.getName());
+        existing.setDescription(dto.getDescription());
+        existing.setActive(dto.isActive());
+        service.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, RoleDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/status")
