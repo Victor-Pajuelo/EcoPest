@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/evidence")
 public class EvidenceController {
     //private final IEvidenceService evidenceService;
-    //private final IIncidentService incidentService;
+    private final IIncidentService incidentService;
     private final ModelMapper modelMapper;
 
     public EvidenceController(IEvidenceService evidenceService, IIncidentService incidentService, ModelMapper modelMapper) {
