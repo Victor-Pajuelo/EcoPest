@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.dtos.PestTypeDTO;
 import pe.edu.upc.ecopest.entities.PestType;
+import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
 import pe.edu.upc.ecopest.servicesinterfaces.IPestTypeService;
 import java.net.URI;
 import java.util.List;
@@ -30,6 +31,30 @@ public class PestTypeController {
         PestTypeDTO responseDTO = modelMapper.map(pestType, PestTypeDTO.class);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pestType.getIdPestType()).toUri();
         return ResponseEntity.created(location).body(responseDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PestTypeDTO> findById(@PathVariable Long id) {
+        PestType pestType = service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pest type not found"));
+        return ResponseEntity.ok(modelMapper.map(pestType, PestTypeDTO.class));
+    }
+
+    @PutMapping
+    public ResponseEntity<PestTypeDTO> update(@Valid @RequestBody PestTypeDTO dto) {
+        PestType existing = service.findById(dto.getIdPestType())
+                .orElseThrow(() -> new ResourceNotFoundException("Pest type not found with id: " + dto.getIdPestType()));
+        existing.setName(dto.getName());
+        existing.setRiskLevel(dto.getRiskLevel());
+        existing.setDescription(dto.getDescription());
+        service.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, PestTypeDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pest type not found"));
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/by-risk")
