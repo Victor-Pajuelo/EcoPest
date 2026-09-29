@@ -20,7 +20,7 @@ import java.util.List;
 public class EvidenceController {
     //private final IEvidenceService evidenceService;
     //private final IIncidentService incidentService;
-    //private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public EvidenceController(IEvidenceService evidenceService, IIncidentService incidentService, ModelMapper modelMapper) {
         this.evidenceService = evidenceService; this.incidentService = incidentService; this.modelMapper = modelMapper;
