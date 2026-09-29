@@ -18,8 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/evidence")
 public class EvidenceController {
-    //*private final IEvidenceService evidenceService;
-    private final IIncidentService incidentService;
+    //private final IEvidenceService evidenceService;
+    //private final IIncidentService incidentService;
     private final ModelMapper modelMapper;
 
     public EvidenceController(IEvidenceService evidenceService, IIncidentService incidentService, ModelMapper modelMapper) {
