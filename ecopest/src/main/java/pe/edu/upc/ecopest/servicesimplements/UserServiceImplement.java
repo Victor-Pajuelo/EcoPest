@@ -17,4 +17,5 @@ public class UserServiceImplement implements IUserService {
     @Override public Optional<User> findById(Long id) { return repository.findById(id); }
     @Override public void update(User user) { repository.save(user); }
     @Override public void delete(Long id) { repository.deleteById(id); }
+    @Override public List<Object[]> countUsersByRole() { return repository.countUsersByRole(); }
 }

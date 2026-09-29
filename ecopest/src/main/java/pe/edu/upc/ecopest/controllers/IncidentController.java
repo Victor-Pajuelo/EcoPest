@@ -109,6 +109,18 @@ public class IncidentController {
         return ResponseEntity.ok(items);
     }
 
+    @Operation(summary = "Conteo de incidentes por nivel de riesgo", description = "Agrupa y cuenta el total de incidentes reportados segun el nivel de riesgo del tipo de plaga.")
+    @GetMapping("/counts-by-risk-level")
+    public ResponseEntity<List<CountDTO>> countByRiskLevel() {
+        List<CountDTO> items = incidentService.countIncidentsByRiskLevel().stream().map(item -> {
+            CountDTO dto = new CountDTO();
+            dto.setName((String) item[0]);
+            dto.setQuantity(((Number) item[1]).doubleValue());
+            return dto;
+        }).toList();
+        return ResponseEntity.ok(items);
+    }
+
     @Operation(summary = "Obtener incidentes por plaga y empresa (JOIN)", description = "Realiza una consulta avanzada con JOIN filtrando por nombre de plaga y nombre de empresa.")
     @GetMapping("/by-pest-and-company")
     public ResponseEntity<List<IncidentDTO>> findByPestNameAndCompany(@RequestParam String pestName, @RequestParam String companyName) {

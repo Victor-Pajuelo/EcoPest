@@ -12,6 +12,7 @@ public interface IIncidentService {
     void update(Incident incident);
     void delete(Long id);
     List<Object[]> countIncidentsByPestType();
+    List<Object[]> countIncidentsByRiskLevel();
 
     // Nuevos metodos para JOIN y DeleteBy
     List<Incident> findByPestNameAndCompany(String pestName, String companyName);

@@ -9,4 +9,5 @@ public interface IEvidenceService {
     List<Evidence> list();
     List<Evidence> listByIncident(Long incidentId);
     Optional<Evidence> findById(Long id);
+    List<Object[]> countEvidenceByIncident();
 }

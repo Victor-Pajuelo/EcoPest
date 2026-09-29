@@ -24,4 +24,9 @@ public interface IWeatherDataRepository extends JpaRepository<WeatherData, Long>
             "    WHERE i.pestType.name = :pestName" +
             ")")
     List<WeatherData> findWeatherByPestType(@Param("pestName") String pestName);
+
+    @Query(value = "SELECT be.company_name, AVG(w.temperature), AVG(w.humidity) " +
+            "FROM business_entities be LEFT JOIN weather_data w ON be.id_business_entity = w.id_business_entity " +
+            "GROUP BY be.company_name", nativeQuery = true)
+    List<Object[]> averageWeatherByBusinessEntity();
 }
