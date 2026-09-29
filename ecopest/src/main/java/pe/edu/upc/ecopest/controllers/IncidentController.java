@@ -42,7 +42,7 @@ public class IncidentController {
         return ResponseEntity.ok(incidentService.list().stream().map(item -> modelMapper.map(item, IncidentDTO.class)).toList());
     }
 
-    @Operation(summary = "Registrar un incidente", description = "Crea un nuevo incidente vinculado a una inspección y un tipo de plaga.")
+    @Operation(summary = "Registrar un incidente", description = "Crea un nuevo incidente vinculado a una inspeccion y un tipo de plaga.")
     @PostMapping
     public ResponseEntity<IncidentDTO> register(@Valid @RequestBody IncidentDTO dto) {
         Inspection inspection = inspectionService.findById(dto.getInspectionId())
@@ -58,11 +58,37 @@ public class IncidentController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
-    @Operation(summary = "Obtener incidente por ID", description = "Retorna el detalle de un incidente según su ID.")
+    @Operation(summary = "Obtener incidente por ID", description = "Retorna el detalle de un incidente segun su ID.")
     @GetMapping("/{id}")
     public ResponseEntity<IncidentDTO> findById(@PathVariable Long id) {
         Incident incident = incidentService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Incident not found"));
         return ResponseEntity.ok(modelMapper.map(incident, IncidentDTO.class));
+    }
+
+    @Operation(summary = "Actualizar incidente", description = "Actualiza la fecha, descripcion, estado, inspeccion y tipo de plaga de un incidente existente.")
+    @PutMapping
+    public ResponseEntity<IncidentDTO> update(@Valid @RequestBody IncidentDTO dto) {
+        Incident existing = incidentService.findById(dto.getIdIncident())
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + dto.getIdIncident()));
+        Inspection inspection = inspectionService.findById(dto.getInspectionId())
+                .orElseThrow(() -> new ResourceNotFoundException("Inspection not found"));
+        PestType pestType = pestTypeService.findById(dto.getPestTypeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pest type not found"));
+        existing.setIncidentDate(dto.getIncidentDate());
+        existing.setDescription(dto.getDescription());
+        existing.setStatus(dto.getStatus());
+        existing.setInspection(inspection);
+        existing.setPestType(pestType);
+        incidentService.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, IncidentDTO.class));
+    }
+
+    @Operation(summary = "Eliminar incidente por ID", description = "Elimina un incidente especifico de la base de datos.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        incidentService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Incident not found"));
+        incidentService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Filtrar incidentes por ID de empresa", description = "Obtiene la lista de incidentes pertenecientes a una entidad de negocio.")
@@ -71,7 +97,7 @@ public class IncidentController {
         return ResponseEntity.ok(incidentService.listByBusinessEntity(businessEntityId).stream().map(item -> modelMapper.map(item, IncidentDTO.class)).toList());
     }
 
-    @Operation(summary = "Conteo de incidentes por plaga", description = "Agrupa y cuenta el total de incidentes reportados según el tipo de plaga.")
+    @Operation(summary = "Conteo de incidentes por plaga", description = "Agrupa y cuenta el total de incidentes reportados segun el tipo de plaga.")
     @GetMapping("/counts")
     public ResponseEntity<List<CountDTO>> count() {
         List<CountDTO> items = incidentService.countIncidentsByPestType().stream().map(item -> {

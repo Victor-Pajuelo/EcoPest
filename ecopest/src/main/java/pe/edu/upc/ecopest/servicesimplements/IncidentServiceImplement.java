@@ -37,6 +37,16 @@ public class IncidentServiceImplement implements IIncidentService {
     }
 
     @Override
+    public void update(Incident incident) {
+        repository.save(incident);
+    }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
     public List<Object[]> countIncidentsByPestType() {
         return repository.countIncidentsByPestType();
     }
