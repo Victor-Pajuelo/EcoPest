@@ -13,4 +13,5 @@ public interface IWeatherDataService {
     // Nuevos métodos para JOIN y DeleteBy
     List<WeatherData> findWeatherByPestType(String pestName);
     void deleteByBusinessEntity(Long businessEntityId);
+    List<Object[]> averageWeatherByBusinessEntity();
 }

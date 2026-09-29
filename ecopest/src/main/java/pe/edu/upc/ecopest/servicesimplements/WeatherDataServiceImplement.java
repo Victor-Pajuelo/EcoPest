@@ -43,6 +43,11 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
     }
 
     @Override
+    public List<Object[]> averageWeatherByBusinessEntity() {
+        return repository.averageWeatherByBusinessEntity();
+    }
+
+    @Override
     @Transactional
     public void deleteByBusinessEntity(Long businessEntityId) {
         repository.deleteByBusinessEntity_IdBusinessEntity(businessEntityId);

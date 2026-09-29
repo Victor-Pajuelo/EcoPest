@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.ecopest.dtos.AverageWeatherDTO;
 import pe.edu.upc.ecopest.dtos.WeatherDataDTO;
 import pe.edu.upc.ecopest.entities.BusinessEntity;
 import pe.edu.upc.ecopest.entities.WeatherData;
@@ -58,5 +59,18 @@ public class WeatherDataController {
     @GetMapping("/by-business-entity")
     public ResponseEntity<List<WeatherDataDTO>> findByBusinessEntity(@RequestParam Long businessEntityId) {
         return ResponseEntity.ok(weatherDataService.listByBusinessEntity(businessEntityId).stream().map(item -> modelMapper.map(item, WeatherDataDTO.class)).toList());
+    }
+
+    @Operation(summary = "Promedio de clima por empresa", description = "Calcula el promedio de temperatura y humedad agrupado por entidad de negocio.")
+    @GetMapping("/averages")
+    public ResponseEntity<List<AverageWeatherDTO>> averages() {
+        List<AverageWeatherDTO> items = weatherDataService.averageWeatherByBusinessEntity().stream().map(item -> {
+            AverageWeatherDTO dto = new AverageWeatherDTO();
+            dto.setName((String) item[0]);
+            dto.setAvgTemperature(item[1] == null ? 0.0 : ((Number) item[1]).doubleValue());
+            dto.setAvgHumidity(item[2] == null ? 0.0 : ((Number) item[2]).doubleValue());
+            return dto;
+        }).toList();
+        return ResponseEntity.ok(items);
     }
 }

@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.ecopest.dtos.CountDTO;
 import pe.edu.upc.ecopest.dtos.RecommendationDTO;
 import pe.edu.upc.ecopest.entities.Incident;
 import pe.edu.upc.ecopest.entities.Recommendation;
@@ -57,5 +58,16 @@ public class RecommendationController {
     @GetMapping("/by-incident")
     public ResponseEntity<List<RecommendationDTO>> findByIncident(@RequestParam Long incidentId) {
         return ResponseEntity.ok(recommendationService.listByIncident(incidentId).stream().map(item -> modelMapper.map(item, RecommendationDTO.class)).toList());
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<List<CountDTO>> count() {
+        List<CountDTO> items = recommendationService.countRecommendationsByIncident().stream().map(item -> {
+            CountDTO dto = new CountDTO();
+            dto.setName((String) item[0]);
+            dto.setQuantity(((Number) item[1]).doubleValue());
+            return dto;
+        }).toList();
+        return ResponseEntity.ok(items);
     }
 }

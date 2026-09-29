@@ -21,6 +21,11 @@ public interface IIncidentRepository extends JpaRepository<Incident, Long> {
             "GROUP BY pt.name", nativeQuery = true)
     List<Object[]> countIncidentsByPestType();
 
+    @Query(value = "SELECT pt.risk_level, COUNT(i.id_incident) " +
+            "FROM pest_types pt LEFT JOIN incidents i ON pt.id_pest_type = i.id_pest_type " +
+            "GROUP BY pt.risk_level", nativeQuery = true)
+    List<Object[]> countIncidentsByRiskLevel();
+
     // JPQL ajustado exactamente a los campos idIncident, pestType e inspection de la entidad Incident
     @Query("SELECT i FROM Incident i " +
             "JOIN i.pestType pt " +

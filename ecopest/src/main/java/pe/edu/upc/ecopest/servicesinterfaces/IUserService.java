@@ -11,4 +11,5 @@ public interface IUserService {
     Optional<User> findById(Long id);
     void update(User user);
     void delete(Long id);
+    List<Object[]> countUsersByRole();
 }

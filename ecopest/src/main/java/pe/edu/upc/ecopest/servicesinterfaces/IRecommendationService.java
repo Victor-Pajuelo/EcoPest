@@ -9,4 +9,5 @@ public interface IRecommendationService {
     List<Recommendation> list();
     List<Recommendation> listByIncident(Long incidentId);
     Optional<Recommendation> findById(Long id);
+    List<Object[]> countRecommendationsByIncident();
 }

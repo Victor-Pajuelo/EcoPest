@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.ecopest.dtos.CountDTO;
 import pe.edu.upc.ecopest.dtos.UserDTO;
 import pe.edu.upc.ecopest.entities.BusinessEntity;
 import pe.edu.upc.ecopest.entities.Role;
@@ -87,5 +88,16 @@ public class UserController {
     @GetMapping("/by-business-entity")
     public ResponseEntity<List<UserDTO>> findByBusinessEntity(@RequestParam Long businessEntityId) {
         return ResponseEntity.ok(userService.listByBusinessEntity(businessEntityId).stream().map(item -> modelMapper.map(item, UserDTO.class)).toList());
+    }
+
+    @GetMapping("/counts-by-role")
+    public ResponseEntity<List<CountDTO>> countByRole() {
+        List<CountDTO> items = userService.countUsersByRole().stream().map(item -> {
+            CountDTO dto = new CountDTO();
+            dto.setName((String) item[0]);
+            dto.setQuantity(((Number) item[1]).doubleValue());
+            return dto;
+        }).toList();
+        return ResponseEntity.ok(items);
     }
 }

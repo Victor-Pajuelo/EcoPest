@@ -52,6 +52,11 @@ public class IncidentServiceImplement implements IIncidentService {
     }
 
     @Override
+    public List<Object[]> countIncidentsByRiskLevel() {
+        return repository.countIncidentsByRiskLevel();
+    }
+
+    @Override
     public List<Incident> findByPestNameAndCompany(String pestName, String companyName) {
         return repository.findIncidentsByPestNameAndCompany(pestName, companyName);
     }
