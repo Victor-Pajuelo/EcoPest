@@ -63,7 +63,10 @@ public class SecurityConfig {
                         ).permitAll()
                         // CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Todo lo demás solo para ADMIN (el invitado recibe 403)
+                        // Lectura (GET) disponible para cualquier usuario autenticado con
+                        // rol ADMIN o USER, para diferenciar de verdad el uso de roles
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USER")
+                        // Escritura (POST/PUT/DELETE) y todo lo demás, solo para ADMIN
                         .anyRequest().hasRole("ADMIN")
                 )
                 .oauth2ResourceServer(oauth2 ->
