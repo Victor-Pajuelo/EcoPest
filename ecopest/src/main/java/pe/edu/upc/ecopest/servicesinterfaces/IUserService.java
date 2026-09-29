@@ -9,4 +9,6 @@ public interface IUserService {
     List<User> list();
     List<User> listByBusinessEntity(Long businessEntityId);
     Optional<User> findById(Long id);
+    void update(User user);
+    void delete(Long id);
 }

@@ -54,6 +54,36 @@ public class UserController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        User user = userService.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return ResponseEntity.ok(modelMapper.map(user, UserDTO.class));
+    }
+
+    @PutMapping
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO dto) {
+        User existing = userService.findById(dto.getIdUser())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getIdUser()));
+        Role role = roleService.findById(dto.getRoleId()).orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        BusinessEntity businessEntity = businessEntityService.findById(dto.getBusinessEntityId())
+                .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
+        existing.setName(dto.getName());
+        existing.setEmail(dto.getEmail());
+        existing.setActive(dto.isActive());
+        existing.setRole(role);
+        existing.setBusinessEntity(businessEntity);
+        existing.setPassword(passwordEncoder.encode(dto.getPassword()));
+        userService.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, UserDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/by-business-entity")
     public ResponseEntity<List<UserDTO>> findByBusinessEntity(@RequestParam Long businessEntityId) {
         return ResponseEntity.ok(userService.listByBusinessEntity(businessEntityId).stream().map(item -> modelMapper.map(item, UserDTO.class)).toList());
