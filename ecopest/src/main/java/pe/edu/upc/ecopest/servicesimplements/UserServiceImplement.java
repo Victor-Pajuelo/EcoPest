@@ -15,4 +15,6 @@ public class UserServiceImplement implements IUserService {
     @Override public List<User> list() { return repository.findAll(); }
     @Override public List<User> listByBusinessEntity(Long businessEntityId) { return repository.findByBusinessEntity_IdBusinessEntity(businessEntityId); }
     @Override public Optional<User> findById(Long id) { return repository.findById(id); }
+    @Override public void update(User user) { repository.save(user); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
 }
