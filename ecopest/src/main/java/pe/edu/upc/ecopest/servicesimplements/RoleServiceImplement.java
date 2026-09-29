@@ -15,4 +15,6 @@ public class RoleServiceImplement implements IRoleService {
     @Override public List<Role> list() { return repository.findAll(); }
     @Override public List<Role> listByActive(boolean active) { return repository.findByActive(active); }
     @Override public Optional<Role> findById(Long id) { return repository.findById(id); }
+    @Override public void update(Role role) { repository.save(role); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
 }
