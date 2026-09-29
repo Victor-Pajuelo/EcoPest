@@ -10,4 +10,6 @@ public interface IRecommendationService {
     List<Recommendation> listByIncident(Long incidentId);
     Optional<Recommendation> findById(Long id);
     List<Object[]> countRecommendationsByIncident();
+    void update(Recommendation recommendation);
+    void delete(Long id);
 }
