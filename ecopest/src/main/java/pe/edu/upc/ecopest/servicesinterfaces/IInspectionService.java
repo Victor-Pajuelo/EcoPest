@@ -10,9 +10,10 @@ public interface IInspectionService {
     List<Inspection> listByStatus(String status);
     Optional<Inspection> findById(Long id);
     void update(Inspection inspection);
+    void delete(Long id);
     List<Object[]> countInspectionsByCompany();
 
-    // Nuevos métodos para JOIN y DeleteBy
+    // Nuevos metodos para JOIN y DeleteBy
     List<Inspection> findWithPendingIncidentsByCompany(String incidentStatus, String companyName);
     void deleteByStatus(String status);
 }

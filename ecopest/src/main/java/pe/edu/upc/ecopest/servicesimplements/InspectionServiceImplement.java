@@ -43,6 +43,11 @@ public class InspectionServiceImplement implements IInspectionService {
     }
 
     @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
     public List<Object[]> countInspectionsByCompany() {
         return repository.countInspectionsByCompany();
     }

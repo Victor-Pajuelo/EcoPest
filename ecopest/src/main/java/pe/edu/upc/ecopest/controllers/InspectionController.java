@@ -76,6 +76,14 @@ public class InspectionController {
         return ResponseEntity.ok(modelMapper.map(existing, InspectionDTO.class));
     }
 
+    @Operation(summary = "Eliminar inspección por ID", description = "Elimina una inspección específica de la base de datos.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        inspectionService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Inspection not found"));
+        inspectionService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @Operation(summary = "Filtrar inspecciones por estado", description = "Obtiene la lista de inspecciones según su estado actual.")
     @GetMapping("/by-status")
     public ResponseEntity<List<InspectionDTO>> findByStatus(@RequestParam String status) {
