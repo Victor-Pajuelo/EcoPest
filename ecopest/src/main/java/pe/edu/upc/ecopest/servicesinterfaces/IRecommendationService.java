@@ -9,4 +9,6 @@ public interface IRecommendationService {
     List<Recommendation> list();
     List<Recommendation> listByIncident(Long incidentId);
     Optional<Recommendation> findById(Long id);
+    void update(Recommendation recommendation);
+    void delete(Long id);
 }

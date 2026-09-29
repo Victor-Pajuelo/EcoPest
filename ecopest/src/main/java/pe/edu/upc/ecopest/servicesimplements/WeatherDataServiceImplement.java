@@ -15,4 +15,6 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
     @Override public List<WeatherData> list() { return repository.findAll(); }
     @Override public List<WeatherData> listByBusinessEntity(Long businessEntityId) { return repository.findByBusinessEntity_IdBusinessEntity(businessEntityId); }
     @Override public Optional<WeatherData> findById(Long id) { return repository.findById(id); }
+    @Override public void update(WeatherData weatherData) { repository.save(weatherData); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
 }

@@ -9,4 +9,6 @@ public interface IPestTypeService {
     List<PestType> list();
     List<PestType> listByRiskLevel(String riskLevel);
     Optional<PestType> findById(Long id);
+    void update(PestType pestType);
+    void delete(Long id);
 }

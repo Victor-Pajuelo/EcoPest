@@ -3,6 +3,7 @@ package pe.edu.upc.ecopest.controllers;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.dtos.CountDTO;
@@ -79,5 +80,13 @@ public class InspectionController {
             return dto;
         }).toList();
         return ResponseEntity.ok(items);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        inspectionService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Inspection not found"));
+        inspectionService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

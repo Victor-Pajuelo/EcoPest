@@ -15,4 +15,6 @@ public class RecommendationServiceImplement implements IRecommendationService {
     @Override public List<Recommendation> list() { return repository.findAll(); }
     @Override public List<Recommendation> listByIncident(Long incidentId) { return repository.findByIncident_IdIncident(incidentId); }
     @Override public Optional<Recommendation> findById(Long id) { return repository.findById(id); }
+    @Override public void update(Recommendation recommendation) { repository.save(recommendation); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
 }

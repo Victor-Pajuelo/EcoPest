@@ -9,4 +9,6 @@ public interface IRoleService {
     List<Role> list();
     List<Role> listByActive(boolean active);
     Optional<Role> findById(Long id);
+    void update(Role role);
+    void delete(Long id);
 }

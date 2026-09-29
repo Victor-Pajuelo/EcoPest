@@ -52,4 +52,25 @@ public class WeatherDataController {
     public ResponseEntity<List<WeatherDataDTO>> findByBusinessEntity(@RequestParam Long businessEntityId) {
         return ResponseEntity.ok(weatherDataService.listByBusinessEntity(businessEntityId).stream().map(item -> modelMapper.map(item, WeatherDataDTO.class)).toList());
     }
+    @PutMapping
+    public ResponseEntity<WeatherDataDTO> update(@Valid @RequestBody WeatherDataDTO dto) {
+        WeatherData existing = weatherDataService.findById(dto.getIdWeatherData())
+                .orElseThrow(() -> new ResourceNotFoundException("Weather data not found with id: " + dto.getIdWeatherData()));
+        BusinessEntity businessEntity = businessEntityService.findById(dto.getBusinessEntityId())
+                .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
+        existing.setDate(dto.getDate());
+        existing.setTemperature(dto.getTemperature());
+        existing.setHumidity(dto.getHumidity());
+        existing.setSource(dto.getSource());
+        existing.setBusinessEntity(businessEntity);
+        weatherDataService.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, WeatherDataDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        weatherDataService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Weather data not found"));
+        weatherDataService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

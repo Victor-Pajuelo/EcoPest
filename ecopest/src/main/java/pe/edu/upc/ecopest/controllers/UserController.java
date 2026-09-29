@@ -1,9 +1,10 @@
 package pe.edu.upc.ecopest.controllers;
 
 import jakarta.validation.Valid;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.dtos.UserDTO;
@@ -17,6 +18,7 @@ import pe.edu.upc.ecopest.servicesinterfaces.IUserService;
 import java.net.URI;
 import java.util.List;
 
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -26,7 +28,8 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(IUserService userService, IRoleService roleService, IBusinessEntityService businessEntityService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserController(IUserService userService, IRoleService roleService, IBusinessEntityService businessEntityService,
+                          ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.businessEntityService = businessEntityService;
@@ -36,12 +39,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> list() {
-        return ResponseEntity.ok(userService.list().stream().map(item -> modelMapper.map(item, UserDTO.class)).toList());
+        return ResponseEntity.ok(userService.list().stream()
+                .map(item -> modelMapper.map(item, UserDTO.class)).toList());
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> register(@Valid @RequestBody UserDTO dto) {
-        Role role = roleService.findById(dto.getRoleId()).orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        Role role = roleService.findById(dto.getRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
         BusinessEntity businessEntity = businessEntityService.findById(dto.getBusinessEntityId())
                 .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
         User user = modelMapper.map(dto, User.class);
@@ -50,12 +55,47 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userService.insert(user);
         UserDTO responseDTO = modelMapper.map(user, UserDTO.class);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getIdUser()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getIdUser()).toUri();
         return ResponseEntity.created(location).body(responseDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        User user = userService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return ResponseEntity.ok(modelMapper.map(user, UserDTO.class));
+    }
+
+    @PutMapping
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO dto) {
+        User existing = userService.findById(dto.getIdUser())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getIdUser()));
+        Role role = roleService.findById(dto.getRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        BusinessEntity businessEntity = businessEntityService.findById(dto.getBusinessEntityId())
+                .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
+        existing.setName(dto.getName());
+        existing.setEmail(dto.getEmail());
+        existing.setActive(dto.isActive());
+        existing.setRole(role);
+        existing.setBusinessEntity(businessEntity);
+        existing.setPassword(passwordEncoder.encode(dto.getPassword()));
+        userService.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, UserDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/by-business-entity")
     public ResponseEntity<List<UserDTO>> findByBusinessEntity(@RequestParam Long businessEntityId) {
-        return ResponseEntity.ok(userService.listByBusinessEntity(businessEntityId).stream().map(item -> modelMapper.map(item, UserDTO.class)).toList());
+        return ResponseEntity.ok(userService.listByBusinessEntity(businessEntityId).stream()
+                .map(item -> modelMapper.map(item, UserDTO.class)).toList());
     }
 }

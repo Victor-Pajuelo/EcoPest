@@ -3,6 +3,7 @@ package pe.edu.upc.ecopest.controllers;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.dtos.BusinessEntityDTO;
@@ -24,6 +25,7 @@ public class BusinessEntityController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping
     public ResponseEntity<List<BusinessEntityDTO>> list() {
         List<BusinessEntityDTO> items = service.list().stream()
@@ -31,6 +33,7 @@ public class BusinessEntityController {
         return ResponseEntity.ok(items);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<BusinessEntityDTO> register(@Valid @RequestBody BusinessEntityDTO dto) {
         BusinessEntity businessEntity = modelMapper.map(dto, BusinessEntity.class);
@@ -49,6 +52,7 @@ public class BusinessEntityController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/{id}")
     public ResponseEntity<BusinessEntityDTO> findById(@PathVariable Long id) {
         BusinessEntity businessEntity = service.findById(id)
@@ -56,6 +60,7 @@ public class BusinessEntityController {
         return ResponseEntity.ok(modelMapper.map(businessEntity, BusinessEntityDTO.class));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<BusinessEntityDTO> update(@Valid @RequestBody BusinessEntityDTO dto) {
         BusinessEntity existing = service.findById(dto.getIdBusinessEntity())
@@ -67,13 +72,16 @@ public class BusinessEntityController {
         return ResponseEntity.ok(modelMapper.map(existing, BusinessEntityDTO.class));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
+        service.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/types")
     public ResponseEntity<List<BusinessEntityDTO>> findByType(@RequestParam String type) {
         List<BusinessEntityDTO> items = service.listByType(type).stream()
@@ -81,6 +89,7 @@ public class BusinessEntityController {
         return ResponseEntity.ok(items);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @GetMapping("/counts")
     public ResponseEntity<List<CountDTO>> count() {
         List<CountDTO> items = service.countUsersByCompany().stream().map(item -> {

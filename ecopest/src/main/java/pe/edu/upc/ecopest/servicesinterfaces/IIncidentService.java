@@ -10,4 +10,6 @@ public interface IIncidentService {
     List<Incident> listByBusinessEntity(Long businessEntityId);
     Optional<Incident> findById(Long id);
     List<Object[]> countIncidentsByPestType();
+    void update(Incident incident);
+    void delete(Long id);
 }

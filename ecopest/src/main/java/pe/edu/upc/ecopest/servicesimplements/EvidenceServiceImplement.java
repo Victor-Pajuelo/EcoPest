@@ -15,4 +15,6 @@ public class EvidenceServiceImplement implements IEvidenceService {
     @Override public List<Evidence> list() { return repository.findAll(); }
     @Override public List<Evidence> listByIncident(Long incidentId) { return repository.findByIncident_IdIncident(incidentId); }
     @Override public Optional<Evidence> findById(Long id) { return repository.findById(id); }
+    @Override public void update(Evidence evidence) { repository.save(evidence); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
 }

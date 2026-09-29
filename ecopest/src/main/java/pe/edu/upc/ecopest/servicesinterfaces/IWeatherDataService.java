@@ -9,4 +9,6 @@ public interface IWeatherDataService {
     List<WeatherData> list();
     List<WeatherData> listByBusinessEntity(Long businessEntityId);
     Optional<WeatherData> findById(Long id);
+    void update(WeatherData weatherData);
+    void delete(Long id);
 }

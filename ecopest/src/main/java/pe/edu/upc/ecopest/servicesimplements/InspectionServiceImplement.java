@@ -17,4 +17,6 @@ public class InspectionServiceImplement implements IInspectionService {
     @Override public Optional<Inspection> findById(Long id) { return repository.findById(id); }
     @Override public void update(Inspection inspection) { repository.save(inspection); }
     @Override public List<Object[]> countInspectionsByCompany() { return repository.countInspectionsByCompany(); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
+
 }

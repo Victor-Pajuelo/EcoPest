@@ -9,4 +9,6 @@ public interface IEvidenceService {
     List<Evidence> list();
     List<Evidence> listByIncident(Long incidentId);
     Optional<Evidence> findById(Long id);
+    void update(Evidence evidence);
+    void delete(Long id);
 }

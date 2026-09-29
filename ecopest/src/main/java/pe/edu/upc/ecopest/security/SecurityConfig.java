@@ -64,7 +64,7 @@ public class SecurityConfig {
                         // CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Todo lo demás solo para ADMIN (el invitado recibe 403)
-                        .anyRequest().hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt ->

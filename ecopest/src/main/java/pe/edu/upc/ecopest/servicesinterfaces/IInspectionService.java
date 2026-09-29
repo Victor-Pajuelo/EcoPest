@@ -11,4 +11,5 @@ public interface IInspectionService {
     Optional<Inspection> findById(Long id);
     void update(Inspection inspection);
     List<Object[]> countInspectionsByCompany();
+    void delete(Long id);
 }

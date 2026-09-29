@@ -16,4 +16,6 @@ public class IncidentServiceImplement implements IIncidentService {
     @Override public List<Incident> listByBusinessEntity(Long businessEntityId) { return repository.findByInspection_BusinessEntity_IdBusinessEntity(businessEntityId); }
     @Override public Optional<Incident> findById(Long id) { return repository.findById(id); }
     @Override public List<Object[]> countIncidentsByPestType() { return repository.countIncidentsByPestType(); }
+    @Override public void update(Incident incident) { repository.save(incident); }
+    @Override public void delete(Long id) { repository.deleteById(id); }
 }
