@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Lectura (GET) disponible para cualquier usuario autenticado con
                         // rol ADMIN o USER, para diferenciar de verdad el uso de roles
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "CLIENTE")
                         // Escritura (POST/PUT/DELETE) y todo lo demás, solo para ADMIN
                         .anyRequest().hasRole("ADMIN")
                 )
