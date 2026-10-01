@@ -63,4 +63,25 @@ public class EvidenceController {
         }).toList();
         return ResponseEntity.ok(items);
     }
+
+    @PutMapping
+    public ResponseEntity<EvidenceDTO> update(@Valid @RequestBody EvidenceDTO dto) {
+        Evidence existing = evidenceService.findById(dto.getIdEvidence())
+                .orElseThrow(() -> new ResourceNotFoundException("Evidence not found with id: " + dto.getIdEvidence()));
+        Incident incident = incidentService.findById(dto.getIncidentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found"));
+        existing.setFileUrl(dto.getFileUrl());
+        existing.setFileType(dto.getFileType());
+        existing.setIncident(incident);
+        evidenceService.update(existing);
+        return ResponseEntity.ok(modelMapper.map(existing, EvidenceDTO.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        evidenceService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Evidence not found"));
+        evidenceService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
