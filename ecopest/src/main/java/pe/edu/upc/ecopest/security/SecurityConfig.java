@@ -63,10 +63,14 @@ public class SecurityConfig {
                         ).permitAll()
                         // CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Lectura (GET) disponible para cualquier usuario autenticado con
-                        // rol ADMIN o USER, para diferenciar de verdad el uso de roles
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "CLIENTE")
-                        // Escritura (POST/PUT/DELETE) y todo lo demás, solo para ADMIN
+                        // Usuarios y roles: solo ADMIN
+                        .requestMatchers("/api/users/**", "/api/roles/**").hasRole("ADMIN")
+                        // Lectura: todos los roles
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "SUPERVISOR", "TESTER", "CLIENTE")
+                        // Crear y actualizar: ADMIN y SUPERVISOR
+                        .requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                        // Eliminar y todo lo demás: solo ADMIN
                         .anyRequest().hasRole("ADMIN")
                 )
                 .oauth2ResourceServer(oauth2 ->
