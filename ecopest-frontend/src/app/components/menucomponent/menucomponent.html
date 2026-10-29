@@ -40,7 +40,10 @@
   </button>
 
   @if (auth.isLoggedIn()) {
-    <span class="user-name">{{ auth.me()?.name }}</span>
+    <span class="user-chip" [attr.title]="auth.me()?.name">
+      <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+      <span class="user-name">{{ auth.me()?.name }}</span>
+    </span>
     <button mat-button type="button" (click)="logout()">
       <mat-icon>logout</mat-icon> <span class="logout-label">{{ 'menu.logout' | t }}</span>
     </button>

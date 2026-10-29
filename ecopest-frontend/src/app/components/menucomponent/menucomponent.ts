@@ -77,4 +77,12 @@ export class Menucomponent {
     this.closeMobile();
     this.auth.logout();
   }
+
+  /** Iniciales del usuario para el avatar de la barra superior. */
+  initials(): string {
+    const name = (this.auth.me()?.name ?? '').trim();
+    if (!name) return '?';
+    const parts = name.split(/\s+/).filter(Boolean);
+    return ((parts[0]?.[0] ?? '') + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+  }
 }

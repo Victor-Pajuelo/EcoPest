@@ -24,27 +24,27 @@
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="idCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.idRecommendation }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'common.id' | t">{{ element.idRecommendation }}</td>
       </ng-container>
       <ng-container matColumnDef="c_description">
         <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.description' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.description">{{ element.description }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.description' | t"><span class="cell-text" [title]="element.description">{{ element.description }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_origin">
         <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.origin' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="chip origin-{{ element.origin }}">{{ 'opt.' + element.origin | t }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.origin' | t"><span class="chip origin-{{ element.origin }}">{{ 'opt.' + element.origin | t }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_status">
         <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.status' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="chip st-{{ element.status }}">{{ 'opt.' + element.status | t }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.status' | t"><span class="chip st-{{ element.status }}">{{ 'opt.' + element.status | t }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_generationDate">
         <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.generationDate' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.generationDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.generationDate' | t">{{ element.generationDate | date: 'yyyy-MM-dd HH:mm' }}</td>
       </ng-container>
       <ng-container matColumnDef="c_incidentId">
         <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.incidentId' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ incidentName(element.incidentId) }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.incidentId' | t">{{ incidentName(element.incidentId) }}</td>
       </ng-container>
       <ng-container matColumnDef="actionsCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>

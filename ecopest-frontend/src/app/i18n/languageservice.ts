@@ -14,7 +14,14 @@ export class Languageservice {
 
   t(key: string): string {
     const l = this.lang();
-    return ENTITY_TEXTS[l][key] ?? BASE_TEXTS[l][key] ?? BASE_TEXTS['es_419'][key] ?? key;
+    return ENTITY_TEXTS[l][key] ?? BASE_TEXTS[l][key] ?? BASE_TEXTS['es_419'][key] ?? this.humanizeOpt(key);
+  }
+
+  /** Si falta la traduccion de una opcion (opt.X), muestra el valor legible en vez de la clave. */
+  private humanizeOpt(key: string): string {
+    if (!key.startsWith('opt.')) return key;
+    const raw = key.slice(4).replace(/[_-]+/g, ' ').trim().toLowerCase();
+    return raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : '—';
   }
 
   set(lang: Lang): void {

@@ -24,27 +24,27 @@
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="idCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.idInspection }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'common.id' | t">{{ element.idInspection }}</td>
       </ng-container>
       <ng-container matColumnDef="c_inspectionDate">
         <th mat-header-cell *matHeaderCellDef>{{ 'inspection.inspectionDate' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.inspectionDate }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'inspection.inspectionDate' | t">{{ element.inspectionDate }}</td>
       </ng-container>
       <ng-container matColumnDef="c_status">
         <th mat-header-cell *matHeaderCellDef>{{ 'inspection.status' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="chip st-{{ element.status }}">{{ 'opt.' + element.status | t }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'inspection.status' | t"><span class="chip st-{{ element.status }}">{{ 'opt.' + element.status | t }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_observations">
         <th mat-header-cell *matHeaderCellDef>{{ 'inspection.observations' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.observations">{{ element.observations }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'inspection.observations' | t"><span class="cell-text" [title]="element.observations">{{ element.observations }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_businessEntityId">
         <th mat-header-cell *matHeaderCellDef>{{ 'inspection.businessEntityId' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ businessName(element.businessEntityId) }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'inspection.businessEntityId' | t">{{ businessName(element.businessEntityId) }}</td>
       </ng-container>
       <ng-container matColumnDef="c_userId">
         <th mat-header-cell *matHeaderCellDef>{{ 'inspection.userId' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ userName(element.userId) }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'inspection.userId' | t">{{ userName(element.userId) }}</td>
       </ng-container>
       <ng-container matColumnDef="actionsCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>
