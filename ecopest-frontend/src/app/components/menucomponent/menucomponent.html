@@ -21,7 +21,7 @@
         <mat-menu #groupMenu="matMenu">
           @for (item of g.items; track item.route) {
             <a mat-menu-item [routerLink]="item.route">
-              <mat-icon>{{ item.icon }}</mat-icon>
+              <mat-icon [class]="'ic-' + item.icon">{{ item.icon }}</mat-icon>
               <span>{{ item.labelKey | t }}</span>
             </a>
           }
@@ -57,7 +57,7 @@
       <h2 class="group-title">{{ g.labelKey | t }}</h2>
       @for (item of g.items; track item.route) {
         <a [routerLink]="item.route" (click)="closeMobile()">
-          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon> {{ item.labelKey | t }}
+          <mat-icon aria-hidden="true" [class]="'ic-' + item.icon">{{ item.icon }}</mat-icon> {{ item.labelKey | t }}
         </a>
       }
     }

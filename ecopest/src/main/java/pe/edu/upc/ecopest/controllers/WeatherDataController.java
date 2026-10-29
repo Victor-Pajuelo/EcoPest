@@ -123,7 +123,7 @@ public class WeatherDataController {
         weatherData.setDate(today);
         weatherData.setTemperature(current.temperature());
         weatherData.setHumidity(current.humidity());
-        weatherData.setSource("OPEN-METEO");
+        weatherData.setSource(current.source());
         weatherData.setBusinessEntity(businessEntity);
         if (existing != null) {
             weatherDataService.update(weatherData);

@@ -40,13 +40,13 @@
           @if (auth.canWrite()) {
             <a mat-icon-button [routerLink]="['/roles/editar', element.idRole]"
               [attr.aria-label]="('common.edit' | t) + ' #' + element.idRole" [matTooltip]="'common.edit' | t">
-              <mat-icon>edit</mat-icon>
+              <mat-icon class="ic-edit">edit</mat-icon>
             </a>
           }
           @if (auth.canDelete()) {
             <button mat-icon-button type="button" (click)="deleteRole(element)"
               [attr.aria-label]="('common.delete' | t) + ' #' + element.idRole" [matTooltip]="'common.delete' | t">
-              <mat-icon>delete</mat-icon>
+              <mat-icon class="ic-delete">delete</mat-icon>
             </button>
           }
         </td>
