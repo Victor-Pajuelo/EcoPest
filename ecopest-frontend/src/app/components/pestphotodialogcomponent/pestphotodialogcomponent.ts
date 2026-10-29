@@ -22,7 +22,7 @@ export class Pestphotodialogcomponent implements OnInit {
   constructor(private nat: Inaturalistservice, public lang: Languageservice) {}
 
   ngOnInit(): void {
-    const locale = this.lang.lang() === 'es_419' ? 'es' : 'en';
+    const locale = 'es'; // los nombres de plagas estan en espanol: iNaturalist resuelve mejor con locale es
     this.nat.searchTaxa(this.data.name, locale).subscribe({
       next: (list) => {
         this.result.set(list.find((t) => t.photoUrl) ?? list[0] ?? null);

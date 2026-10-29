@@ -1,5 +1,5 @@
 <section class="sync-card" aria-labelledby="sync-title">
-  <h3 id="sync-title"><mat-icon aria-hidden="true">cloud_sync</mat-icon> {{ 'weather.syncTitle' | t }}</h3>
+  <h3 id="sync-title"><mat-icon class="ic-cloud_sync" aria-hidden="true">cloud_sync</mat-icon> {{ 'weather.syncTitle' | t }}</h3>
   <p class="muted">{{ 'weather.syncHelp' | t }}</p>
   <form [formGroup]="form" (ngSubmit)="sync()" class="sync-form" novalidate>
     <mat-form-field appearance="outline">

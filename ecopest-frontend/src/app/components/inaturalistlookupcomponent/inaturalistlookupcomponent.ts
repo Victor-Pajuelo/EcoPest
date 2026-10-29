@@ -34,7 +34,7 @@ export class Inaturalistlookupcomponent {
     this.query = q;
     this.loading.set(true);
     this.failed.set(false);
-    const locale = this.lang.lang() === 'es_419' ? 'es' : 'en';
+    const locale = 'es'; // los nombres de plagas estan en espanol: iNaturalist resuelve mejor con locale es
     this.nat.searchTaxa(q, locale).subscribe({
       next: (list) => {
         this.results.set(list);

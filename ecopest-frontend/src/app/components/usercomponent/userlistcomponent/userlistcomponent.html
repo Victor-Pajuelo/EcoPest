@@ -52,13 +52,13 @@
           @if (auth.canWrite()) {
             <a mat-icon-button [routerLink]="['/usuarios/editar', element.idUser]"
               [attr.aria-label]="('common.edit' | t) + ' #' + element.idUser" [matTooltip]="'common.edit' | t">
-              <mat-icon>edit</mat-icon>
+              <mat-icon class="ic-edit">edit</mat-icon>
             </a>
           }
           @if (auth.canDelete()) {
             <button mat-icon-button type="button" (click)="deleteUser(element)"
               [attr.aria-label]="('common.delete' | t) + ' #' + element.idUser" [matTooltip]="'common.delete' | t">
-              <mat-icon>delete</mat-icon>
+              <mat-icon class="ic-delete">delete</mat-icon>
             </button>
           }
         </td>

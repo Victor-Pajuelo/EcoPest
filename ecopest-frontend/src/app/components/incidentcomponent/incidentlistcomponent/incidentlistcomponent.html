@@ -51,18 +51,18 @@
         <td mat-cell *matCellDef="let element" class="actions-cell">
           <button mat-icon-button type="button" (click)="openRecommendations(element)"
             [attr.aria-label]="('ai.view' | t) + ' #' + element.idIncident" [matTooltip]="'ai.view' | t">
-            <mat-icon>lightbulb</mat-icon>
+            <mat-icon class="ic-lightbulb">lightbulb</mat-icon>
           </button>
           @if (auth.canWrite()) {
             <a mat-icon-button [routerLink]="['/incidentes/editar', element.idIncident]"
               [attr.aria-label]="('common.edit' | t) + ' #' + element.idIncident" [matTooltip]="'common.edit' | t">
-              <mat-icon>edit</mat-icon>
+              <mat-icon class="ic-edit">edit</mat-icon>
             </a>
           }
           @if (auth.canDelete()) {
             <button mat-icon-button type="button" (click)="deleteIncident(element)"
               [attr.aria-label]="('common.delete' | t) + ' #' + element.idIncident" [matTooltip]="'common.delete' | t">
-              <mat-icon>delete</mat-icon>
+              <mat-icon class="ic-delete">delete</mat-icon>
             </button>
           }
         </td>
