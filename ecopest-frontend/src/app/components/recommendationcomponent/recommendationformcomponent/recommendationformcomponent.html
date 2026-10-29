@@ -1,0 +1,62 @@
+<section class="page" [attr.aria-labelledby]="'form-title-recommendation'">
+  <h2 id="form-title-recommendation">{{ (isEdit ? 'recommendation.edit' : 'recommendation.new') | t }}</h2>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'recommendation.description' | t }}</mat-label>
+        <textarea matInput rows="4" formControlName="description" maxlength="1000" required></textarea>
+        @if (form.get('description')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'recommendation.origin' | t }}</mat-label>
+        <mat-select formControlName="origin" required>
+          @for (o of optionsOf('origin', ["IA", "MANUAL"]); track o) {
+            <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('origin')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'recommendation.status' | t }}</mat-label>
+        <mat-select formControlName="status" required>
+          @for (o of optionsOf('status', ["PENDING", "IN_PROGRESS", "DONE"]); track o) {
+            <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('status')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'recommendation.incidentId' | t }}</mat-label>
+        <mat-select formControlName="incidentId" required>
+          @for (o of incidentOptions(); track o.idIncident) {
+            <mat-option [value]="o.idIncident">{{ incidentLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('incidentId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'recommendation.responsibleUserId' | t }}</mat-label>
+        <mat-select formControlName="responsibleUserId">
+          <mat-option [value]="null">{{ 'common.none' | t }}</mat-option>
+          @for (o of userOptions(); track o.idUser) {
+            <mat-option [value]="o.idUser">{{ userLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('responsibleUserId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+
+      @if (message()) {
+        <p class="msg-error" role="alert">{{ message() }}</p>
+      }
+      @if (saving()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+      }
+      <div class="form-actions">
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          <mat-icon>save</mat-icon> {{ 'common.save' | t }}
+        </button>
+        <a mat-stroked-button routerLink="/recomendaciones/listar">{{ 'common.cancel' | t }}</a>
+      </div>
+    </form>
+  </div>
+</section>

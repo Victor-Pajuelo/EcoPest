@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.ecopest.clients.OpenMeteoClient;
 import pe.edu.upc.ecopest.dtos.AverageWeatherDTO;
 import pe.edu.upc.ecopest.dtos.WeatherDataDTO;
 import pe.edu.upc.ecopest.entities.BusinessEntity;
@@ -26,8 +27,10 @@ public class WeatherDataController {
     private final IWeatherDataService weatherDataService;
     private final IBusinessEntityService businessEntityService;
     private final ModelMapper modelMapper;
+    private final OpenMeteoClient openMeteoClient;
 
-    public WeatherDataController(IWeatherDataService weatherDataService, IBusinessEntityService businessEntityService, ModelMapper modelMapper) {
+    public WeatherDataController(IWeatherDataService weatherDataService, IBusinessEntityService businessEntityService, ModelMapper modelMapper, OpenMeteoClient openMeteoClient) {
+        this.openMeteoClient = openMeteoClient;
         this.weatherDataService = weatherDataService;
         this.businessEntityService = businessEntityService;
         this.modelMapper = modelMapper;
@@ -100,6 +103,34 @@ public class WeatherDataController {
             items.add(modelMapper.map(weatherData, WeatherDataDTO.class));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(items);
+    }
+
+    @Operation(summary = "Sincronizar clima real (Open-Meteo)", description = "Consulta la API externa Open-Meteo con las coordenadas indicadas (por defecto Lima) y guarda la temperatura y humedad actuales como un registro con source OPEN-METEO.")
+    @PostMapping("/sync")
+    public ResponseEntity<WeatherDataDTO> sync(@RequestParam Long businessEntityId,
+                                               @RequestParam(defaultValue = "-12.0464") double latitude,
+                                               @RequestParam(defaultValue = "-77.0428") double longitude) {
+        BusinessEntity businessEntity = businessEntityService.findById(businessEntityId)
+                .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
+        OpenMeteoClient.CurrentWeather current = openMeteoClient.fetchCurrent(latitude, longitude);
+        LocalDate today = LocalDate.now();
+        // Hay un solo registro por empresa y fecha (restriccion unica): si ya existe hoy, se actualiza.
+        WeatherData existing = weatherDataService.listByBusinessEntity(businessEntityId).stream()
+                .filter(w -> today.equals(w.getDate()))
+                .findFirst()
+                .orElse(null);
+        WeatherData weatherData = existing != null ? existing : new WeatherData();
+        weatherData.setDate(today);
+        weatherData.setTemperature(current.temperature());
+        weatherData.setHumidity(current.humidity());
+        weatherData.setSource("OPEN-METEO");
+        weatherData.setBusinessEntity(businessEntity);
+        if (existing != null) {
+            weatherDataService.update(weatherData);
+            return ResponseEntity.ok(modelMapper.map(weatherData, WeatherDataDTO.class));
+        }
+        weatherDataService.insert(weatherData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(weatherData, WeatherDataDTO.class));
     }
 
     @Operation(summary = "Filtrar datos meteorológicos por ID de empresa", description = "Obtiene la lista de registros meteorológicos pertenecientes a una entidad de negocio.")

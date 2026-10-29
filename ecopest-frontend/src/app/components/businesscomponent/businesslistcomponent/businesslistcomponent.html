@@ -1,0 +1,72 @@
+<section class="page" [attr.aria-labelledby]="'title-business'">
+  <div class="toolbar-row">
+    <h2 id="title-business">{{ 'business.title' | t }}</h2>
+    <span class="spacer"></span>
+    @if (auth.canWrite()) {
+      <a mat-flat-button routerLink="/empresas/insertar">
+        <mat-icon>add</mat-icon> {{ 'common.new' | t }}
+      </a>
+    }
+  </div>
+
+
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>{{ 'common.search' | t }}</mat-label>
+    <input matInput (keyup)="applyFilter($event)" [attr.aria-label]="'common.search' | t" />
+    <mat-icon matSuffix aria-hidden="true">search</mat-icon>
+  </mat-form-field>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+  }
+
+  <div class="table-wrap">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="idCol">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.idBusinessEntity }}</td>
+      </ng-container>
+      <ng-container matColumnDef="c_name">
+        <th mat-header-cell *matHeaderCellDef>{{ 'business.name' | t }}</th>
+        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.name">{{ element.name }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="c_type">
+        <th mat-header-cell *matHeaderCellDef>{{ 'business.type' | t }}</th>
+        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.type">{{ element.type }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="c_companyName">
+        <th mat-header-cell *matHeaderCellDef>{{ 'business.companyName' | t }}</th>
+        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.companyName">{{ element.companyName }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="c_active">
+        <th mat-header-cell *matHeaderCellDef>{{ 'business.active' | t }}</th>
+        <td mat-cell *matCellDef="let element">{{ (element.active ? 'common.yes' : 'common.no') | t }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actionsCol">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>
+        <td mat-cell *matCellDef="let element" class="actions-cell">
+          @if (auth.canWrite()) {
+            <a mat-icon-button [routerLink]="['/empresas/editar', element.idBusinessEntity]"
+              [attr.aria-label]="('common.edit' | t) + ' #' + element.idBusinessEntity" [matTooltip]="'common.edit' | t">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (auth.canDelete()) {
+            <button mat-icon-button type="button" (click)="deleteBusiness(element)"
+              [attr.aria-label]="('common.delete' | t) + ' #' + element.idBusinessEntity" [matTooltip]="'common.delete' | t">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    @if (!loading() && dataSource.filteredData.length === 0) {
+      <p class="empty muted">{{ 'common.noData' | t }}</p>
+    }
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons
+      [attr.aria-label]="'common.rowsPerPage' | t"></mat-paginator>
+  </div>
+</section>

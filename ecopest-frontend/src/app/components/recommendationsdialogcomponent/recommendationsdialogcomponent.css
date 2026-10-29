@@ -1,0 +1,7 @@
+.rec-list { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 12px; }
+.rec-list li { border: 1px solid #c8e6c9; border-radius: 8px; padding: 8px 12px; background: #fafffa; }
+.rec-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.rec-list p { margin: 8px 0 0; line-height: 1.5; }
+.incident-desc { font-style: italic; }
+.small { font-size: 12px; }
+.mini { font-size: 14px; width: 14px; height: 14px; vertical-align: text-bottom; }

@@ -1,0 +1,38 @@
+<section class="nat-card" aria-labelledby="nat-title">
+  <h3 id="nat-title"><mat-icon aria-hidden="true">travel_explore</mat-icon> {{ 'nat.title' | t }}</h3>
+  <p class="muted">{{ 'nat.help' | t }}</p>
+  <div class="nat-search">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'nat.search' | t }}</mat-label>
+      <input matInput [(ngModel)]="query" [ngModelOptions]="{ standalone: true }" (keydown.enter)="$event.preventDefault(); search()" />
+    </mat-form-field>
+    <button mat-stroked-button type="button" (click)="search()" [disabled]="loading()">
+      <mat-icon>search</mat-icon> {{ 'nat.search' | t }}
+    </button>
+  </div>
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+  }
+  @if (failed()) {
+    <p class="msg-error" role="alert">{{ 'nat.error' | t }}</p>
+  } @else if (searched() && results().length === 0) {
+    <p class="muted">{{ 'nat.notFound' | t }}</p>
+  }
+  <ul class="nat-list">
+    @for (r of results(); track r.id) {
+      <li>
+        @if (r.photoUrl) {
+          <img [src]="r.photoUrl" [alt]="('nat.photo' | t) + ': ' + (r.commonName || r.scientificName)" width="64" height="64" />
+        }
+        <div class="nat-info">
+          <em>{{ r.scientificName }}</em>
+          @if (r.commonName) { <span class="muted">{{ r.commonName }}</span> }
+        </div>
+        <button mat-button type="button" (click)="use(r)">{{ 'nat.use' | t }}</button>
+      </li>
+    }
+  </ul>
+  @if (results().length) {
+    <p class="muted small">{{ 'nat.source' | t }}</p>
+  }
+</section>

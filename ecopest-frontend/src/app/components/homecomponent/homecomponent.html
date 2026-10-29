@@ -1,0 +1,30 @@
+<section class="page" aria-labelledby="home-title">
+  <h1 id="home-title">{{ 'home.welcome' | t }}</h1>
+  @if (auth.me(); as me) {
+    <p>{{ 'home.hello' | t }}, <strong>{{ me.name }}</strong> · {{ 'home.role' | t }}: <span class="chip">{{ auth.roleLabel() }}</span></p>
+  }
+  <p class="muted">{{ 'home.intro' | t }}</p>
+
+  <ul class="kpis" aria-label="KPI">
+    <li><a routerLink="/inspecciones"><mat-icon aria-hidden="true">fact_check</mat-icon><span class="num">{{ inspections() ?? '–' }}</span><span>{{ 'home.kpi.inspections' | t }}</span></a></li>
+    <li><a routerLink="/incidentes"><mat-icon aria-hidden="true">report_problem</mat-icon><span class="num">{{ incidents() ?? '–' }}</span><span>{{ 'home.kpi.incidents' | t }}</span></a></li>
+    <li><a routerLink="/plagas"><mat-icon aria-hidden="true">bug_report</mat-icon><span class="num">{{ pests() ?? '–' }}</span><span>{{ 'home.kpi.pests' | t }}</span></a></li>
+    <li><a routerLink="/empresas"><mat-icon aria-hidden="true">business</mat-icon><span class="num">{{ companies() ?? '–' }}</span><span>{{ 'home.kpi.companies' | t }}</span></a></li>
+    <li><a routerLink="/recomendaciones"><mat-icon aria-hidden="true">lightbulb</mat-icon><span class="num">{{ recommendations() ?? '–' }}</span><span>{{ 'home.kpi.recommendations' | t }}</span></a></li>
+  </ul>
+
+  <div class="charts">
+    <app-barchart [title]="'home.byRisk' | t" [items]="byRisk()"></app-barchart>
+    <app-barchart [title]="'home.byPest' | t" [items]="byPest()"></app-barchart>
+  </div>
+
+  <aside class="ods" aria-labelledby="ods-title">
+    <h2 id="ods-title">{{ 'home.ods' | t }}</h2>
+    <p>{{ 'home.ods.text' | t }}</p>
+    <div class="ods-badges">
+      <span class="ods-badge ods3">ODS 3</span>
+      <span class="ods-badge ods11">ODS 11</span>
+      <span class="ods-badge ods12">ODS 12</span>
+    </div>
+  </aside>
+</section>

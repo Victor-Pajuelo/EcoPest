@@ -1,0 +1,61 @@
+<section class="page" [attr.aria-labelledby]="'form-title-inspection'">
+  <h2 id="form-title-inspection">{{ (isEdit ? 'inspection.edit' : 'inspection.new') | t }}</h2>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'inspection.inspectionDate' | t }}</mat-label>
+        <input matInput [matDatepicker]="picker_inspectionDate" formControlName="inspectionDate" required />
+        <mat-datepicker-toggle matIconSuffix [for]="picker_inspectionDate"></mat-datepicker-toggle>
+        <mat-datepicker #picker_inspectionDate></mat-datepicker>
+        @if (form.get('inspectionDate')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'inspection.status' | t }}</mat-label>
+        <mat-select formControlName="status" required>
+          @for (o of optionsOf('status', ["PENDING", "IN_PROGRESS", "COMPLETED"]); track o) {
+            <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('status')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'inspection.observations' | t }}</mat-label>
+        <textarea matInput rows="4" formControlName="observations" maxlength="500" required></textarea>
+        @if (form.get('observations')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'inspection.businessEntityId' | t }}</mat-label>
+        <mat-select formControlName="businessEntityId" required>
+          @for (o of businessOptions(); track o.idBusinessEntity) {
+            <mat-option [value]="o.idBusinessEntity">{{ businessLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('businessEntityId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      @if (auth.isAdmin()) {
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'inspection.userId' | t }}</mat-label>
+        <mat-select formControlName="userId" required>
+          @for (o of userOptions(); track o.idUser) {
+            <mat-option [value]="o.idUser">{{ userLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('userId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      }
+
+      @if (message()) {
+        <p class="msg-error" role="alert">{{ message() }}</p>
+      }
+      @if (saving()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+      }
+      <div class="form-actions">
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          <mat-icon>save</mat-icon> {{ 'common.save' | t }}
+        </button>
+        <a mat-stroked-button routerLink="/inspecciones/listar">{{ 'common.cancel' | t }}</a>
+      </div>
+    </form>
+  </div>
+</section>
