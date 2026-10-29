@@ -12,7 +12,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{ 'inspection.status' | t }}</mat-label>
         <mat-select formControlName="status" required>
-          @for (o of optionsOf('status', ["PENDING", "IN_PROGRESS", "COMPLETED"]); track o) {
+          @for (o of optionsOf('status', ["PROGRAMADA", "REALIZADA"]); track o) {
             <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
           }
         </mat-select>

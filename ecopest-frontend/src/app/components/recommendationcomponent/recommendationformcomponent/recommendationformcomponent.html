@@ -10,7 +10,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{ 'recommendation.origin' | t }}</mat-label>
         <mat-select formControlName="origin" required>
-          @for (o of optionsOf('origin', ["IA", "MANUAL"]); track o) {
+          @for (o of optionsOf('origin', ["AUTOMATICO", "MANUAL", "IA"]); track o) {
             <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
           }
         </mat-select>
@@ -19,7 +19,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{ 'recommendation.status' | t }}</mat-label>
         <mat-select formControlName="status" required>
-          @for (o of optionsOf('status', ["PENDING", "IN_PROGRESS", "DONE"]); track o) {
+          @for (o of optionsOf('status', ["PENDIENTE", "EN_PROCESO", "APLICADA"]); track o) {
             <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
           }
         </mat-select>

@@ -27,27 +27,27 @@
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="idCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.idWeatherData }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'common.id' | t">{{ element.idWeatherData }}</td>
       </ng-container>
       <ng-container matColumnDef="c_date">
         <th mat-header-cell *matHeaderCellDef>{{ 'weather.date' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'weather.date' | t">{{ element.date }}</td>
       </ng-container>
       <ng-container matColumnDef="c_temperature">
         <th mat-header-cell *matHeaderCellDef>{{ 'weather.temperature' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.temperature }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'weather.temperature' | t">{{ element.temperature }}</td>
       </ng-container>
       <ng-container matColumnDef="c_humidity">
         <th mat-header-cell *matHeaderCellDef>{{ 'weather.humidity' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.humidity }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'weather.humidity' | t">{{ element.humidity }}</td>
       </ng-container>
       <ng-container matColumnDef="c_source">
         <th mat-header-cell *matHeaderCellDef>{{ 'weather.source' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.source">{{ element.source }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'weather.source' | t">{{ element.source ? ('opt.' + element.source | t) : '—' }}</td>
       </ng-container>
       <ng-container matColumnDef="c_businessEntityId">
         <th mat-header-cell *matHeaderCellDef>{{ 'weather.businessEntityId' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ businessName(element.businessEntityId) }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'weather.businessEntityId' | t">{{ businessName(element.businessEntityId) }}</td>
       </ng-container>
       <ng-container matColumnDef="actionsCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>

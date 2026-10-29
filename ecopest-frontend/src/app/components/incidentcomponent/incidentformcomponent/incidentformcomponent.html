@@ -17,7 +17,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{ 'incident.status' | t }}</mat-label>
         <mat-select formControlName="status" required>
-          @for (o of optionsOf('status', ["OPEN", "IN_PROGRESS", "CLOSED"]); track o) {
+          @for (o of optionsOf('status', ["PENDIENTE", "EN_PROCESO", "RESUELTO"]); track o) {
             <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
           }
         </mat-select>

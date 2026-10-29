@@ -24,27 +24,27 @@
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="idCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ element.idUser }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'common.id' | t">{{ element.idUser }}</td>
       </ng-container>
       <ng-container matColumnDef="c_name">
         <th mat-header-cell *matHeaderCellDef>{{ 'user.name' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.name">{{ element.name }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'user.name' | t"><span class="cell-text" [title]="element.name">{{ element.name }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_email">
         <th mat-header-cell *matHeaderCellDef>{{ 'user.email' | t }}</th>
-        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.email">{{ element.email }}</span></td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'user.email' | t"><span class="cell-text" [title]="element.email">{{ element.email }}</span></td>
       </ng-container>
       <ng-container matColumnDef="c_roleId">
         <th mat-header-cell *matHeaderCellDef>{{ 'user.roleId' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ roleName(element.roleId) }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'user.roleId' | t">{{ roleName(element.roleId) }}</td>
       </ng-container>
       <ng-container matColumnDef="c_businessEntityId">
         <th mat-header-cell *matHeaderCellDef>{{ 'user.businessEntityId' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ businessName(element.businessEntityId) }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'user.businessEntityId' | t">{{ businessName(element.businessEntityId) }}</td>
       </ng-container>
       <ng-container matColumnDef="c_active">
         <th mat-header-cell *matHeaderCellDef>{{ 'user.active' | t }}</th>
-        <td mat-cell *matCellDef="let element">{{ (element.active ? 'common.yes' : 'common.no') | t }}</td>
+        <td mat-cell *matCellDef="let element" [attr.data-label]="'user.active' | t">{{ (element.active ? 'common.yes' : 'common.no') | t }}</td>
       </ng-container>
       <ng-container matColumnDef="actionsCol">
         <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>

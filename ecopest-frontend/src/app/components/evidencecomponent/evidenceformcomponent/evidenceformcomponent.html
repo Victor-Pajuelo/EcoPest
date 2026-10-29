@@ -10,7 +10,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{ 'evidence.fileType' | t }}</mat-label>
         <mat-select formControlName="fileType" required>
-          @for (o of optionsOf('fileType', ["IMAGE", "VIDEO", "DOCUMENT"]); track o) {
+          @for (o of optionsOf('fileType', ["IMAGEN", "VIDEO", "PDF"]); track o) {
             <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
           }
         </mat-select>
