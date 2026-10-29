@@ -1,0 +1,51 @@
+<section class="page" [attr.aria-labelledby]="'form-title-weather'">
+  <h2 id="form-title-weather">{{ (isEdit ? 'weather.edit' : 'weather.new') | t }}</h2>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'weather.date' | t }}</mat-label>
+        <input matInput [matDatepicker]="picker_date" formControlName="date" required />
+        <mat-datepicker-toggle matIconSuffix [for]="picker_date"></mat-datepicker-toggle>
+        <mat-datepicker #picker_date></mat-datepicker>
+        @if (form.get('date')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'weather.temperature' | t }}</mat-label>
+        <input matInput type="number" formControlName="temperature" step="0.1" required />
+        @if (form.get('temperature')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'weather.humidity' | t }}</mat-label>
+        <input matInput type="number" formControlName="humidity" step="0.1" required />
+        @if (form.get('humidity')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'weather.source' | t }}</mat-label>
+        <input matInput type="text" formControlName="source" maxlength="60" />
+        @if (form.get('source')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'weather.businessEntityId' | t }}</mat-label>
+        <mat-select formControlName="businessEntityId" required>
+          @for (o of businessOptions(); track o.idBusinessEntity) {
+            <mat-option [value]="o.idBusinessEntity">{{ businessLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('businessEntityId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+
+      @if (message()) {
+        <p class="msg-error" role="alert">{{ message() }}</p>
+      }
+      @if (saving()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+      }
+      <div class="form-actions">
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          <mat-icon>save</mat-icon> {{ 'common.save' | t }}
+        </button>
+        <a mat-stroked-button routerLink="/clima/listar">{{ 'common.cancel' | t }}</a>
+      </div>
+    </form>
+  </div>
+</section>

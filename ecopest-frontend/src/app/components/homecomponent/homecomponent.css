@@ -1,0 +1,10 @@
+.kpis { list-style: none; padding: 0; margin: 16px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.kpis a { display: flex; flex-direction: column; align-items: center; gap: 2px; background: #fff; color: #1b5e20; text-decoration: none; border-radius: 10px; padding: 14px 8px; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.kpis a:hover { background: #e8f5e9; }
+.kpis mat-icon { color: #2e7d32; }
+.num { font-size: 32px; font-weight: 500; color: #1b5e20; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.ods { background: #e8f5e9; border-radius: 10px; padding: 8px 20px 16px; }
+.ods-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.ods-badge { color: #fff; padding: 4px 12px; border-radius: 6px; font-weight: 500; }
+.ods3 { background: #2e7d32; } .ods11 { background: #b36200; } .ods12 { background: #8a5a00; }

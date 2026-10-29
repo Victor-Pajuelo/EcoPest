@@ -1,0 +1,63 @@
+<mat-toolbar class="app-toolbar" role="banner">
+  @if (auth.isLoggedIn()) {
+    <button mat-icon-button type="button" class="hamburger" (click)="mobileOpen.set(!mobileOpen())"
+      [attr.aria-label]="'menu.open' | t" [attr.aria-expanded]="mobileOpen()" aria-controls="mobile-nav">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+
+  <a routerLink="/" class="brand" [attr.aria-label]="('app.name' | t) + ' · ' + ('menu.home' | t)">
+    <mat-icon aria-hidden="true">eco</mat-icon>
+    <span class="brand-name">{{ 'app.name' | t }}</span>
+  </a>
+
+  @if (auth.isLoggedIn()) {
+    <nav class="desktop-nav" [attr.aria-label]="'app.name' | t">
+      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'menu.home' | t }}</a>
+      @for (g of visibleGroups(); track g.labelKey) {
+        <button mat-button type="button" [matMenuTriggerFor]="groupMenu">
+          {{ g.labelKey | t }} <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #groupMenu="matMenu">
+          @for (item of g.items; track item.route) {
+            <a mat-menu-item [routerLink]="item.route">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.labelKey | t }}</span>
+            </a>
+          }
+        </mat-menu>
+      }
+      <a mat-button routerLink="/reportes" routerLinkActive="active">{{ 'menu.reports' | t }}</a>
+    </nav>
+  }
+
+  <span class="spacer"></span>
+
+  <button mat-button type="button" class="lang-btn" (click)="lang.toggle()"
+    [attr.aria-label]="('menu.language' | t) + ': ' + (lang.lang() === 'es_419' ? 'English' : 'Español')">
+    <mat-icon>translate</mat-icon>
+    {{ lang.lang() === 'es_419' ? 'EN' : 'ES' }}
+  </button>
+
+  @if (auth.isLoggedIn()) {
+    <span class="user-name">{{ auth.me()?.name }}</span>
+    <button mat-button type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon> <span class="logout-label">{{ 'menu.logout' | t }}</span>
+    </button>
+  }
+</mat-toolbar>
+
+@if (auth.isLoggedIn() && mobileOpen()) {
+  <nav id="mobile-nav" class="mobile-nav" [attr.aria-label]="'app.name' | t">
+    <a routerLink="/" (click)="closeMobile()">{{ 'menu.home' | t }}</a>
+    @for (g of visibleGroups(); track g.labelKey) {
+      <h2 class="group-title">{{ g.labelKey | t }}</h2>
+      @for (item of g.items; track item.route) {
+        <a [routerLink]="item.route" (click)="closeMobile()">
+          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon> {{ item.labelKey | t }}
+        </a>
+      }
+    }
+    <a routerLink="/reportes" (click)="closeMobile()">{{ 'menu.reports' | t }}</a>
+  </nav>
+}

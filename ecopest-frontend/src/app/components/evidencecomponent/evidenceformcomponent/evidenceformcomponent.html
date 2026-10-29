@@ -1,0 +1,43 @@
+<section class="page" [attr.aria-labelledby]="'form-title-evidence'">
+  <h2 id="form-title-evidence">{{ (isEdit ? 'evidence.edit' : 'evidence.new') | t }}</h2>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'evidence.fileUrl' | t }}</mat-label>
+        <input matInput type="text" formControlName="fileUrl" maxlength="300" required />
+        @if (form.get('fileUrl')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'evidence.fileType' | t }}</mat-label>
+        <mat-select formControlName="fileType" required>
+          @for (o of optionsOf('fileType', ["IMAGE", "VIDEO", "DOCUMENT"]); track o) {
+            <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('fileType')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'evidence.incidentId' | t }}</mat-label>
+        <mat-select formControlName="incidentId" required>
+          @for (o of incidentOptions(); track o.idIncident) {
+            <mat-option [value]="o.idIncident">{{ incidentLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('incidentId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+
+      @if (message()) {
+        <p class="msg-error" role="alert">{{ message() }}</p>
+      }
+      @if (saving()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+      }
+      <div class="form-actions">
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          <mat-icon>save</mat-icon> {{ 'common.save' | t }}
+        </button>
+        <a mat-stroked-button routerLink="/evidencias/listar">{{ 'common.cancel' | t }}</a>
+      </div>
+    </form>
+  </div>
+</section>

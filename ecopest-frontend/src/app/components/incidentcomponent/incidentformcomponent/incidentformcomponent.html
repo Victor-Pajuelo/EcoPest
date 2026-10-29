@@ -1,0 +1,59 @@
+<section class="page" [attr.aria-labelledby]="'form-title-incident'">
+  <h2 id="form-title-incident">{{ (isEdit ? 'incident.edit' : 'incident.new') | t }}</h2>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'incident.incidentDate' | t }}</mat-label>
+        <input matInput [matDatepicker]="picker_incidentDate" formControlName="incidentDate" required />
+        <mat-datepicker-toggle matIconSuffix [for]="picker_incidentDate"></mat-datepicker-toggle>
+        <mat-datepicker #picker_incidentDate></mat-datepicker>
+        @if (form.get('incidentDate')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'incident.description' | t }}</mat-label>
+        <textarea matInput rows="4" formControlName="description" maxlength="500" required></textarea>
+        @if (form.get('description')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'incident.status' | t }}</mat-label>
+        <mat-select formControlName="status" required>
+          @for (o of optionsOf('status', ["OPEN", "IN_PROGRESS", "CLOSED"]); track o) {
+            <mat-option [value]="o">{{ 'opt.' + o | t }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('status')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'incident.inspectionId' | t }}</mat-label>
+        <mat-select formControlName="inspectionId" required>
+          @for (o of inspectionOptions(); track o.idInspection) {
+            <mat-option [value]="o.idInspection">{{ inspectionLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('inspectionId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'incident.pestTypeId' | t }}</mat-label>
+        <mat-select formControlName="pestTypeId" required>
+          @for (o of pestOptions(); track o.idPestType) {
+            <mat-option [value]="o.idPestType">{{ pestLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('pestTypeId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+
+      @if (message()) {
+        <p class="msg-error" role="alert">{{ message() }}</p>
+      }
+      @if (saving()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+      }
+      <div class="form-actions">
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          <mat-icon>save</mat-icon> {{ 'common.save' | t }}
+        </button>
+        <a mat-stroked-button routerLink="/incidentes/listar">{{ 'common.cancel' | t }}</a>
+      </div>
+    </form>
+  </div>
+</section>

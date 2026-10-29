@@ -1,0 +1,80 @@
+<section class="page" [attr.aria-labelledby]="'title-incident'">
+  <div class="toolbar-row">
+    <h2 id="title-incident">{{ 'incident.title' | t }}</h2>
+    <span class="spacer"></span>
+    @if (auth.canWrite()) {
+      <a mat-flat-button routerLink="/incidentes/insertar">
+        <mat-icon>add</mat-icon> {{ 'common.new' | t }}
+      </a>
+    }
+  </div>
+
+
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>{{ 'common.search' | t }}</mat-label>
+    <input matInput (keyup)="applyFilter($event)" [attr.aria-label]="'common.search' | t" />
+    <mat-icon matSuffix aria-hidden="true">search</mat-icon>
+  </mat-form-field>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+  }
+
+  <div class="table-wrap">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="idCol">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.idIncident }}</td>
+      </ng-container>
+      <ng-container matColumnDef="c_incidentDate">
+        <th mat-header-cell *matHeaderCellDef>{{ 'incident.incidentDate' | t }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.incidentDate }}</td>
+      </ng-container>
+      <ng-container matColumnDef="c_description">
+        <th mat-header-cell *matHeaderCellDef>{{ 'incident.description' | t }}</th>
+        <td mat-cell *matCellDef="let element"><span class="cell-text" [title]="element.description">{{ element.description }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="c_status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'incident.status' | t }}</th>
+        <td mat-cell *matCellDef="let element"><span class="chip st-{{ element.status }}">{{ 'opt.' + element.status | t }}</span></td>
+      </ng-container>
+      <ng-container matColumnDef="c_inspectionId">
+        <th mat-header-cell *matHeaderCellDef>{{ 'incident.inspectionId' | t }}</th>
+        <td mat-cell *matCellDef="let element">{{ inspectionName(element.inspectionId) }}</td>
+      </ng-container>
+      <ng-container matColumnDef="c_pestTypeId">
+        <th mat-header-cell *matHeaderCellDef>{{ 'incident.pestTypeId' | t }}</th>
+        <td mat-cell *matCellDef="let element">{{ pestName(element.pestTypeId) }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actionsCol">
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>
+        <td mat-cell *matCellDef="let element" class="actions-cell">
+          <button mat-icon-button type="button" (click)="openRecommendations(element)"
+            [attr.aria-label]="('ai.view' | t) + ' #' + element.idIncident" [matTooltip]="'ai.view' | t">
+            <mat-icon>lightbulb</mat-icon>
+          </button>
+          @if (auth.canWrite()) {
+            <a mat-icon-button [routerLink]="['/incidentes/editar', element.idIncident]"
+              [attr.aria-label]="('common.edit' | t) + ' #' + element.idIncident" [matTooltip]="'common.edit' | t">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (auth.canDelete()) {
+            <button mat-icon-button type="button" (click)="deleteIncident(element)"
+              [attr.aria-label]="('common.delete' | t) + ' #' + element.idIncident" [matTooltip]="'common.delete' | t">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    @if (!loading() && dataSource.filteredData.length === 0) {
+      <p class="empty muted">{{ 'common.noData' | t }}</p>
+    }
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons
+      [attr.aria-label]="'common.rowsPerPage' | t"></mat-paginator>
+  </div>
+</section>

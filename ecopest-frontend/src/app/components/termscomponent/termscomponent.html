@@ -1,0 +1,9 @@
+<article class="page terms" aria-labelledby="terms-title">
+  <h1 id="terms-title">{{ 'terms.title' | t }}</h1>
+  <p class="muted">{{ 'terms.updated' | t }}</p>
+  @for (n of sections; track n) {
+    <h2>{{ 'terms.s' + n + '.t' | t }}</h2>
+    <p>{{ 'terms.s' + n + '.p' | t }}</p>
+  }
+  <a mat-stroked-button routerLink="/">{{ 'common.back' | t }}</a>
+</article>
