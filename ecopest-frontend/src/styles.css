@@ -227,6 +227,22 @@ h1, h2, h3 { letter-spacing: -0.015em; }
 .actions-cell mat-icon.ic-photo_camera { color: #7c3aed; }
 .actions-cell .mat-mdc-icon-button:has(.ic-delete) { background: #fef2f2; }
 .actions-cell .mat-mdc-icon-button:has(.ic-delete):hover { background: #fee2e2; }
+/* Eliminar: al pasar el mouse se pone rojo y tiembla */
+.actions-cell .mat-mdc-icon-button:has(.ic-delete):hover,
+.actions-cell .mat-mdc-icon-button:has(.ic-delete):focus-visible {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, .35);
+  animation: shake-delete .4s ease-in-out;
+}
+.actions-cell .mat-mdc-icon-button:hover mat-icon.ic-delete,
+.actions-cell .mat-mdc-icon-button:focus-visible mat-icon.ic-delete { color: #fff; }
+@keyframes shake-delete {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-3px) rotate(-8deg); }
+  40% { transform: translateX(3px) rotate(8deg); }
+  60% { transform: translateX(-2px) rotate(-5deg); }
+  80% { transform: translateX(2px) rotate(5deg); }
+}
 .actions-cell .mat-mdc-icon-button:has(.ic-edit) { background: #eff6ff; }
 .actions-cell .mat-mdc-icon-button:has(.ic-edit):hover { background: #dbeafe; }
 .actions-cell .mat-mdc-icon-button:has(.ic-lightbulb) { background: #fffbeb; }

@@ -16,7 +16,6 @@ public interface IWeatherDataRepository extends JpaRepository<WeatherData, Long>
     // Borrado por ID de BusinessEntity
     void deleteByBusinessEntity_IdBusinessEntity(Long businessEntityId);
 
-    // Consulta corregida navegando a través de BusinessEntity
     @Query("SELECT DISTINCT w FROM WeatherData w " +
             "JOIN w.businessEntity be " +
             "WHERE be.idBusinessEntity IN (" +
