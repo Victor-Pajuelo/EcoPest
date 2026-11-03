@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>{{ 'ai.title' | t }} #{{ data.incidentId }}</h2>
+<mat-dialog-content>
+  <p class="muted incident-desc">{{ data.description }}</p>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+  }
+  @if (!loading() && items().length === 0) {
+    <p class="muted">{{ 'common.noData' | t }}</p>
+  }
+  <ul class="rec-list">
+    @for (r of items(); track r.idRecommendation) {
+      <li>
+        <div class="rec-head">
+          @if (r.origin === 'IA') {
+            <span class="chip origin-IA"><mat-icon class="mini" aria-hidden="true">auto_awesome</mat-icon> {{ 'ai.badge' | t }}</span>
+          } @else {
+            <span class="chip">{{ 'opt.' + r.origin | t }}</span>
+          }
+          <span class="chip st-{{ r.status }}">{{ 'opt.' + r.status | t }}</span>
+          @if (r.generationDate) {
+            <span class="muted small">{{ r.generationDate | date: 'yyyy-MM-dd HH:mm' }}</span>
+          }
+        </div>
+        <p>{{ r.description }}</p>
+      </li>
+    }
+  </ul>
+
+  @if (generating()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'ai.generating' | t"></mat-progress-bar>
+    <p class="muted" aria-live="polite">{{ 'ai.generating' | t }}</p>
+  }
+  @if (message()) {
+    <p [class]="messageIsError() ? 'msg-error' : 'msg-ok'" role="status" aria-live="polite">{{ message() }}</p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if (auth.canWrite()) {
+    <button mat-flat-button type="button" (click)="generate()" [disabled]="generating()">
+      <mat-icon>auto_awesome</mat-icon> {{ 'ai.generate' | t }}
+    </button>
+  }
+  <button mat-button type="button" mat-dialog-close>{{ 'common.close' | t }}</button>
+</mat-dialog-actions>

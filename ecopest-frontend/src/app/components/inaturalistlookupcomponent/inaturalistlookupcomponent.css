@@ -1,0 +1,9 @@
+.nat-card { background: #e3f2fd; border: 1px solid #90caf9; border-radius: 8px; padding: 8px 16px 12px; margin: 8px 0 16px; }
+.nat-card h3 { margin: 4px 0; display: flex; align-items: center; gap: 8px; color: #0d47a1; font-size: 16px; }
+.nat-search { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+.nat-search mat-form-field { flex: 1 1 200px; }
+.nat-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.nat-list li { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 8px; padding: 6px 10px; flex-wrap: wrap; }
+.nat-list img { object-fit: cover; border-radius: 6px; }
+.nat-info { display: flex; flex-direction: column; flex: 1 1 140px; }
+.small { font-size: 12px; }

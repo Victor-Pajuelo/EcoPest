@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ data.name }}</h2>
+<mat-dialog-content>
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+  }
+  @if (failed()) {
+    <p class="msg-error" role="alert">{{ 'nat.error' | t }}</p>
+  } @else if (!loading() && !result()) {
+    <p class="muted">{{ 'nat.notFound' | t }}</p>
+  }
+  @if (result(); as r) {
+    @if (r.photoUrl) {
+      <img [src]="r.photoUrl" [alt]="('nat.photo' | t) + ': ' + (r.commonName || r.scientificName)" class="photo" />
+    }
+    <p><strong>{{ 'nat.scientific' | t }}:</strong> <em>{{ r.scientificName }}</em></p>
+    @if (r.commonName) {
+      <p><strong>{{ 'nat.common' | t }}:</strong> {{ r.commonName }}</p>
+    }
+    <p class="muted small">{{ 'nat.source' | t }} · <a [href]="'https://www.inaturalist.org/taxa/' + r.id" target="_blank" rel="noopener noreferrer">iNaturalist #{{ r.id }}</a></p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" mat-dialog-close>{{ 'common.close' | t }}</button>
+</mat-dialog-actions>

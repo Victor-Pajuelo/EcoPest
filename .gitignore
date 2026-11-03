@@ -4,3 +4,6 @@
 
 # Archivos compilados
 target/
+
+# Carpeta de trabajo temporal
+Claude outputs/

@@ -1,0 +1,40 @@
+<section class="login-wrap" aria-labelledby="login-title">
+  <div class="login-card">
+    <div class="brand" aria-hidden="true"><mat-icon>eco</mat-icon></div>
+    <h1 id="login-title">{{ 'login.title' | t }}</h1>
+    <p class="muted">{{ 'login.subtitle' | t }}</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'login.email' | t }}</mat-label>
+        <input matInput type="email" formControlName="username" autocomplete="username" required />
+        @if (form.get('username')?.hasError('required')) {
+          <mat-error>{{ 'common.required' | t }}</mat-error>
+        } @else if (form.get('username')?.hasError('email')) {
+          <mat-error>{{ 'common.invalidEmail' | t }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'login.password' | t }}</mat-label>
+        <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" autocomplete="current-password" required />
+        <button mat-icon-button matSuffix type="button" (click)="hide.set(!hide())"
+          [attr.aria-label]="(hide() ? 'login.show' : 'login.hide') | t" [attr.aria-pressed]="!hide()">
+          <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('required')) {
+          <mat-error>{{ 'common.required' | t }}</mat-error>
+        } @else if (form.get('password')?.hasError('minlength')) {
+          <mat-error>{{ 'common.minLength' | t }}</mat-error>
+        }
+      </mat-form-field>
+
+      @if (error()) {
+        <p class="msg-error" role="alert">{{ error() }}</p>
+      }
+      @if (loading()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+        <p class="muted small">{{ 'login.hint' | t }}</p>
+      }
+      <button mat-flat-button type="submit" class="full" [disabled]="loading()">{{ 'login.submit' | t }}</button>
+    </form>
+  </div>
+</section>

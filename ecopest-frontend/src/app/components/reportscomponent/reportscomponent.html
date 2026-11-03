@@ -1,0 +1,37 @@
+<section class="page" aria-labelledby="reports-title">
+  <h1 id="reports-title">{{ 'reports.title' | t }}</h1>
+  <div class="grid">
+    <app-barchart [title]="'reports.inspectionsByCompany' | t" [items]="inspectionsByCompany()"></app-barchart>
+    <app-barchart [title]="'reports.usersByCompany' | t" [items]="usersByCompany()"></app-barchart>
+    @if (auth.isAdmin()) {
+      <app-barchart [title]="'reports.usersByRole' | t" [items]="usersByRole()"></app-barchart>
+    }
+    <app-barchart [title]="'reports.incidentsByPest' | t" [items]="incidentsByPest()"></app-barchart>
+    <app-barchart [title]="'reports.incidentsByRisk' | t" [items]="incidentsByRisk()"></app-barchart>
+    <app-barchart [title]="'reports.evidenceByIncident' | t" [items]="evidenceByIncident()"></app-barchart>
+    <app-barchart [title]="'reports.recommendationsByIncident' | t" [items]="recommendationsByIncident()"></app-barchart>
+  </div>
+
+  <h2>{{ 'reports.weatherAvg' | t }}</h2>
+  <div class="table-wrap">
+    <table mat-table [dataSource]="weather()">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{ 'reports.name' | t }}</th>
+        <td mat-cell *matCellDef="let e">{{ e.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="avgTemperature">
+        <th mat-header-cell *matHeaderCellDef>{{ 'reports.avgTemp' | t }}</th>
+        <td mat-cell *matCellDef="let e">{{ e.avgTemperature }}</td>
+      </ng-container>
+      <ng-container matColumnDef="avgHumidity">
+        <th mat-header-cell *matHeaderCellDef>{{ 'reports.avgHum' | t }}</th>
+        <td mat-cell *matCellDef="let e">{{ e.avgHumidity }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="weatherColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: weatherColumns"></tr>
+    </table>
+    @if (weather().length === 0) {
+      <p class="muted pad">{{ 'common.noData' | t }}</p>
+    }
+  </div>
+</section>

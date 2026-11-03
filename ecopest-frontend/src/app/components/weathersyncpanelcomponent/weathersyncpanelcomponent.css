@@ -1,0 +1,11 @@
+.sync-card {
+  background: linear-gradient(135deg, var(--eco-50), #fff 70%); border: 1px solid var(--eco-200); border-left: 5px solid var(--eco-600);
+  border-radius: 16px; padding: 16px 20px 18px; margin-bottom: 18px; box-shadow: var(--shadow-sm);
+}
+.sync-card h3 { margin: 0 0 4px; display: flex; align-items: center; gap: 8px; color: var(--eco-800); font-size: 17px; }
+.sync-card h3 mat-icon { color: var(--eco-600); }
+.sync-card p.muted { margin: 0 0 14px; font-size: 14px; }
+.sync-form { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: flex-start; }
+.sync-form mat-form-field { flex: 1 1 190px; min-width: 150px; }
+.sync-form button { margin-top: 6px; height: 48px; }
+@media (max-width: 600px) { .sync-form button { width: 100%; } }

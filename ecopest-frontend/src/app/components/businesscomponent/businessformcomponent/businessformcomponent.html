@@ -1,0 +1,41 @@
+<section class="page" [attr.aria-labelledby]="'form-title-business'">
+  <h2 id="form-title-business">{{ (isEdit ? 'business.edit' : 'business.new') | t }}</h2>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'business.name' | t }}</mat-label>
+        <input matInput type="text" formControlName="name" maxlength="100" required />
+        @if (form.get('name')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'business.type' | t }}</mat-label>
+        <input matInput type="text" formControlName="type" maxlength="60" required />
+        @if (form.get('type')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'business.parentBusinessEntityId' | t }}</mat-label>
+        <mat-select formControlName="parentBusinessEntityId">
+          <mat-option [value]="null">{{ 'common.none' | t }}</mat-option>
+          @for (o of businessOptions(); track o.idBusinessEntity) {
+            <mat-option [value]="o.idBusinessEntity">{{ businessLabel(o) }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('parentBusinessEntityId')?.hasError('required')) { <mat-error>{{ 'common.required' | t }}</mat-error> }
+      </mat-form-field>
+      <div class="check-row"><mat-checkbox formControlName="active">{{ 'business.active' | t }}</mat-checkbox></div>
+
+      @if (message()) {
+        <p class="msg-error" role="alert">{{ message() }}</p>
+      }
+      @if (saving()) {
+        <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
+      }
+      <div class="form-actions">
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          <mat-icon>save</mat-icon> {{ 'common.save' | t }}
+        </button>
+        <a mat-stroked-button routerLink="/empresas/listar">{{ 'common.cancel' | t }}</a>
+      </div>
+    </form>
+  </div>
+</section>

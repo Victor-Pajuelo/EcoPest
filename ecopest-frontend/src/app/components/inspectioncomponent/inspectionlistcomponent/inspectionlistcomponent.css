@@ -1,0 +1,4 @@
+.filter-field { width: 100%; max-width: 360px; }
+.cell-text { display: inline-block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.actions-cell { white-space: nowrap; }
+.empty { padding: 16px; text-align: center; }
