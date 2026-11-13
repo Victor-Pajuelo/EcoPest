@@ -5,9 +5,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pe.edu.upc.ecopest.dtos.PestIdentifyRequestDTO;
+import pe.edu.upc.ecopest.dtos.PestIdentifyResponseDTO;
 import pe.edu.upc.ecopest.dtos.PestTypeDTO;
 import pe.edu.upc.ecopest.entities.PestType;
 import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
+import pe.edu.upc.ecopest.servicesinterfaces.IPestIdentifyService;
 import pe.edu.upc.ecopest.servicesinterfaces.IPestTypeService;
 import java.net.URI;
 import java.util.List;
@@ -17,7 +20,13 @@ import java.util.List;
 public class PestTypeController {
     private final IPestTypeService service;
     private final ModelMapper modelMapper;
-    public PestTypeController(IPestTypeService service, ModelMapper modelMapper) { this.service = service; this.modelMapper = modelMapper; }
+    private final IPestIdentifyService identifyService;
+
+    public PestTypeController(IPestTypeService service, ModelMapper modelMapper, IPestIdentifyService identifyService) {
+        this.service = service;
+        this.modelMapper = modelMapper;
+        this.identifyService = identifyService;
+    }
 
     @GetMapping
     public ResponseEntity<List<PestTypeDTO>> list() {
@@ -60,5 +69,10 @@ public class PestTypeController {
     @GetMapping("/by-risk")
     public ResponseEntity<List<PestTypeDTO>> findByRisk(@RequestParam String riskLevel) {
         return ResponseEntity.ok(service.listByRiskLevel(riskLevel).stream().map(item -> modelMapper.map(item, PestTypeDTO.class)).toList());
+    }
+
+    @PostMapping("/identify")
+    public ResponseEntity<PestIdentifyResponseDTO> identify(@Valid @RequestBody PestIdentifyRequestDTO request) {
+        return ResponseEntity.ok(new PestIdentifyResponseDTO(identifyService.identify(request)));
     }
 }

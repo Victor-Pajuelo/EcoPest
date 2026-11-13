@@ -63,6 +63,9 @@ public class SecurityConfig {
                         ).permitAll()
                         // CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // FASE 1 (temporal): como el demo de la clase, la API no pide token todavia.
+                        // En la FASE 2 se quita esta linea para volver a activar login y roles.
+                        .requestMatchers("/api/**").permitAll()
                         // Usuarios y roles: solo ADMIN
                         .requestMatchers("/api/users/**", "/api/roles/**").hasRole("ADMIN")
                         // Lectura: todos los roles

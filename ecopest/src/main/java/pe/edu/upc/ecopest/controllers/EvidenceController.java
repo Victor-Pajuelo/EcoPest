@@ -23,7 +23,9 @@ public class EvidenceController {
     private final ModelMapper modelMapper;
 
     public EvidenceController(IEvidenceService evidenceService, IIncidentService incidentService, ModelMapper modelMapper) {
-        this.evidenceService = evidenceService; this.incidentService = incidentService; this.modelMapper = modelMapper;
+        this.evidenceService = evidenceService;
+        this.incidentService = incidentService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping

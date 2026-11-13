@@ -18,7 +18,14 @@ import java.util.List;
 public class RoleController {
     private final IRoleService service;
     private final ModelMapper modelMapper;
-    public RoleController(IRoleService service, ModelMapper modelMapper) { this.service = service; this.modelMapper = modelMapper; }
+
+    public RoleController(
+            IRoleService service,
+            ModelMapper modelMapper
+    ) {
+        this.service = service;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     public ResponseEntity<List<RoleDTO>> list() {
