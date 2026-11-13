@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ModelMapperConfig {`r`n    // Simple mapper setup kept intentionally lightweight.
+public class ModelMapperConfig {`r`n    // DTO conversion stays centralized here.`r`n    // Simple mapper setup kept intentionally lightweight.
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
