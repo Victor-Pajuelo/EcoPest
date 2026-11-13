@@ -39,7 +39,7 @@ El backend debe estar levantado (`../ecopest`) con las variables `DATASOURCE_URL
 npm run build        # salida: dist/ecopestFront/browser
 ```
 
-Vercel / Netlify: raíz del proyecto = `ecopest-frontend`, comando `npm run build`, directorio de salida `dist/ecopestFront/browser`. Ya incluye `vercel.json` y `public/_redirects` para las rutas de la SPA. Antes de desplegar, editar `src/environments/environment.ts` con la URL del backend (Render).
+Render (Static Site): comando de build `cd ecopest-frontend && npm ci && npm run build`, directorio de publicación `ecopest-frontend/dist/ecopestFront/browser`. La URL del backend (Render) se configura en `src/environments/environment.ts`.
 
 ## Roles y permisos (igual que la API)
 
