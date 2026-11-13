@@ -1,0 +1,32 @@
+<div class="buscador">
+  <p class="titulo"><mat-icon>travel_explore</mat-icon> Buscar especie en iNaturalist</p>
+  <div class="fila">
+    <mat-form-field class="campo">
+      <mat-label>Nombre común o científico</mat-label>
+      <input matInput #texto type="text" placeholder="Ej: cucaracha, mosquito, rata" (keyup.enter)="buscar(texto.value)">
+    </mat-form-field>
+    <button matButton type="button" (click)="buscar(texto.value)" [disabled]="buscando">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+  </div>
+  @if (mensaje) {
+  <p class="mensaje">{{ mensaje }}</p>
+  }
+  @if (resultados.length > 0) {
+  <ul class="resultados">
+    @for (e of resultados; track e.id) {
+    <li (click)="elegir(e)">
+      @if (e.photoUrl) {
+      <img [src]="e.photoUrl" [alt]="e.scientificName">
+      } @else {
+      <span class="sinfoto"><mat-icon>bug_report</mat-icon></span>
+      }
+      <div class="datos">
+        <strong>{{ e.commonName || e.scientificName }}</strong>
+        <span><em>{{ e.scientificName }}</em> · {{ traducirRango(e.rank) }}</span>
+      </div>
+    </li>
+    }
+  </ul>
+  }
+</div>

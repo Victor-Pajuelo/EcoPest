@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { PestTypeDTO } from '../models/PestTypeDTO';
 import { PestIdentifyRequestDTO } from '../models/PestIdentifyRequestDTO';
 import { PestIdentifyResponseDTO } from '../models/PestIdentifyResponseDTO';
+import { SpeciesDTO } from '../models/SpeciesDTO';
 
 
 @Injectable({
@@ -33,6 +34,12 @@ export class Pestservice {
 
   deletePest(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
+
+  /** Busca especies en la API externa iNaturalist (a traves del backend). */
+  searchSpecies(q: string): Observable<SpeciesDTO[]> {
+    const params = new HttpParams().set('q', q);
+    return this.http.get<SpeciesDTO[]>(`${this.apiURL}/species`, { params });
   }
 
   identifyPest(item: PestIdentifyRequestDTO): Observable<PestIdentifyResponseDTO> {

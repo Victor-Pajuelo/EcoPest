@@ -3,6 +3,7 @@
     <h2>Registro de Plaga</h2>
   </div>
   <div>
+    <app-speciessearchcomponent (seleccionada)="usarEspecie($event)"></app-speciessearchcomponent>
     <form [formGroup]="form" (ngSubmit)="insertarPlaga()">
       <mat-form-field class="example-full-width">
         <mat-label>Nombre</mat-label>

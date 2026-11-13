@@ -8,4 +8,22 @@
   } @else {
   <p>{{ mensaje || 'Cargando...' }}</p>
   }
+
+  <h4><mat-icon>bug_report</mat-icon> Riesgo de plaga (5 días)</h4>
+  @if (pronostico.length > 0) {
+  <ul class="pronostico">
+    @for (d of pronostico; track d.date) {
+    <li [title]="'Lluvia: ' + d.precipitation + ' mm'">
+      <span class="dia">{{ d.date | date:'dd/MM' }}</span>
+      <span>{{ d.temperatureMax | number:'1.0-0' }}°/{{ d.temperatureMin | number:'1.0-0' }}°</span>
+      <span>{{ d.humidity | number:'1.0-0' }}%</span>
+      <span class="riesgo" [class.bajo]="d.pestRisk === 'BAJO'" [class.medio]="d.pestRisk === 'MEDIO'"
+        [class.alto]="d.pestRisk === 'ALTO'">{{ d.pestRisk }}</span>
+    </li>
+    }
+  </ul>
+  <p class="nota">Máx/mín · humedad · riesgo según clima (Open-Meteo)</p>
+  } @else {
+  <p>{{ mensajePronostico }}</p>
+  }
 </div>

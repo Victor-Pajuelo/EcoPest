@@ -7,10 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { PestTypeDTO } from '../../../models/PestTypeDTO';
 import { Pestservice } from '../../../services/pestservice';
+import { SpeciesDTO } from '../../../models/SpeciesDTO';
+import { Speciessearchcomponent } from '../speciessearchcomponent/speciessearchcomponent';
 
 @Component({
   selector: 'app-pestupdatecomponent',
-  imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, Speciessearchcomponent],
   templateUrl: './pestupdatecomponent.html',
   styleUrl: './pestupdatecomponent.css',
 })
@@ -97,5 +99,12 @@ export class Pestupdatecomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  usarEspecie(especie: SpeciesDTO): void {
+    const nombre = especie.commonName || especie.scientificName
+    const descripcion = `${nombre} (${especie.scientificName}). Categoría: ${especie.rank}. Fuente: iNaturalist.`
+    this.form.patchValue({ name: nombre, description: descripcion })
+    this.mensaje = ''
   }
 }
