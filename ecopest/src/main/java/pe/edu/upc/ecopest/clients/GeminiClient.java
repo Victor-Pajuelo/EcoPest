@@ -6,14 +6,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import pe.edu.upc.ecopest.exceptions.ExternalServiceException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Cliente de la API de Gemini (Google AI) para generar texto con IA.
- * Necesita la variable de entorno GEMINI_API_KEY (propiedad gemini.api-key).
- * El modelo se puede cambiar con GEMINI_MODEL (propiedad gemini.model).
- */
 @Component
 public class GeminiClient {
 
@@ -33,14 +29,23 @@ public class GeminiClient {
         return apiKey != null && !apiKey.isBlank();
     }
 
-    @SuppressWarnings("unchecked")
     public String generate(String systemInstruction, String prompt) {
+        return generate(systemInstruction, prompt, null, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public String generate(String systemInstruction, String prompt, String mimeType, String imageBase64) {
         if (!isConfigured()) {
             throw new ExternalServiceException("AI is not configured: set the GEMINI_API_KEY environment variable");
         }
+        List<Map<String, Object>> requestParts = new ArrayList<>();
+        requestParts.add(Map.of("text", prompt));
+        if (imageBase64 != null && !imageBase64.isBlank()) {
+            requestParts.add(Map.of("inlineData", Map.of("mimeType", mimeType, "data", imageBase64)));
+        }
         Map<String, Object> request = Map.of(
                 "systemInstruction", Map.of("parts", List.of(Map.of("text", systemInstruction))),
-                "contents", List.of(Map.of("role", "user", "parts", List.of(Map.of("text", prompt)))),
+                "contents", List.of(Map.of("role", "user", "parts", requestParts)),
                 "generationConfig", Map.of("maxOutputTokens", 1024));
         try {
             Map<String, Object> body = restClient.post()

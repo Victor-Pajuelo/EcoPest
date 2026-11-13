@@ -10,12 +10,43 @@ import java.util.Optional;
 @Service
 public class EvidenceServiceImplement implements IEvidenceService {
     private final IEvidenceRepository repository;
-    public EvidenceServiceImplement(IEvidenceRepository repository) { this.repository = repository; }
-    @Override public void insert(Evidence evidence) { repository.save(evidence); }
-    @Override public List<Evidence> list() { return repository.findAll(); }
-    @Override public List<Evidence> listByIncident(Long incidentId) { return repository.findByIncident_IdIncident(incidentId); }
-    @Override public Optional<Evidence> findById(Long id) { return repository.findById(id); }
-    @Override public List<Object[]> countEvidenceByIncident() { return repository.countEvidenceByIncident(); }
-    @Override public void update(Evidence evidence) { repository.save(evidence); }
-    @Override public void delete(Long id) { repository.deleteById(id); }
+
+    public EvidenceServiceImplement(IEvidenceRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public void insert(Evidence evidence) {
+        repository.save(evidence);
+    }
+
+    @Override
+    public List<Evidence> list() {
+        return repository.findAll();
+    }
+
+    @Override
+    public List<Evidence> listByIncident(Long incidentId) {
+        return repository.findByIncident_IdIncident(incidentId);
+    }
+
+    @Override
+    public Optional<Evidence> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public List<Object[]> countEvidenceByIncident() {
+        return repository.countEvidenceByIncident();
+    }
+
+    @Override
+    public void update(Evidence evidence) {
+        repository.save(evidence);
+    }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }

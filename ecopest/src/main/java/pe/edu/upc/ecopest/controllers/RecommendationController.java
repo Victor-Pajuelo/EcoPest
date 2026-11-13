@@ -7,21 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.ecopest.clients.GeminiClient;
 import pe.edu.upc.ecopest.dtos.CountDTO;
 import pe.edu.upc.ecopest.dtos.RecommendationDTO;
-import pe.edu.upc.ecopest.entities.BusinessEntity;
 import pe.edu.upc.ecopest.entities.Incident;
 import pe.edu.upc.ecopest.entities.Recommendation;
 import pe.edu.upc.ecopest.entities.User;
-import pe.edu.upc.ecopest.entities.WeatherData;
 import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
 import pe.edu.upc.ecopest.servicesinterfaces.IIncidentService;
 import pe.edu.upc.ecopest.servicesinterfaces.IRecommendationService;
 import pe.edu.upc.ecopest.servicesinterfaces.IUserService;
-import pe.edu.upc.ecopest.servicesinterfaces.IWeatherDataService;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -31,12 +26,12 @@ public class RecommendationController {
     private final IIncidentService incidentService;
     private final IUserService userService;
     private final ModelMapper modelMapper;
-    private final IWeatherDataService weatherDataService;
-    private final GeminiClient geminiClient;
 
-    public RecommendationController(IRecommendationService recommendationService, IIncidentService incidentService, IUserService userService, ModelMapper modelMapper, IWeatherDataService weatherDataService, GeminiClient geminiClient) {
-        this.weatherDataService = weatherDataService; this.geminiClient = geminiClient;
-        this.recommendationService = recommendationService; this.incidentService = incidentService; this.userService = userService; this.modelMapper = modelMapper;
+    public RecommendationController(IRecommendationService recommendationService, IIncidentService incidentService, IUserService userService, ModelMapper modelMapper) {
+        this.recommendationService = recommendationService;
+        this.incidentService = incidentService;
+        this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -71,40 +66,7 @@ public class RecommendationController {
         Incident incident = incidentService.findById(incidentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Incident not found"));
 
-        StringBuilder prompt = new StringBuilder();
-        prompt.append("Incidente registrado: ").append(incident.getDescription()).append("\n");
-        if (incident.getPestType() != null) {
-            prompt.append("Plaga: ").append(incident.getPestType().getName())
-                    .append(" (nivel de riesgo: ").append(incident.getPestType().getRiskLevel()).append(")\n");
-            if (incident.getPestType().getDescription() != null) {
-                prompt.append("Descripción de la plaga: ").append(incident.getPestType().getDescription()).append("\n");
-            }
-        }
-        BusinessEntity businessEntity = incident.getInspection() == null ? null : incident.getInspection().getBusinessEntity();
-        if (businessEntity != null) {
-            prompt.append("Lugar: ").append(businessEntity.getName()).append(" (").append(businessEntity.getType()).append(")\n");
-            List<WeatherData> weather = weatherDataService.listByBusinessEntity(businessEntity.getIdBusinessEntity());
-            if (!weather.isEmpty()) {
-                WeatherData last = weather.get(weather.size() - 1);
-                prompt.append("Clima reciente: ").append(last.getTemperature()).append(" °C, humedad ")
-                        .append(last.getHumidity()).append(" %\n");
-            }
-        }
-        String system = "Eres un asistente experto en control integrado de plagas. Responde en español, "
-                + "en un solo párrafo de máximo 600 caracteres, con acciones concretas, seguras y ordenadas por prioridad. "
-                + "No inventes datos que no se te dieron.";
-        String text = geminiClient.generate(system, prompt.toString());
-        if (text.length() > 990) {
-            text = text.substring(0, 987) + "...";
-        }
-
-        Recommendation recommendation = new Recommendation();
-        recommendation.setDescription(text);
-        recommendation.setOrigin("IA");
-        recommendation.setStatus("PENDING");
-        recommendation.setGenerationDate(LocalDateTime.now());
-        recommendation.setIncident(incident);
-        recommendationService.insert(recommendation);
+        Recommendation recommendation = recommendationService.generateWithAI(incident);
         return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(recommendation, RecommendationDTO.class));
     }
 

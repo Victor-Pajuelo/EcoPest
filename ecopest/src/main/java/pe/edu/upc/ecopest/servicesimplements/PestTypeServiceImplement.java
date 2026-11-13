@@ -10,11 +10,38 @@ import java.util.Optional;
 @Service
 public class PestTypeServiceImplement implements IPestTypeService {
     private final IPestTypeRepository repository;
-    public PestTypeServiceImplement(IPestTypeRepository repository) { this.repository = repository; }
-    @Override public void insert(PestType pestType) { repository.save(pestType); }
-    @Override public List<PestType> list() { return repository.findAll(); }
-    @Override public List<PestType> listByRiskLevel(String riskLevel) { return repository.findByRiskLevel(riskLevel); }
-    @Override public Optional<PestType> findById(Long id) { return repository.findById(id); }
-    @Override public void update(PestType pestType) { repository.save(pestType); }
-    @Override public void delete(Long id) { repository.deleteById(id); }
+
+    public PestTypeServiceImplement(IPestTypeRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public void insert(PestType pestType) {
+        repository.save(pestType);
+    }
+
+    @Override
+    public List<PestType> list() {
+        return repository.findAll();
+    }
+
+    @Override
+    public List<PestType> listByRiskLevel(String riskLevel) {
+        return repository.findByRiskLevel(riskLevel);
+    }
+
+    @Override
+    public Optional<PestType> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void update(PestType pestType) {
+        repository.save(pestType);
+    }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
