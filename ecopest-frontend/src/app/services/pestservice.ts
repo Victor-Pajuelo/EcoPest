@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { PestTypeDTO } from '../models/PestTypeDTO';
+import { PestIdentifyRequestDTO } from '../models/PestIdentifyRequestDTO';
+import { PestIdentifyResponseDTO } from '../models/PestIdentifyResponseDTO';
 
 
 @Injectable({
@@ -31,5 +33,9 @@ export class Pestservice {
 
   deletePest(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
+
+  identifyPest(item: PestIdentifyRequestDTO): Observable<PestIdentifyResponseDTO> {
+    return this.http.post<PestIdentifyResponseDTO>(`${this.apiURL}/identify`, item);
   }
 }

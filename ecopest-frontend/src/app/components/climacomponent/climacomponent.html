@@ -1,0 +1,11 @@
+<div class="clima">
+  <h3><mat-icon>cloud</mat-icon> Clima actual</h3>
+  @if (cargado) {
+  <p class="temperatura">{{ clima.current.temperature_2m }} °C</p>
+  <p>Humedad: {{ clima.current.relative_humidity_2m }} %</p>
+  <p><mat-icon>place</mat-icon> Zona: {{ clima.timezone }}</p>
+  <p class="coordenadas">Lat {{ clima.latitude }} · Lon {{ clima.longitude }}</p>
+  } @else {
+  <p>{{ mensaje || 'Cargando...' }}</p>
+  }
+</div>

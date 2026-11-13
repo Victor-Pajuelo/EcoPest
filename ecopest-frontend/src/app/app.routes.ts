@@ -1,141 +1,277 @@
 import { Routes } from '@angular/router';
-import { authGuard, adminGuard, writeGuard } from './guards/authguard';
 import { Homecomponent } from './components/homecomponent/homecomponent';
-import { Logincomponent } from './components/logincomponent/logincomponent';
-import { Reportscomponent } from './components/reportscomponent/reportscomponent';
-import { Termscomponent } from './components/termscomponent/termscomponent';
-import { Notfoundcomponent } from './components/notfoundcomponent/notfoundcomponent';
-import { Businesscomponent } from './components/businesscomponent/businesscomponent';
-import { Businesslistcomponent } from './components/businesscomponent/businesslistcomponent/businesslistcomponent';
-import { Businessformcomponent } from './components/businesscomponent/businessformcomponent/businessformcomponent';
 import { Pestcomponent } from './components/pestcomponent/pestcomponent';
 import { Pestlistcomponent } from './components/pestcomponent/pestlistcomponent/pestlistcomponent';
-import { Pestformcomponent } from './components/pestcomponent/pestformcomponent/pestformcomponent';
+import { Pestinsertcomponent } from './components/pestcomponent/pestinsertcomponent/pestinsertcomponent';
+import { Pestupdatecomponent } from './components/pestcomponent/pestupdatecomponent/pestupdatecomponent';
+import { Pestidentifycomponent } from './components/pestcomponent/pestidentifycomponent/pestidentifycomponent';
+import { Pestviewcomponent } from './components/pestcomponent/pestviewcomponent/pestviewcomponent';
+import { Businesscomponent } from './components/businesscomponent/businesscomponent';
+import { Businesslistcomponent } from './components/businesscomponent/businesslistcomponent/businesslistcomponent';
+import { Businessinsertcomponent } from './components/businesscomponent/businessinsertcomponent/businessinsertcomponent';
+import { Businessupdatecomponent } from './components/businesscomponent/businessupdatecomponent/businessupdatecomponent';
 import { Rolecomponent } from './components/rolecomponent/rolecomponent';
 import { Rolelistcomponent } from './components/rolecomponent/rolelistcomponent/rolelistcomponent';
-import { Roleformcomponent } from './components/rolecomponent/roleformcomponent/roleformcomponent';
+import { Roleinsertcomponent } from './components/rolecomponent/roleinsertcomponent/roleinsertcomponent';
+import { Roleupdatecomponent } from './components/rolecomponent/roleupdatecomponent/roleupdatecomponent';
 import { Usercomponent } from './components/usercomponent/usercomponent';
 import { Userlistcomponent } from './components/usercomponent/userlistcomponent/userlistcomponent';
-import { Userformcomponent } from './components/usercomponent/userformcomponent/userformcomponent';
+import { Userinsertcomponent } from './components/usercomponent/userinsertcomponent/userinsertcomponent';
+import { Userupdatecomponent } from './components/usercomponent/userupdatecomponent/userupdatecomponent';
+import { Userprofilecomponent } from './components/usercomponent/userprofilecomponent/userprofilecomponent';
 import { Inspectioncomponent } from './components/inspectioncomponent/inspectioncomponent';
 import { Inspectionlistcomponent } from './components/inspectioncomponent/inspectionlistcomponent/inspectionlistcomponent';
-import { Inspectionformcomponent } from './components/inspectioncomponent/inspectionformcomponent/inspectionformcomponent';
+import { Inspectioninsertcomponent } from './components/inspectioncomponent/inspectioninsertcomponent/inspectioninsertcomponent';
+import { Inspectionupdatecomponent } from './components/inspectioncomponent/inspectionupdatecomponent/inspectionupdatecomponent';
 import { Incidentcomponent } from './components/incidentcomponent/incidentcomponent';
 import { Incidentlistcomponent } from './components/incidentcomponent/incidentlistcomponent/incidentlistcomponent';
-import { Incidentformcomponent } from './components/incidentcomponent/incidentformcomponent/incidentformcomponent';
+import { Incidentinsertcomponent } from './components/incidentcomponent/incidentinsertcomponent/incidentinsertcomponent';
+import { Incidentupdatecomponent } from './components/incidentcomponent/incidentupdatecomponent/incidentupdatecomponent';
 import { Evidencecomponent } from './components/evidencecomponent/evidencecomponent';
 import { Evidencelistcomponent } from './components/evidencecomponent/evidencelistcomponent/evidencelistcomponent';
-import { Evidenceformcomponent } from './components/evidencecomponent/evidenceformcomponent/evidenceformcomponent';
+import { Evidenceinsertcomponent } from './components/evidencecomponent/evidenceinsertcomponent/evidenceinsertcomponent';
+import { Evidenceupdatecomponent } from './components/evidencecomponent/evidenceupdatecomponent/evidenceupdatecomponent';
 import { Recommendationcomponent } from './components/recommendationcomponent/recommendationcomponent';
 import { Recommendationlistcomponent } from './components/recommendationcomponent/recommendationlistcomponent/recommendationlistcomponent';
-import { Recommendationformcomponent } from './components/recommendationcomponent/recommendationformcomponent/recommendationformcomponent';
+import { Recommendationinsertcomponent } from './components/recommendationcomponent/recommendationinsertcomponent/recommendationinsertcomponent';
+import { Recommendationupdatecomponent } from './components/recommendationcomponent/recommendationupdatecomponent/recommendationupdatecomponent';
 import { Weathercomponent } from './components/weathercomponent/weathercomponent';
 import { Weatherlistcomponent } from './components/weathercomponent/weatherlistcomponent/weatherlistcomponent';
-import { Weatherformcomponent } from './components/weathercomponent/weatherformcomponent/weatherformcomponent';
+import { Weatherinsertcomponent } from './components/weathercomponent/weatherinsertcomponent/weatherinsertcomponent';
+import { Weatherupdatecomponent } from './components/weathercomponent/weatherupdatecomponent/weatherupdatecomponent';
 
 export const routes: Routes = [
-  { path: '', component: Homecomponent, canActivate: [authGuard] },
-  { path: 'login', component: Logincomponent },
-  { path: 'terminos', component: Termscomponent },
-  { path: 'reportes', component: Reportscomponent, canActivate: [authGuard] },
   {
-    path: 'empresas',
-    component: Businesscomponent,
-    canActivate: [authGuard],
-    children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Businesslistcomponent },
-      { path: 'insertar', component: Businessformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Businessformcomponent, canActivate: [writeGuard] },
-    ],
+    path: '',
+    component: Homecomponent,
   },
+
   {
     path: 'plagas',
     component: Pestcomponent,
-    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Pestlistcomponent },
-      { path: 'insertar', component: Pestformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Pestformcomponent, canActivate: [writeGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Pestlistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Pestinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Pestupdatecomponent,
+      },
+      {
+        path: 'ver/:id',
+        component: Pestviewcomponent,
+      },
+      {
+        path: 'identificar',
+        component: Pestidentifycomponent,
+      },
     ],
   },
+
+  {
+    path: 'empresas',
+    component: Businesscomponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Businesslistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Businessinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Businessupdatecomponent,
+      },
+    ],
+  },
+
   {
     path: 'roles',
     component: Rolecomponent,
-    canActivate: [adminGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Rolelistcomponent },
-      { path: 'insertar', component: Roleformcomponent, canActivate: [adminGuard] },
-      { path: 'editar/:id', component: Roleformcomponent, canActivate: [adminGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Rolelistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Roleinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Roleupdatecomponent,
+      },
     ],
   },
+
   {
     path: 'usuarios',
     component: Usercomponent,
-    canActivate: [adminGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Userlistcomponent },
-      { path: 'insertar', component: Userformcomponent, canActivate: [adminGuard] },
-      { path: 'editar/:id', component: Userformcomponent, canActivate: [adminGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Userlistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Userinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Userupdatecomponent,
+      },
+      {
+        path: 'perfil/:id',
+        component: Userprofilecomponent,
+      },
     ],
   },
+
   {
     path: 'inspecciones',
     component: Inspectioncomponent,
-    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Inspectionlistcomponent },
-      { path: 'insertar', component: Inspectionformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Inspectionformcomponent, canActivate: [writeGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Inspectionlistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Inspectioninsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Inspectionupdatecomponent,
+      },
     ],
   },
+
   {
     path: 'incidentes',
     component: Incidentcomponent,
-    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Incidentlistcomponent },
-      { path: 'insertar', component: Incidentformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Incidentformcomponent, canActivate: [writeGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Incidentlistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Incidentinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Incidentupdatecomponent,
+      },
     ],
   },
+
   {
     path: 'evidencias',
     component: Evidencecomponent,
-    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Evidencelistcomponent },
-      { path: 'insertar', component: Evidenceformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Evidenceformcomponent, canActivate: [writeGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Evidencelistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Evidenceinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Evidenceupdatecomponent,
+      },
     ],
   },
+
   {
     path: 'recomendaciones',
     component: Recommendationcomponent,
-    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Recommendationlistcomponent },
-      { path: 'insertar', component: Recommendationformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Recommendationformcomponent, canActivate: [writeGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Recommendationlistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Recommendationinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Recommendationupdatecomponent,
+      },
     ],
   },
+
   {
     path: 'clima',
     component: Weathercomponent,
-    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'listar', pathMatch: 'full' },
-      { path: 'listar', component: Weatherlistcomponent },
-      { path: 'insertar', component: Weatherformcomponent, canActivate: [writeGuard] },
-      { path: 'editar/:id', component: Weatherformcomponent, canActivate: [writeGuard] },
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      {
+        path: 'listar',
+        component: Weatherlistcomponent,
+      },
+      {
+        path: 'insertar',
+        component: Weatherinsertcomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Weatherupdatecomponent,
+      },
     ],
   },
-  { path: '**', component: Notfoundcomponent },
+  { path: '**', redirectTo: '' },
 ];

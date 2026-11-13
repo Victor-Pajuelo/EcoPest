@@ -1,0 +1,13 @@
+<div class="container">
+  <h2><mat-icon>visibility</mat-icon> Detalle de la plaga</h2>
+  <p>{{ mensaje }}</p>
+  <div class="perfil">
+    <div class="avatar"><mat-icon>bug_report</mat-icon></div>
+    <div class="dato"><span>Nombre</span><strong>{{ plaga.name }}</strong></div>
+    <div class="dato"><span>Nivel de riesgo</span><strong>{{ plaga.riskLevel }}</strong></div>
+    <div class="dato"><span>Descripción</span><strong>{{ plaga.description }}</strong></div>
+  </div>
+  <a mat-flat-button class="btn-volver" routerLink="/plagas/listar">
+    <mat-icon>arrow_back</mat-icon> Volver
+  </a>
+</div>
