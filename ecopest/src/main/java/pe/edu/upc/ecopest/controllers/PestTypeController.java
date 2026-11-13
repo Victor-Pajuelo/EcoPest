@@ -5,6 +5,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import io.swagger.v3.oas.annotations.Operation;
+import pe.edu.upc.ecopest.clients.INaturalistClient;
+import pe.edu.upc.ecopest.dtos.SpeciesDTO;
 import pe.edu.upc.ecopest.dtos.PestIdentifyRequestDTO;
 import pe.edu.upc.ecopest.dtos.PestIdentifyResponseDTO;
 import pe.edu.upc.ecopest.dtos.PestTypeDTO;
@@ -21,11 +24,13 @@ public class PestTypeController {
     private final IPestTypeService service;
     private final ModelMapper modelMapper;
     private final IPestIdentifyService identifyService;
+    private final INaturalistClient iNaturalistClient;
 
-    public PestTypeController(IPestTypeService service, ModelMapper modelMapper, IPestIdentifyService identifyService) {
+    public PestTypeController(IPestTypeService service, ModelMapper modelMapper, IPestIdentifyService identifyService, INaturalistClient iNaturalistClient) {
         this.service = service;
         this.modelMapper = modelMapper;
         this.identifyService = identifyService;
+        this.iNaturalistClient = iNaturalistClient;
     }
 
     @GetMapping
@@ -40,6 +45,25 @@ public class PestTypeController {
         PestTypeDTO responseDTO = modelMapper.map(pestType, PestTypeDTO.class);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pestType.getIdPestType()).toUri();
         return ResponseEntity.created(location).body(responseDTO);
+    }
+
+    @Operation(summary = "Buscar especies (iNaturalist)", description = "Consulta la API externa iNaturalist por nombre comun o cientifico y devuelve hasta 8 especies con su foto y enlace a Wikipedia.")
+    @GetMapping("/species")
+    public ResponseEntity<List<SpeciesDTO>> searchSpecies(@RequestParam String q) {
+        if (q.trim().length() < 3) {
+            throw new IllegalArgumentException("The search must have at least 3 characters");
+        }
+        List<SpeciesDTO> items = iNaturalistClient.search(q.trim()).stream().map(taxon -> {
+            SpeciesDTO dto = new SpeciesDTO();
+            dto.setId(taxon.id());
+            dto.setScientificName(taxon.scientificName());
+            dto.setCommonName(taxon.commonName());
+            dto.setRank(taxon.rank());
+            dto.setPhotoUrl(taxon.photoUrl());
+            dto.setWikipediaUrl(taxon.wikipediaUrl());
+            return dto;
+        }).toList();
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping("/{id}")

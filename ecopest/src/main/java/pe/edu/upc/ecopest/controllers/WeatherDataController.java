@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pe.edu.upc.ecopest.clients.OpenMeteoClient;
 import pe.edu.upc.ecopest.dtos.AverageWeatherDTO;
+import pe.edu.upc.ecopest.dtos.ForecastDayDTO;
 import pe.edu.upc.ecopest.dtos.WeatherDataDTO;
 import pe.edu.upc.ecopest.entities.BusinessEntity;
 import pe.edu.upc.ecopest.entities.WeatherData;
@@ -131,6 +132,39 @@ public class WeatherDataController {
         }
         weatherDataService.insert(weatherData);
         return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(weatherData, WeatherDataDTO.class));
+    }
+
+    @Operation(summary = "Pronostico con riesgo de plaga (Open-Meteo)", description = "Consulta el pronostico de varios dias a la API externa Open-Meteo y calcula un riesgo de plaga por dia: suma 1 punto si la humedad es 70% o mas, otro si es 80% o mas, otro si la temperatura media esta entre 20 y 32 grados y otro si llueve 1 mm o mas. 3 o mas puntos es ALTO, 2 es MEDIO y menos es BAJO.")
+    @GetMapping("/forecast")
+    public ResponseEntity<List<ForecastDayDTO>> forecast(@RequestParam(defaultValue = "-12.0464") double latitude,
+                                                         @RequestParam(defaultValue = "-77.0428") double longitude,
+                                                         @RequestParam(defaultValue = "5") int days) {
+        if (days < 1 || days > 7) {
+            throw new IllegalArgumentException("Days must be between 1 and 7");
+        }
+        List<ForecastDayDTO> items = openMeteoClient.fetchForecast(latitude, longitude, days).stream().map(day -> {
+            ForecastDayDTO dto = new ForecastDayDTO();
+            dto.setDate(day.date());
+            dto.setTemperatureMax(day.temperatureMax());
+            dto.setTemperatureMin(day.temperatureMin());
+            dto.setPrecipitation(day.precipitation());
+            dto.setHumidity(day.humidity());
+            dto.setPestRisk(pestRisk(day.temperatureMax(), day.temperatureMin(), day.humidity(), day.precipitation()));
+            return dto;
+        }).toList();
+        return ResponseEntity.ok(items);
+    }
+
+    private String pestRisk(double temperatureMax, double temperatureMin, double humidity, double precipitation) {
+        double averageTemperature = (temperatureMax + temperatureMin) / 2;
+        int points = 0;
+        if (humidity >= 70) points++;
+        if (humidity >= 80) points++;
+        if (averageTemperature >= 20 && averageTemperature <= 32) points++;
+        if (precipitation >= 1) points++;
+        if (points >= 3) return "ALTO";
+        if (points == 2) return "MEDIO";
+        return "BAJO";
     }
 
     @Operation(summary = "Filtrar datos meteorológicos por ID de empresa", description = "Obtiene la lista de registros meteorológicos pertenecientes a una entidad de negocio.")
