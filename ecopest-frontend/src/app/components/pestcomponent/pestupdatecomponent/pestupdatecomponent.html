@@ -1,0 +1,31 @@
+<div class="container">
+  <div>
+    <h2>Actualizar Plaga</h2>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="actualizarPlaga()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" formControlName="name">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Nivel de riesgo</mat-label>
+        <mat-select formControlName="riskLevel">
+          @for (o of riesgos; track o.value) {
+          <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput rows="3" formControlName="description"></textarea>
+      </mat-form-field>
+      <br>
+
+      <button matButton type="submit">Actualizar</button>
+    </form>
+    <p>{{ mensaje }}</p>
+  </div>
+</div>

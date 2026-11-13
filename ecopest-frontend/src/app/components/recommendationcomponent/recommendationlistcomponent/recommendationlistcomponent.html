@@ -1,76 +1,55 @@
-<section class="page" [attr.aria-labelledby]="'title-recommendation'">
-  <div class="toolbar-row">
-    <h2 id="title-recommendation">{{ 'recommendation.title' | t }}</h2>
-    <span class="spacer"></span>
-    @if (auth.canWrite()) {
-      <a mat-flat-button routerLink="/recomendaciones/insertar">
-        <mat-icon>add</mat-icon> {{ 'common.new' | t }}
-      </a>
-    }
+<div class="container">
+  <h2>Lista de Recomendaciones</h2>
+  <div class="cabecera">
+    <a mat-flat-button class="btn-registrar" routerLink="/recomendaciones/insertar">
+      <mat-icon>add</mat-icon> Registrar
+    </a>
   </div>
-
-
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>{{ 'common.search' | t }}</mat-label>
-    <input matInput (keyup)="applyFilter($event)" [attr.aria-label]="'common.search' | t" />
-    <mat-icon matSuffix aria-hidden="true">search</mat-icon>
-  </mat-form-field>
-
-  @if (loading()) {
-    <mat-progress-bar mode="indeterminate" [attr.aria-label]="'common.loading' | t"></mat-progress-bar>
-  }
-
-  <div class="table-wrap">
-    <table mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="idCol">
-        <th mat-header-cell *matHeaderCellDef>{{ 'common.id' | t }}</th>
-        <td mat-cell *matCellDef="let element" [attr.data-label]="'common.id' | t">{{ element.idRecommendation }}</td>
+  <p>{{ mensaje }}</p>
+  <div>
+    @if(dataSource.length>0){
+    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+      <ng-container matColumnDef="C1">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.idRecommendation }}</td>
       </ng-container>
-      <ng-container matColumnDef="c_description">
-        <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.description' | t }}</th>
-        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.description' | t"><span class="cell-text" [title]="element.description">{{ element.description }}</span></td>
+      <ng-container matColumnDef="C2">
+        <th mat-header-cell *matHeaderCellDef>Descripción</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
       </ng-container>
-      <ng-container matColumnDef="c_origin">
-        <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.origin' | t }}</th>
-        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.origin' | t"><span class="chip origin-{{ element.origin }}">{{ 'opt.' + element.origin | t }}</span></td>
+      <ng-container matColumnDef="C3">
+        <th mat-header-cell *matHeaderCellDef>Origen</th>
+        <td mat-cell *matCellDef="let element">{{ element.origin }}</td>
       </ng-container>
-      <ng-container matColumnDef="c_status">
-        <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.status' | t }}</th>
-        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.status' | t"><span class="chip st-{{ element.status }}">{{ 'opt.' + element.status | t }}</span></td>
+      <ng-container matColumnDef="C4">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let element">{{ element.status }}</td>
       </ng-container>
-      <ng-container matColumnDef="c_generationDate">
-        <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.generationDate' | t }}</th>
-        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.generationDate' | t">{{ element.generationDate | date: 'yyyy-MM-dd HH:mm' }}</td>
+      <ng-container matColumnDef="C5">
+        <th mat-header-cell *matHeaderCellDef>Incidente</th>
+        <td mat-cell *matCellDef="let element">{{ nombreIncidente(element.incidentId) }}</td>
       </ng-container>
-      <ng-container matColumnDef="c_incidentId">
-        <th mat-header-cell *matHeaderCellDef>{{ 'recommendation.incidentId' | t }}</th>
-        <td mat-cell *matCellDef="let element" [attr.data-label]="'recommendation.incidentId' | t">{{ incidentName(element.incidentId) }}</td>
+      <ng-container matColumnDef="C6">
+        <th mat-header-cell *matHeaderCellDef>Responsable</th>
+        <td mat-cell *matCellDef="let element">{{ nombreUsuario(element.responsibleUserId) }}</td>
       </ng-container>
-      <ng-container matColumnDef="actionsCol">
-        <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | t }}</th>
-        <td mat-cell *matCellDef="let element" class="actions-cell">
-          @if (auth.canWrite()) {
-            <a mat-icon-button [routerLink]="['/recomendaciones/editar', element.idRecommendation]"
-              [attr.aria-label]="('common.edit' | t) + ' #' + element.idRecommendation" [matTooltip]="'common.edit' | t">
-              <mat-icon class="ic-edit">edit</mat-icon>
-            </a>
-          }
-          @if (auth.canDelete()) {
-            <button mat-icon-button type="button" (click)="deleteRecommendation(element)"
-              [attr.aria-label]="('common.delete' | t) + ' #' + element.idRecommendation" [matTooltip]="'common.delete' | t">
-              <mat-icon class="ic-delete">delete</mat-icon>
-            </button>
-          }
+      <ng-container matColumnDef="C7">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let element">
+          <a mat-icon-button class="btn-editar" [routerLink]="['/recomendaciones/editar', element.idRecommendation]" title="Editar">
+            <mat-icon>edit</mat-icon>
+          </a>
+          <button mat-icon-button class="btn-eliminar" (click)="eliminarRecomendacion(element.idRecommendation)" title="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    @if (!loading() && dataSource.filteredData.length === 0) {
-      <p class="empty muted">{{ 'common.noData' | t }}</p>
+    }@else {
+    <p>No hay registros disponibles.</p>
     }
-    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons
-      [attr.aria-label]="'common.rowsPerPage' | t"></mat-paginator>
   </div>
-</section>
+</div>

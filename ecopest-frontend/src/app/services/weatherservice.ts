@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { WeatherDataDTO } from '../models/WeatherDataDTO';
-import { AverageWeatherDTO } from '../models/CountDTO';
+import { AverageWeatherDTO } from '../models/AverageWeatherDTO';
 
 @Injectable({
   providedIn: 'root',
