@@ -60,7 +60,7 @@ export class Climacomponent implements OnInit {
     this.cS.getLugar(latitud, longitud).subscribe({
       next: data => {
         const d = data.address
-        const distrito = d.suburb || d.city_district || d.neighbourhood || d.village || ''
+        const distrito = d.suburb || d.city_district || d.quarter || d.neighbourhood || d.village || ''
         const ciudad = d.city || d.town || d.state || ''
         this.lugar = [distrito, ciudad].filter(x => x).join(', ')
         this.cdr.detectChanges()
