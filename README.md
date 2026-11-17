@@ -27,12 +27,18 @@ No hace falta ejecutar ningún script manualmente. La base `BDEcoPest` (PostgreS
 | `CORS_ALLOWED_ORIGINS` | Orígenes del frontend permitidos, separados por coma. Por defecto `http://localhost:4200`. |
 | `GEMINI_API_KEY` | Clave de la API de Gemini (identificar plagas y generar recomendaciones con IA). Nunca se guarda en el código. |
 | `GEMINI_MODEL` | Modelo de Gemini. Por defecto `gemini-3.8-flash`. |
+| `GEMINI_MAX_PER_MINUTE` | Tope de llamadas a la IA por minuto (por defecto 5). Al pasarse la API responde 429. |
+| `GEMINI_MAX_PER_DAY` | Tope de llamadas a la IA por día, hora de Lima (por defecto 60). Al pasarse la API responde 429. |
 
 ## Ejecutar en local
 
 1. Define las variables de entorno de arriba (como mínimo `JWT_SECRET`).
 2. Abre `ecopest/` en tu IDE y ejecuta la clase `EcoPestApplication` (puerto 8080).
 3. En otra terminal: `cd ecopest-frontend && npm install && npm start` (puerto 4200).
+
+## Límites de uso (sin costos)
+
+Para no pagar nada, la clave de Gemini debe ser del plan gratuito de Google AI Studio (sin facturación activada). Además el backend limita las llamadas a la IA (por minuto y por día), el texto a 4000 caracteres y las imágenes a 2 MB, y guarda el pronóstico del clima 30 minutos por zona.
 
 ## API externas
 
