@@ -1,0 +1,35 @@
+<div class="container">
+  <div>
+    <h2>Registro de Evidencia</h2>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="insertarEvidencia()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Enlace del archivo</mat-label>
+        <input matInput type="text" formControlName="fileUrl">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Tipo de archivo</mat-label>
+        <mat-select formControlName="fileType">
+          @for (o of tipos; track o.value) {
+          <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Incidente</mat-label>
+        <mat-select formControlName="incidentId">
+          @for (o of incidentes; track o.idIncident) {
+          <mat-option [value]="o.idIncident">{{ '#' + o.idIncident + ' - ' + o.description }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+
+      <button matButton type="submit">Registrar</button>
+    </form>
+    <p>{{ mensaje }}</p>
+  </div>
+</div>

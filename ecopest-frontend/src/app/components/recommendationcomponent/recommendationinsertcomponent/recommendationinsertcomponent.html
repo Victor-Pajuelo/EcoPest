@@ -1,0 +1,54 @@
+<div class="container">
+  <div>
+    <h2>Registro de Recomendación</h2>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="insertarRecomendacion()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput rows="3" formControlName="description"></textarea>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Origen</mat-label>
+        <mat-select formControlName="origin">
+          @for (o of origenes; track o.value) {
+          <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="status">
+          @for (o of estados; track o.value) {
+          <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Incidente</mat-label>
+        <mat-select formControlName="incidentId">
+          @for (o of incidentes; track o.idIncident) {
+          <mat-option [value]="o.idIncident">{{ '#' + o.idIncident + ' - ' + o.description }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Responsable</mat-label>
+        <mat-select formControlName="responsibleUserId">
+          <mat-option [value]="null">Ninguno</mat-option>
+          @for (o of usuarios; track o.idUser) {
+          <mat-option [value]="o.idUser">{{ o.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+
+      <button matButton type="submit">Registrar</button>
+    </form>
+    <p>{{ mensaje }}</p>
+  </div>
+</div>

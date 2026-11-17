@@ -1,0 +1,35 @@
+<div class="container">
+  <div>
+    <h2>Actualizar Empresa</h2>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="actualizarEmpresa()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" formControlName="name">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <mat-label>Tipo</mat-label>
+        <input matInput type="text" formControlName="type">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Empresa matriz</mat-label>
+        <mat-select formControlName="parentBusinessEntityId">
+          <mat-option [value]="null">Ninguno</mat-option>
+          @for (o of empresas; track o.idBusinessEntity) {
+          <mat-option [value]="o.idBusinessEntity">{{ o.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <section class="example-section">
+        <mat-checkbox class="example-margin" formControlName="active">Activo</mat-checkbox>
+      </section>
+
+      <button matButton type="submit">Actualizar</button>
+    </form>
+    <p>{{ mensaje }}</p>
+  </div>
+</div>

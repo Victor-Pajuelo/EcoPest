@@ -1,0 +1,28 @@
+<div class="container">
+  <div>
+    <h2>Identificar Plaga</h2>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="identificar()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Describa la plaga</mat-label>
+        <textarea matInput rows="3" formControlName="text"></textarea>
+      </mat-form-field>
+      <br>
+
+      <input #archivo type="file" accept="image/*" hidden (change)="elegirImagen($event)">
+      <button matButton type="button" class="imagen" (click)="archivo.click()">
+        <mat-icon>photo_camera</mat-icon> Elegir imagen
+      </button>
+      <p class="archivo">{{ nombreImagen }}</p>
+
+      <button matButton type="submit"><mat-icon>search</mat-icon> Identificar</button>
+    </form>
+    <p>{{ mensaje }}</p>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Resultado</mat-label>
+      <textarea matInput rows="6" readonly [value]="resultado"></textarea>
+    </mat-form-field>
+  </div>
+</div>

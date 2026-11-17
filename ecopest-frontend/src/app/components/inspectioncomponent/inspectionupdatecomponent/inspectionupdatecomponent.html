@@ -1,0 +1,52 @@
+<div class="container">
+  <div>
+    <h2>Actualizar Inspección</h2>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="actualizarInspeccion()">
+      <mat-form-field>
+        <mat-label>Fecha de inspección</mat-label>
+        <input matInput [matDatepicker]="picker_inspectionDate" formControlName="inspectionDate">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker_inspectionDate"></mat-datepicker-toggle>
+        <mat-datepicker #picker_inspectionDate></mat-datepicker>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="status">
+          @for (o of estados; track o.value) {
+          <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <mat-label>Observaciones</mat-label>
+        <textarea matInput rows="3" formControlName="observations"></textarea>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Empresa</mat-label>
+        <mat-select formControlName="businessEntityId">
+          @for (o of empresas; track o.idBusinessEntity) {
+          <mat-option [value]="o.idBusinessEntity">{{ o.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Inspector</mat-label>
+        <mat-select formControlName="userId">
+          @for (o of usuarios; track o.idUser) {
+          <mat-option [value]="o.idUser">{{ o.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+
+      <button matButton type="submit">Actualizar</button>
+    </form>
+    <p>{{ mensaje }}</p>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="container">
+  <h2><mat-icon>visibility</mat-icon> Perfil del usuario</h2>
+  <p>{{ mensaje }}</p>
+  <div class="perfil">
+    <div class="avatar"><mat-icon>account_circle</mat-icon></div>
+    <div class="dato"><span>Nombre</span><strong>{{ usuario.name }}</strong></div>
+    <div class="dato"><span>Correo electrónico</span><strong>{{ usuario.email }}</strong></div>
+    <div class="dato"><span>Rol</span><strong>{{ rol }}</strong></div>
+    <div class="dato"><span>Empresa</span><strong>{{ empresa }}</strong></div>
+    <div class="dato"><span>Estado</span><strong>{{ usuario.active ? 'Activo' : 'Inactivo' }}</strong></div>
+  </div>
+  <a mat-flat-button class="btn-volver" routerLink="/usuarios/listar">
+    <mat-icon>arrow_back</mat-icon> Volver
+  </a>
+</div>

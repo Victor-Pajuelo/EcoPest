@@ -3,7 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { WeatherDataDTO } from '../models/WeatherDataDTO';
-import { AverageWeatherDTO } from '../models/CountDTO';
+import { AverageWeatherDTO } from '../models/AverageWeatherDTO';
+import { ForecastDayDTO } from '../models/ForecastDayDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,12 @@ export class Weatherservice {
       .set('latitude', latitude)
       .set('longitude', longitude);
     return this.http.post<WeatherDataDTO>(`${this.apiURL}/sync`, null, { params });
+  }
+
+  /** Pronostico de varios dias con riesgo de plaga (el backend llama a Open-Meteo). */
+  getForecast(latitude: number, longitude: number, days: number): Observable<ForecastDayDTO[]> {
+    const params = new HttpParams().set('latitude', latitude).set('longitude', longitude).set('days', days);
+    return this.http.get<ForecastDayDTO[]>(`${this.apiURL}/forecast`, { params });
   }
 
   simulateWeather(businessEntityId: number, days: number): Observable<WeatherDataDTO[]> {

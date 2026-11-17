@@ -2,6 +2,7 @@ package pe.edu.upc.ecopest.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public class InspectionDTO {
@@ -9,6 +10,7 @@ public class InspectionDTO {
     @NotNull(message = "The inspection date is required")
     private LocalDate inspectionDate;
     @NotBlank(message = "The inspection status is required")
+    @Pattern(regexp = "PROGRAMADA|REALIZADA", message = "The inspection status must be PROGRAMADA or REALIZADA")
     private String status;
     @NotBlank(message = "The observations are required")
     private String observations;
