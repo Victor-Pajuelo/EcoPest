@@ -27,6 +27,7 @@ No hace falta ejecutar ningún script manualmente. La base `BDEcoPest` (PostgreS
 | `CORS_ALLOWED_ORIGINS` | Orígenes del frontend permitidos, separados por coma. Por defecto `http://localhost:4200`. |
 | `GEMINI_API_KEY` | Clave de la API de Gemini (identificar plagas y generar recomendaciones con IA). Nunca se guarda en el código. |
 | `GEMINI_MODEL` | Modelo de Gemini. Por defecto `gemini-3.8-flash`. |
+| `GEMINI_FALLBACK_MODEL` | Modelo de respaldo si el principal está saturado (503) o sin cuota (429). Por defecto `gemini-3.1-flash-lite`. |
 | `GEMINI_MAX_PER_MINUTE` | Tope de llamadas a la IA por minuto (por defecto 5). Al pasarse la API responde 429. |
 | `GEMINI_MAX_PER_DAY` | Tope de llamadas a la IA por día, hora de Lima (por defecto 60). Al pasarse la API responde 429. |
 

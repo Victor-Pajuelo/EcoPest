@@ -3,6 +3,8 @@ package pe.edu.upc.ecopest.clients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 import pe.edu.upc.ecopest.exceptions.ExternalServiceException;
 
@@ -16,6 +18,7 @@ public class GeminiClient {
     private final RestClient restClient;
     private final String apiKey;
     private final String model;
+    private final String fallbackModel;
     private final AiUsageLimiter limiter;
 
     // Maximos para que una sola peticion no gaste demasiado: texto de 4000 caracteres e imagen de unos 2 MB
@@ -25,9 +28,11 @@ public class GeminiClient {
     public GeminiClient(AiUsageLimiter limiter,
                         @Value("${gemini.api-key:}") String apiKey,
                         @Value("${gemini.model:gemini-3.8-flash}") String model,
+                        @Value("${gemini.fallback-model:gemini-3.1-flash-lite}") String fallbackModel,
                         @Value("${gemini.base-url:https://generativelanguage.googleapis.com}") String baseUrl) {
         this.apiKey = apiKey;
         this.model = model;
+        this.fallbackModel = fallbackModel;
         this.limiter = limiter;
         this.restClient = RestClient.builder().baseUrl(baseUrl).build();
     }
@@ -38,6 +43,15 @@ public class GeminiClient {
 
     public String generate(String systemInstruction, String prompt) {
         return generate(systemInstruction, prompt, null, null);
+    }
+
+    private Map<String, Object> callModel(String modelName, Map<String, Object> request) {
+        return restClient.post()
+                .uri("/v1beta/models/{model}:generateContent", modelName)
+                .header("x-goog-api-key", apiKey)
+                .body(request)
+                .retrieve()
+                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
     }
 
     @SuppressWarnings("unchecked")
@@ -62,12 +76,16 @@ public class GeminiClient {
                 "contents", List.of(Map.of("role", "user", "parts", requestParts)),
                 "generationConfig", Map.of("maxOutputTokens", 512));
         try {
-            Map<String, Object> body = restClient.post()
-                    .uri("/v1beta/models/{model}:generateContent", model)
-                    .header("x-goog-api-key", apiKey)
-                    .body(request)
-                    .retrieve()
-                    .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+            Map<String, Object> body;
+            try {
+                body = callModel(model, request);
+            } catch (HttpServerErrorException | HttpClientErrorException.TooManyRequests e) {
+                // Si el modelo principal esta saturado (503) o sin cuota (429), se prueba el modelo de respaldo
+                if (fallbackModel == null || fallbackModel.isBlank() || fallbackModel.equals(model)) {
+                    throw e;
+                }
+                body = callModel(fallbackModel, request);
+            }
             List<Map<String, Object>> candidates = body == null ? null : (List<Map<String, Object>>) body.get("candidates");
             if (candidates == null || candidates.isEmpty()) {
                 throw new ExternalServiceException("The AI service returned no answer");
