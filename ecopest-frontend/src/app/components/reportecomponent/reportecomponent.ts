@@ -5,7 +5,7 @@ import { Menucomponent } from '../menucomponent/menucomponent';
 import { Reportservice } from '../../services/reportservice';
 import { CountDTO } from '../../models/CountDTO';
 
-/** HU82 - Reportes: grafico de barras de inspecciones por empresa. */
+/** HU82 (inspecciones por empresa) y HU81 (incidencias por tipo de plaga): reportes con graficos de barras. */
 @Component({
   selector: 'app-reportecomponent',
   imports: [Menucomponent, MatIconModule, MatTooltipModule],
@@ -14,38 +14,62 @@ import { CountDTO } from '../../models/CountDTO';
 })
 export class Reportecomponent implements OnInit {
 
+  // HU82: inspecciones por empresa
   inspeccionesPorEmpresa: CountDTO[] = [];
-  cargado: boolean = false;   // ya respondio el servidor
-  hayError: boolean = false;  // CA03: la consulta fallo
+  cargadoInspecciones: boolean = false;
+  errorInspecciones: boolean = false;
+
+  // HU81: incidencias por tipo de plaga
+  incidenciasPorPlaga: CountDTO[] = [];
+  cargadoPlagas: boolean = false;
+  errorPlagas: boolean = false;
 
   constructor(private reportS: Reportservice, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.obtenerInspeccionesPorEmpresa();
+    this.obtenerIncidenciasPorPlaga();
   }
 
-  // CA01: una barra por empresa. CA03: si falla, se marca el error.
   obtenerInspeccionesPorEmpresa(): void {
-    this.hayError = false;
-    this.cargado = false;
+    this.errorInspecciones = false;
+    this.cargadoInspecciones = false;
     this.reportS.inspectionsByCompany().subscribe({
       next: data => {
         this.inspeccionesPorEmpresa = data;
-        this.cargado = true;
+        this.cargadoInspecciones = true;
         this.cdr.detectChanges();
       },
       error: err => {
         console.log(err);
-        this.hayError = true;
-        this.cargado = true;
+        this.errorInspecciones = true;
+        this.cargadoInspecciones = true;
         this.cdr.detectChanges();
       }
     });
   }
 
-  /** Ancho en % de una barra, comparando contra el valor mas alto de la lista. */
-  porcentaje(valor: number): number {
-    const max = Math.max(...this.inspeccionesPorEmpresa.map(x => x.quantity), 1);
+  obtenerIncidenciasPorPlaga(): void {
+    this.errorPlagas = false;
+    this.cargadoPlagas = false;
+    this.reportS.incidentsByPest().subscribe({
+      next: data => {
+        this.incidenciasPorPlaga = data;
+        this.cargadoPlagas = true;
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        console.log(err);
+        this.errorPlagas = true;
+        this.cargadoPlagas = true;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  /** Ancho en % de una barra, comparando contra el valor mas alto de su lista. */
+  porcentaje(valor: number, lista: CountDTO[]): number {
+    const max = Math.max(...lista.map(x => x.quantity), 1);
     return Math.round((valor / max) * 100);
   }
 }
