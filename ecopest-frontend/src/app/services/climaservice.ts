@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { ClimaDTO } from '../models/ClimaDTO';
 import { LugarDTO } from '../models/LugarDTO';
 
@@ -26,7 +26,14 @@ export class Climaservice {
     });
   }
 
+  // Nominatim pide no repetir consultas: se guarda el lugar de cada zona ya consultada
+  private lugares: { [zona: string]: LugarDTO } = {}
+
   getLugar(latitud: number, longitud: number): Observable<LugarDTO> {
+    const zona = latitud.toFixed(2) + ',' + longitud.toFixed(2)
+    if (this.lugares[zona]) {
+      return of(this.lugares[zona])
+    }
     return this.http.get<LugarDTO>(this.lugarURL, {
       params: {
         format: 'jsonv2',
@@ -35,6 +42,6 @@ export class Climaservice {
         zoom: 14,
         'accept-language': 'es'
       }
-    });
+    }).pipe(tap(lugar => this.lugares[zona] = lugar));
   }
 }
