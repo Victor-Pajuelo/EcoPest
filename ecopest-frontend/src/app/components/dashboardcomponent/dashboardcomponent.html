@@ -1,0 +1,100 @@
+<app-menucomponent></app-menucomponent>
+
+<div class="container">
+  <h2>Dashboard de indicadores</h2>
+
+  <div class="kpis">
+    <div class="kpi">
+      <mat-icon>business</mat-icon>
+      <span class="numero">{{ totalEmpresas }}</span>
+      <span class="texto">Empresas</span>
+    </div>
+    <div class="kpi">
+      <mat-icon>report_problem</mat-icon>
+      <span class="numero">{{ totalIncidentes }}</span>
+      <span class="texto">Incidentes</span>
+    </div>
+    <div class="kpi">
+      <mat-icon>fact_check</mat-icon>
+      <span class="numero">{{ totalInspecciones }}</span>
+      <span class="texto">Inspecciones</span>
+    </div>
+    <div class="kpi">
+      <mat-icon>lightbulb</mat-icon>
+      <span class="numero">{{ totalRecomendaciones }}</span>
+      <span class="texto">Recomendaciones</span>
+    </div>
+  </div>
+
+  <div class="graficos">
+
+    <div class="grafico">
+      <h3>Inspecciones por empresa</h3>
+      @if (inspeccionesPorEmpresa.length > 0) {
+        @for (item of inspeccionesPorEmpresa; track item.name) {
+          <div class="fila">
+            <span class="etiqueta">{{ item.name }}</span>
+            <div class="barra-fondo">
+              <div class="barra" [style.width.%]="porcentaje(item.quantity, inspeccionesPorEmpresa)"></div>
+            </div>
+            <span class="valor">{{ item.quantity }}</span>
+          </div>
+        }
+      } @else {
+        <p class="vacio">Sin datos</p>
+      }
+    </div>
+
+    <div class="grafico">
+      <h3>Incidentes por nivel de riesgo</h3>
+      @if (incidentesPorRiesgo.length > 0) {
+        @for (item of incidentesPorRiesgo; track item.name) {
+          <div class="fila">
+            <span class="etiqueta">{{ item.name }}</span>
+            <div class="barra-fondo">
+              <div class="barra" [style.width.%]="porcentaje(item.quantity, incidentesPorRiesgo)"></div>
+            </div>
+            <span class="valor">{{ item.quantity }}</span>
+          </div>
+        }
+      } @else {
+        <p class="vacio">Sin datos</p>
+      }
+    </div>
+
+    <div class="grafico">
+      <h3>Usuarios por rol</h3>
+      @if (usuariosPorRol.length > 0) {
+        @for (item of usuariosPorRol; track item.name) {
+          <div class="fila">
+            <span class="etiqueta">{{ item.name }}</span>
+            <div class="barra-fondo">
+              <div class="barra" [style.width.%]="porcentaje(item.quantity, usuariosPorRol)"></div>
+            </div>
+            <span class="valor">{{ item.quantity }}</span>
+          </div>
+        }
+      } @else {
+        <p class="vacio">Sin datos</p>
+      }
+    </div>
+
+    <div class="grafico">
+      <h3>Recomendaciones por incidente</h3>
+      @if (recomendacionesPorIncidente.length > 0) {
+        @for (item of recomendacionesPorIncidente; track item.name) {
+          <div class="fila">
+            <span class="etiqueta">{{ item.name }}</span>
+            <div class="barra-fondo">
+              <div class="barra" [style.width.%]="porcentaje(item.quantity, recomendacionesPorIncidente)"></div>
+            </div>
+            <span class="valor">{{ item.quantity }}</span>
+          </div>
+        }
+      } @else {
+        <p class="vacio">Sin datos</p>
+      }
+    </div>
+
+  </div>
+</div>

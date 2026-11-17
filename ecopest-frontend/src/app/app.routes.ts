@@ -39,11 +39,15 @@ import { Weathercomponent } from './components/weathercomponent/weathercomponent
 import { Weatherlistcomponent } from './components/weathercomponent/weatherlistcomponent/weatherlistcomponent';
 import { Weatherinsertcomponent } from './components/weathercomponent/weatherinsertcomponent/weatherinsertcomponent';
 import { Weatherupdatecomponent } from './components/weathercomponent/weatherupdatecomponent/weatherupdatecomponent';
-
+import { Dashboardcomponent } from './components/dashboardcomponent/dashboardcomponent';
 export const routes: Routes = [
   {
     path: '',
     component: Homecomponent,
+  },
+    {
+    path: 'dashboard',
+    component: Dashboardcomponent,
   },
 
   {
