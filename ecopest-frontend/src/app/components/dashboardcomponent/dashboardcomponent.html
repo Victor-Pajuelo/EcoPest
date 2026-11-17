@@ -1,0 +1,90 @@
+<app-menucomponent></app-menucomponent>
+
+<div class="container">
+  <h2>Dashboard de indicadores</h2>
+
+  <div class="kpis">
+    <div class="kpi">
+      <mat-icon>business</mat-icon>
+      <span class="numero">{{ totalEmpresas }}</span>
+      <span class="texto">Empresas</span>
+    </div>
+    <div class="kpi">
+      <mat-icon>report_problem</mat-icon>
+      <span class="numero">{{ totalIncidentes }}</span>
+      <span class="texto">Incidentes</span>
+    </div>
+    <div class="kpi">
+      <mat-icon>fact_check</mat-icon>
+      <span class="numero">{{ totalInspecciones }}</span>
+      <span class="texto">Inspecciones</span>
+    </div>
+    <div class="kpi">
+      <mat-icon>lightbulb</mat-icon>
+      <span class="numero">{{ totalRecomendaciones }}</span>
+      <span class="texto">Recomendaciones</span>
+    </div>
+  </div>
+
+  <div class="graficos">
+
+    <div class="grafico">
+      <h3>Incidentes por tipo de plaga</h3>
+      @if (incidentesPorPlaga.length > 0) {
+        @for (item of incidentesPorPlaga; track item.name) {
+          <div class="fila">
+            <span class="etiqueta">{{ item.name }}</span>
+            <div class="barra-fondo">
+              <div class="barra" [style.width.%]="porcentaje(item.quantity, incidentesPorPlaga)"></div>
+            </div>
+            <span class="valor">{{ item.quantity }}</span>
+          </div>
+        }
+      } @else {
+        <p class="vacio">Sin datos</p>
+      }
+    </div>
+
+    <div class="grafico">
+      <h3>Inspecciones por empresa</h3>
+      @if (inspeccionesPorEmpresa.length > 0) {
+        @for (item of inspeccionesPorEmpresa; track item.name) {
+          <div class="fila">
+            <span class="etiqueta">{{ item.name }}</span>
+            <div class="barra-fondo">
+              <div class="barra" [style.width.%]="porcentaje(item.quantity, inspeccionesPorEmpresa)"></div>
+            </div>
+            <span class="valor">{{ item.quantity }}</span>
+          </div>
+        }
+      } @else {
+        <p class="vacio">Sin datos</p>
+      }
+    </div>
+
+  </div>
+
+  <div class="tabla-clima">
+    <h3>Promedio de clima por empresa</h3>
+    @if (promediosClima.length > 0) {
+      <table mat-table [dataSource]="promediosClima" class="mat-shadow-2">
+        <ng-container matColumnDef="empresa">
+          <th mat-header-cell *matHeaderCellDef>Empresa</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="temperatura">
+          <th mat-header-cell *matHeaderCellDef>Temp. promedio (°C)</th>
+          <td mat-cell *matCellDef="let element">{{ element.avgTemperature | number:'1.1-1' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="humedad">
+          <th mat-header-cell *matHeaderCellDef>Humedad promedio (%)</th>
+          <td mat-cell *matCellDef="let element">{{ element.avgHumidity | number:'1.1-1' }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnasClima"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasClima;"></tr>
+      </table>
+    } @else {
+      <p class="vacio">Sin datos</p>
+    }
+  </div>
+</div>
