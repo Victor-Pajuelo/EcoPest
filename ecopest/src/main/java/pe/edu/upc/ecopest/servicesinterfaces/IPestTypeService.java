@@ -1,5 +1,6 @@
 package pe.edu.upc.ecopest.servicesinterfaces;
 
+import pe.edu.upc.ecopest.clients.INaturalistClient;
 import pe.edu.upc.ecopest.entities.PestType;
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +12,5 @@ public interface IPestTypeService {
     Optional<PestType> findById(Long id);
     void update(PestType pestType);
     void delete(Long id);
+    List<INaturalistClient.Taxon> searchSpecies(String query);
 }

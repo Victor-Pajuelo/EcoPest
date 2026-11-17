@@ -11,6 +11,7 @@ import pe.edu.upc.ecopest.servicesinterfaces.IRecommendationService;
 import pe.edu.upc.ecopest.servicesinterfaces.IWeatherDataService;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +74,7 @@ public class RecommendationServiceImplement implements IRecommendationService {
             prompt.append("Lugar: ").append(businessEntity.getName()).append(" (").append(businessEntity.getType()).append(")\n");
             List<WeatherData> weather = weatherDataService.listByBusinessEntity(businessEntity.getIdBusinessEntity());
             if (!weather.isEmpty()) {
-                WeatherData last = weather.get(weather.size() - 1);
+                WeatherData last = weather.stream().max(Comparator.comparing(WeatherData::getDate)).get();
                 prompt.append("Clima reciente: ").append(last.getTemperature()).append(" °C, humedad ")
                         .append(last.getHumidity()).append(" %\n");
             }

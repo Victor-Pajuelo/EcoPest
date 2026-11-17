@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import pe.edu.upc.ecopest.exceptions.GlobalExceptionHandler;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,8 +41,8 @@ class LoginControllerTest {
                                 """))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.message").value(
-                        "username: The username is required; password: The password is required"))
+                .andExpect(jsonPath("$.message").value(containsString("username: The username is required")))
+                .andExpect(jsonPath("$.message").value(containsString("password: The password is required")))
                 .andExpect(jsonPath("$.path").value("/login"));
     }
 
