@@ -152,14 +152,46 @@ tr[mat-row]:hover {
         justify-content: center;
     }
 
+    /* Cada fila se muestra como una tarjeta: titulo a la izquierda y dato a la derecha */
     table {
         display: block;
-        overflow-x: auto;
     }
 
-    th[mat-header-cell],
+    /* el cuerpo de la tabla lo crea Angular Material, por eso se usa ng-deep */
+    :host ::ng-deep tbody {
+        display: block;
+    }
+
+    tr[mat-header-row] {
+        display: none;
+    }
+
+    tr[mat-row] {
+        display: block;
+        height: auto;
+        margin-bottom: 12px;
+        border: 1px solid #cfe9da;
+        border-radius: 8px;
+    }
+
     td[mat-cell] {
-        padding: 10px 8px;
-        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        font-size: 13px;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    td[mat-cell]::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #0a7d38;
+        text-align: left;
     }
 }

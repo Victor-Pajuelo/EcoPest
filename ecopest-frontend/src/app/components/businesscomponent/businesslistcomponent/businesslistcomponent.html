@@ -11,27 +11,27 @@
     <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell *matCellDef="let element">{{ element.idBusinessEntity }}</td>
+        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idBusinessEntity }}</td>
       </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td mat-cell data-label="Nombre" *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Tipo</th>
-        <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+        <td mat-cell data-label="Tipo" *matCellDef="let element">{{ element.type }}</td>
       </ng-container>
       <ng-container matColumnDef="C4">
         <th mat-header-cell *matHeaderCellDef>Empresa</th>
-        <td mat-cell *matCellDef="let element">{{ element.companyName }}</td>
+        <td mat-cell data-label="Empresa" *matCellDef="let element">{{ element.companyName }}</td>
       </ng-container>
       <ng-container matColumnDef="C5">
         <th mat-header-cell *matHeaderCellDef>Activo</th>
-        <td mat-cell *matCellDef="let element">{{ element.active ? 'Sí' : 'No' }}</td>
+        <td mat-cell data-label="Activo" *matCellDef="let element">{{ element.active ? 'Sí' : 'No' }}</td>
       </ng-container>
       <ng-container matColumnDef="C6">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell data-label="Acciones" *matCellDef="let element">
           <a mat-icon-button class="btn-editar" [routerLink]="['/empresas/editar', element.idBusinessEntity]" title="Editar">
             <mat-icon>edit</mat-icon>
           </a>

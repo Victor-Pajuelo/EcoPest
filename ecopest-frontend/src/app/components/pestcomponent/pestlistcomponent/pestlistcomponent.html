@@ -11,23 +11,23 @@
     <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell *matCellDef="let element">{{ element.idPestType }}</td>
+        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idPestType }}</td>
       </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td mat-cell data-label="Nombre" *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Nivel de riesgo</th>
-        <td mat-cell *matCellDef="let element">{{ element.riskLevel }}</td>
+        <td mat-cell data-label="Nivel de riesgo" *matCellDef="let element">{{ element.riskLevel }}</td>
       </ng-container>
       <ng-container matColumnDef="C4">
         <th mat-header-cell *matHeaderCellDef>Descripción</th>
-        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        <td mat-cell data-label="Descripción" *matCellDef="let element">{{ element.description }}</td>
       </ng-container>
       <ng-container matColumnDef="C5">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell data-label="Acciones" *matCellDef="let element">
           <a mat-icon-button class="btn-ver" [routerLink]="['/plagas/ver', element.idPestType]" title="Ver">
             <mat-icon>visibility</mat-icon>
           </a>
