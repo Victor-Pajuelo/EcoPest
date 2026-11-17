@@ -5,6 +5,19 @@
       <mat-icon>add</mat-icon> Registrar
     </a>
   </div>
+  <div class="sincronizar">
+    <mat-form-field appearance="outline">
+      <mat-label>Empresa</mat-label>
+      <mat-select (selectionChange)="empresaSeleccionada = $event.value">
+        @for (e of empresas; track e.idBusinessEntity) {
+        <mat-option [value]="e.idBusinessEntity">{{ e.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button mat-flat-button class="btn-sincronizar" (click)="sincronizarClima()" [disabled]="sincronizando">
+      <mat-icon>sync</mat-icon> Sincronizar con Open-Meteo
+    </button>
+  </div>
   <p>{{ mensaje }}</p>
   <div>
     @if(dataSource.length>0){

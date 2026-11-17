@@ -38,6 +38,12 @@ export class Pestidentifycomponent {
     if (!archivo) {
       return
     }
+    // La IA tiene tope de uso: solo se aceptan imágenes de hasta 2 MB
+    if (archivo.size > 2 * 1024 * 1024) {
+      this.mensaje = 'La imagen pesa más de 2 MB, elija una más liviana'
+      return
+    }
+    this.mensaje = ''
     const lector = new FileReader()
     lector.onload = () => {
       const url = String(lector.result)
@@ -71,7 +77,11 @@ export class Pestidentifycomponent {
         this.resultado = data.answer
         this.cdr.detectChanges()
       }, error: err => {
-        this.mensaje = 'No se pudo identificar la plaga, intente nuevamente'
+        if (err.status == 429) {
+          this.mensaje = 'Se alcanzó el límite de uso de la IA (es gratuita y tiene tope). Intente de nuevo en un minuto o mañana.'
+        } else {
+          this.mensaje = 'No se pudo identificar la plaga, intente nuevamente'
+        }
         this.cdr.detectChanges()
       }
     })

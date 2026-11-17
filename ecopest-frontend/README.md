@@ -1,60 +1,60 @@
 # EcoPest – Frontend (Angular 21 + Angular Material)
 
-Frontend del proyecto **EcoPest** (control integrado de plagas) para el curso *Arquitectura de Aplicaciones Web* (UPC, 1ASI0705). Consume la API REST de Spring Boot de este mismo repositorio (`../ecopest`).
+Frontend del proyecto **EcoPest** (control integrado de plagas) del curso *Arquitectura de Aplicaciones Web* (UPC, 1ASI0705). Consume la API REST de Spring Boot de este mismo repositorio (`../ecopest`).
 
 ## Tecnologías
 
-- Angular 21 (standalone components, signals, `@if/@for`), TypeScript 5.9
-- Angular Material 21 (tablas, formularios, diálogos, menú, snackbar, datepicker)
-- RxJS, Reactive Forms, `HttpClient` con interceptor JWT, guards por rol
-- i18n propio es_419 / en_US (selector de idioma en la barra superior)
-- APIs externas: **Open-Meteo** (clima real, vía backend), **iNaturalist** (foto y nombre científico de plagas), **Gemini** (recomendaciones con IA, vía backend)
+- Angular 21 con componentes standalone, `@if` / `@for` e inyección por constructor
+- Angular Material 21 (tablas, formularios, select, iconos, botones, datepicker, menú)
+- RxJS, Reactive Forms (`FormBuilder` + `Validators`) y `HttpClient`
+- APIs externas: **Open-Meteo** (clima y pronóstico), **Nominatim / OpenStreetMap** (nombre del lugar a partir de las coordenadas), **iNaturalist** (especies de plagas, desde el backend) y **Gemini** (identificar plaga por foto y generar recomendaciones, desde el backend)
 
-## Estructura (mismo estilo que los ejemplos del curso)
+## Estructura
 
 ```
 src/app/
-  models/        DTOs (BusinessDTO, PestTypeDTO, ...)
-  services/      un servicio por entidad (Pestservice, Incidentservice, ...) + authservice, reportservice, inaturalistservice
-  components/    <entidad>component (shell) / <entidad>listcomponent / <entidad>formcomponent
-  guards/        authGuard, adminGuard, writeGuard
-  interceptors/  authInterceptor (agrega el JWT)
-  i18n/          traducciones, pipe `t`
-src/environments/  environment.ts (producción) / environment.development.ts (local)
+  models/        un DTO por archivo (PestTypeDTO, IncidentDTO, ClimaDTO, LugarDTO, ...)
+  services/      un servicio por entidad (Pestservice, Incidentservice, ...) más climaservice y reportservice
+  components/    <entidad>component (contenedor con <router-outlet>)
+                 + <entidad>listcomponent / insertcomponent / updatecomponent
+  app.routes.ts  rutas de cada módulo (plagas, empresas, roles, usuarios, inspecciones,
+                 incidentes, evidencias, recomendaciones, clima)
+src/environments/  environment.development.ts (local) / environment.ts (producción)
 ```
+
+## Módulos
+
+Plagas, empresas, roles, usuarios, inspecciones, incidentes, evidencias, recomendaciones y datos del clima, cada uno con listar, registrar y editar (y eliminar donde corresponde). Además:
+
+- **Clima**: clima actual y pronóstico de 5 días con riesgo de plaga. Muestra el distrito y la ciudad (Nominatim); si no se puede obtener, muestra la zona horaria.
+- **Datos del clima**: bloque "Sincronizar con Open-Meteo" para guardar el clima actual de Lima en una empresa.
+- **Incidentes**: botón con icono de destellos que pide a la IA (Gemini) una recomendación para el incidente.
+- **Plagas**: buscador de especies (iNaturalist) en el formulario e identificación de plaga por foto con IA.
 
 ## Ejecutar en local
 
 ```bash
 cd ecopest-frontend
 npm install
-npm start            # http://localhost:4200  (usa environment.development.ts -> backend en http://localhost:8080)
+npm start            # http://localhost:4200, usa environment.development.ts (backend en http://localhost:8080)
 ```
 
-El backend debe estar levantado (`../ecopest`) con las variables `DATASOURCE_URL`, `DATASOURCE_USERNAME`, `DB_PASSWORD`, `JWT_SECRET`. Para la IA: `GEMINI_API_KEY` (y opcional `GEMINI_MODEL`). Para CORS en producción: `CORS_ALLOWED_ORIGINS` (URL del frontend desplegado, separadas por coma).
+El backend debe estar levantado (`../ecopest`).
 
-## Build y despliegue
+## Build y despliegue (Render)
 
 ```bash
 npm run build        # salida: dist/ecopestFront/browser
 ```
 
-Render (Static Site): comando de build `cd ecopest-frontend && npm ci && npm run build`, directorio de publicación `ecopest-frontend/dist/ecopestFront/browser`. La URL del backend (Render) se configura en `src/environments/environment.ts`.
+Static Site en Render:
 
-## Roles y permisos (igual que la API)
+- Build command: `cd ecopest-frontend && npm ci && npm run build`
+- Publish directory: `ecopest-frontend/dist/ecopestFront/browser`
+- Redirects/Rewrites: regla `Source: /*`, `Destination: /index.html`, `Action: Rewrite`. Sin esta regla, entrar directo a una URL como `/incidentes/listar` redirige al inicio.
 
-| Rol | Ver | Crear / editar | Eliminar | Usuarios y roles |
-|---|---|---|---|---|
-| ADMIN | sí | sí | sí | sí |
-| SUPERVISOR | sí | sí | no | no |
-| TESTER / CLIENTE | sí (solo lectura) | no | no | no |
+La URL del backend de producción se configura en `src/environments/environment.ts`. El backend debe permitir el origen del frontend con la variable `CORS_ALLOWED_ORIGINS`.
 
-## Funcionalidades destacadas
+## Pendiente (siguiente fase)
 
-- Login con JWT, sesión persistente, cierre automático si el token vence.
-- CRUD de las 9 entidades con búsqueda, paginación, validaciones y confirmación al eliminar.
-- Dashboard con KPIs y gráficos, y página de Reportes (consultas con JOIN/GROUP BY de la API).
-- **Clima real**: botón "Sincronizar clima real" (Open-Meteo).
-- **IA**: botón "Generar recomendación con IA" en cada incidente.
-- **iNaturalist**: buscador de especies en el formulario de plagas y botón "Ver foto" en la lista.
-- Responsive (menú hamburguesa en móvil), accesibilidad (ARIA, foco visible, enlace "saltar al contenido"), página de Términos y condiciones.
+Inicio de sesión (login con JWT), menú y permisos por rol, y los gráficos del dashboard.

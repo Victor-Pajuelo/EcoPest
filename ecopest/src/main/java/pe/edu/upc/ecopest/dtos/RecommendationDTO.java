@@ -2,6 +2,7 @@ package pe.edu.upc.ecopest.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public class RecommendationDTO {
@@ -9,9 +10,11 @@ public class RecommendationDTO {
     @NotBlank(message = "The recommendation description is required")
     private String description;
     @NotBlank(message = "The recommendation origin is required")
+    @Pattern(regexp = "AUTOMATICO|MANUAL|IA", message = "The recommendation origin must be AUTOMATICO, MANUAL or IA")
     private String origin;
     private LocalDateTime generationDate;
     @NotBlank(message = "The recommendation status is required")
+    @Pattern(regexp = "PENDIENTE|EN_PROCESO|APLICADA", message = "The recommendation status must be PENDIENTE, EN_PROCESO or APLICADA")
     private String status;
     @NotNull(message = "The incident id is required")
     private Long incidentId;

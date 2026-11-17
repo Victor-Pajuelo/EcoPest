@@ -71,10 +71,10 @@ export class Inspectioninsertcomponent implements OnInit {
       return
     }
     // El datepicker entrega un objeto Date, pero el backend recibe la fecha como texto (yyyy-MM-dd).
-    // Por eso la convertimos a string con toISOString().substring(0, 10).
+    // Por eso la convertimos a string con toLocaleDateString('en-CA'), que da la fecha local en formato yyyy-MM-dd.
     const dto: InspectionDTO = {
       idInspection: null,
-      inspectionDate: this.form.value.inspectionDate.toISOString().substring(0, 10),
+      inspectionDate: this.form.value.inspectionDate.toLocaleDateString('en-CA'),
       status: this.form.value.status,
       observations: this.form.value.observations,
       businessEntityId: this.form.value.businessEntityId,

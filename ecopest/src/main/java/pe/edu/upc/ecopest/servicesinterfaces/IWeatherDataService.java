@@ -1,9 +1,9 @@
 package pe.edu.upc.ecopest.servicesinterfaces;
 
+import pe.edu.upc.ecopest.clients.OpenMeteoClient;
 import pe.edu.upc.ecopest.entities.BusinessEntity;
 import pe.edu.upc.ecopest.entities.WeatherData;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +19,8 @@ public interface IWeatherDataService {
     List<Object[]> averageWeatherByBusinessEntity();
     void update(WeatherData weatherData);
     void delete(Long id);
-    WeatherData simulate(BusinessEntity businessEntity, LocalDate date);
+    List<WeatherData> simulateDays(BusinessEntity businessEntity, int days);
+    WeatherData syncCurrent(BusinessEntity businessEntity, double latitude, double longitude);
+    List<OpenMeteoClient.DailyForecast> forecast(double latitude, double longitude, int days);
+    String pestRisk(OpenMeteoClient.DailyForecast day);
 }

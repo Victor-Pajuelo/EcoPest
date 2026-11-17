@@ -2,6 +2,7 @@ package pe.edu.upc.ecopest.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public class IncidentDTO {
@@ -11,6 +12,7 @@ public class IncidentDTO {
     @NotBlank(message = "The description is required")
     private String description;
     @NotBlank(message = "The status is required")
+    @Pattern(regexp = "PENDIENTE|EN_PROCESO|RESUELTO", message = "The status must be PENDIENTE, EN_PROCESO or RESUELTO")
     private String status;
     @NotNull(message = "The inspection id is required")
     private Long inspectionId;

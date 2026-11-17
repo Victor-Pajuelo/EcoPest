@@ -6,9 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pe.edu.upc.ecopest.clients.OpenMeteoClient;
 import pe.edu.upc.ecopest.dtos.AverageWeatherDTO;
 import pe.edu.upc.ecopest.dtos.ForecastDayDTO;
 import pe.edu.upc.ecopest.dtos.WeatherDataDTO;
@@ -18,8 +16,6 @@ import pe.edu.upc.ecopest.exceptions.ResourceNotFoundException;
 import pe.edu.upc.ecopest.servicesinterfaces.IBusinessEntityService;
 import pe.edu.upc.ecopest.servicesinterfaces.IWeatherDataService;
 import java.net.URI;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,10 +24,8 @@ public class WeatherDataController {
     private final IWeatherDataService weatherDataService;
     private final IBusinessEntityService businessEntityService;
     private final ModelMapper modelMapper;
-    private final OpenMeteoClient openMeteoClient;
 
-    public WeatherDataController(IWeatherDataService weatherDataService, IBusinessEntityService businessEntityService, ModelMapper modelMapper, OpenMeteoClient openMeteoClient) {
-        this.openMeteoClient = openMeteoClient;
+    public WeatherDataController(IWeatherDataService weatherDataService, IBusinessEntityService businessEntityService, ModelMapper modelMapper) {
         this.weatherDataService = weatherDataService;
         this.businessEntityService = businessEntityService;
         this.modelMapper = modelMapper;
@@ -93,16 +87,12 @@ public class WeatherDataController {
     public ResponseEntity<List<WeatherDataDTO>> simulate(@RequestParam Long businessEntityId,
                                                          @RequestParam(defaultValue = "1") int days) {
         if (days < 1 || days > 30) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Days must be between 1 and 30");
+            throw new IllegalArgumentException("Days must be between 1 and 30");
         }
         BusinessEntity businessEntity = businessEntityService.findById(businessEntityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
-        List<WeatherDataDTO> items = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-        for (int i = 0; i < days; i++) {
-            WeatherData weatherData = weatherDataService.simulate(businessEntity, today.minusDays(i));
-            items.add(modelMapper.map(weatherData, WeatherDataDTO.class));
-        }
+        List<WeatherDataDTO> items = weatherDataService.simulateDays(businessEntity, days).stream()
+                .map(item -> modelMapper.map(item, WeatherDataDTO.class)).toList();
         return ResponseEntity.status(HttpStatus.CREATED).body(items);
     }
 
@@ -113,25 +103,8 @@ public class WeatherDataController {
                                                @RequestParam(defaultValue = "-77.0428") double longitude) {
         BusinessEntity businessEntity = businessEntityService.findById(businessEntityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
-        OpenMeteoClient.CurrentWeather current = openMeteoClient.fetchCurrent(latitude, longitude);
-        LocalDate today = LocalDate.now();
-        // Hay un solo registro por empresa y fecha (restriccion unica): si ya existe hoy, se actualiza.
-        WeatherData existing = weatherDataService.listByBusinessEntity(businessEntityId).stream()
-                .filter(w -> today.equals(w.getDate()))
-                .findFirst()
-                .orElse(null);
-        WeatherData weatherData = existing != null ? existing : new WeatherData();
-        weatherData.setDate(today);
-        weatherData.setTemperature(current.temperature());
-        weatherData.setHumidity(current.humidity());
-        weatherData.setSource(current.source());
-        weatherData.setBusinessEntity(businessEntity);
-        if (existing != null) {
-            weatherDataService.update(weatherData);
-            return ResponseEntity.ok(modelMapper.map(weatherData, WeatherDataDTO.class));
-        }
-        weatherDataService.insert(weatherData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(weatherData, WeatherDataDTO.class));
+        WeatherData weatherData = weatherDataService.syncCurrent(businessEntity, latitude, longitude);
+        return ResponseEntity.ok(modelMapper.map(weatherData, WeatherDataDTO.class));
     }
 
     @Operation(summary = "Pronostico con riesgo de plaga (Open-Meteo)", description = "Consulta el pronostico de varios dias a la API externa Open-Meteo y calcula un riesgo de plaga por dia: suma 1 punto si la humedad es 70% o mas, otro si es 80% o mas, otro si la temperatura media esta entre 20 y 32 grados y otro si llueve 1 mm o mas. 3 o mas puntos es ALTO, 2 es MEDIO y menos es BAJO.")
@@ -142,29 +115,17 @@ public class WeatherDataController {
         if (days < 1 || days > 7) {
             throw new IllegalArgumentException("Days must be between 1 and 7");
         }
-        List<ForecastDayDTO> items = openMeteoClient.fetchForecast(latitude, longitude, days).stream().map(day -> {
+        List<ForecastDayDTO> items = weatherDataService.forecast(latitude, longitude, days).stream().map(day -> {
             ForecastDayDTO dto = new ForecastDayDTO();
             dto.setDate(day.date());
             dto.setTemperatureMax(day.temperatureMax());
             dto.setTemperatureMin(day.temperatureMin());
             dto.setPrecipitation(day.precipitation());
             dto.setHumidity(day.humidity());
-            dto.setPestRisk(pestRisk(day.temperatureMax(), day.temperatureMin(), day.humidity(), day.precipitation()));
+            dto.setPestRisk(weatherDataService.pestRisk(day));
             return dto;
         }).toList();
         return ResponseEntity.ok(items);
-    }
-
-    private String pestRisk(double temperatureMax, double temperatureMin, double humidity, double precipitation) {
-        double averageTemperature = (temperatureMax + temperatureMin) / 2;
-        int points = 0;
-        if (humidity >= 70) points++;
-        if (humidity >= 80) points++;
-        if (averageTemperature >= 20 && averageTemperature <= 32) points++;
-        if (precipitation >= 1) points++;
-        if (points >= 3) return "ALTO";
-        if (points == 2) return "MEDIO";
-        return "BAJO";
     }
 
     @Operation(summary = "Filtrar datos meteorológicos por ID de empresa", description = "Obtiene la lista de registros meteorológicos pertenecientes a una entidad de negocio.")
