@@ -42,7 +42,7 @@ Para no pagar nada, la clave de Gemini debe ser del plan gratuito de Google AI S
 
 ## API externas
 
-- **Open-Meteo**: clima actual y pronóstico (el backend guarda el clima y calcula el riesgo de plaga).
+- **Open-Meteo**: clima actual y pronóstico (el backend guarda el clima y calcula el riesgo de plaga). Si Open-Meteo falla por su límite diario, el backend usa **MET Norway** (gratuita, sin clave) de respaldo.
 - **iNaturalist**: búsqueda de especies de plagas.
 - **Gemini**: identificación de plagas por foto y recomendaciones generadas con IA.
 - **Nominatim (OpenStreetMap)**: el frontend la usa para mostrar el distrito y la ciudad del clima.

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WeatherDataServiceImplementTest {
     // pestRisk solo calcula con los datos del dia, por eso no necesita repositorio ni cliente
-    private final WeatherDataServiceImplement service = new WeatherDataServiceImplement(null, null);
+    private final WeatherDataServiceImplement service = new WeatherDataServiceImplement(null, null, null);
 
     @Test
     void humedadAltaTemperaturaCalidaYLluviaDanRiesgoAlto() {

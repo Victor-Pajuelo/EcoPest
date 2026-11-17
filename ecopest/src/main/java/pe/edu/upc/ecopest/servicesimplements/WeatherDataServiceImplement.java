@@ -2,7 +2,9 @@ package pe.edu.upc.ecopest.servicesimplements;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pe.edu.upc.ecopest.clients.MetNoClient;
 import pe.edu.upc.ecopest.clients.OpenMeteoClient;
+import pe.edu.upc.ecopest.exceptions.ExternalServiceException;
 import pe.edu.upc.ecopest.entities.BusinessEntity;
 import pe.edu.upc.ecopest.entities.WeatherData;
 import pe.edu.upc.ecopest.repositories.IWeatherDataRepository;
@@ -20,15 +22,17 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
 
     private final IWeatherDataRepository repository;
     private final OpenMeteoClient openMeteoClient;
+    private final MetNoClient metNoClient;
 
     // El pronostico se guarda 30 minutos por zona para no llamar a Open-Meteo en cada visita
     private static final long FORECAST_CACHE_MILLIS = 30 * 60 * 1000;
     private record CachedForecast(long savedAt, List<OpenMeteoClient.DailyForecast> days) {}
     private final Map<String, CachedForecast> forecastCache = new ConcurrentHashMap<>();
 
-    public WeatherDataServiceImplement(IWeatherDataRepository repository, OpenMeteoClient openMeteoClient) {
+    public WeatherDataServiceImplement(IWeatherDataRepository repository, OpenMeteoClient openMeteoClient, MetNoClient metNoClient) {
         this.repository = repository;
         this.openMeteoClient = openMeteoClient;
+        this.metNoClient = metNoClient;
     }
 
     @Override
@@ -99,7 +103,13 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
 
     @Override
     public WeatherData syncCurrent(BusinessEntity businessEntity, double latitude, double longitude) {
-        OpenMeteoClient.CurrentWeather current = openMeteoClient.fetchCurrent(latitude, longitude);
+        // Si Open-Meteo falla (por ejemplo, limite diario), se usa MET Norway de respaldo
+        OpenMeteoClient.CurrentWeather current;
+        try {
+            current = openMeteoClient.fetchCurrent(latitude, longitude);
+        } catch (ExternalServiceException e) {
+            current = metNoClient.fetchCurrent(latitude, longitude);
+        }
         LocalDate today = LocalDate.now();
         // Hay un solo registro por empresa y fecha (restriccion unica): si ya existe hoy, se actualiza.
         WeatherData weatherData = listByBusinessEntity(businessEntity.getIdBusinessEntity()).stream()
@@ -121,7 +131,12 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
         if (cached != null && System.currentTimeMillis() - cached.savedAt() < FORECAST_CACHE_MILLIS) {
             return cached.days();
         }
-        List<OpenMeteoClient.DailyForecast> result = openMeteoClient.fetchForecast(latitude, longitude, days);
+        List<OpenMeteoClient.DailyForecast> result;
+        try {
+            result = openMeteoClient.fetchForecast(latitude, longitude, days);
+        } catch (ExternalServiceException e) {
+            result = metNoClient.fetchForecast(latitude, longitude, days);
+        }
         forecastCache.put(key, new CachedForecast(System.currentTimeMillis(), result));
         return result;
     }
