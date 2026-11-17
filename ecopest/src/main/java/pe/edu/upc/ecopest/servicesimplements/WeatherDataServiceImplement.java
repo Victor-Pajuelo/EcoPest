@@ -10,7 +10,9 @@ import pe.edu.upc.ecopest.servicesinterfaces.IWeatherDataService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -18,6 +20,11 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
 
     private final IWeatherDataRepository repository;
     private final OpenMeteoClient openMeteoClient;
+
+    // El pronostico se guarda 30 minutos por zona para no llamar a Open-Meteo en cada visita
+    private static final long FORECAST_CACHE_MILLIS = 30 * 60 * 1000;
+    private record CachedForecast(long savedAt, List<OpenMeteoClient.DailyForecast> days) {}
+    private final Map<String, CachedForecast> forecastCache = new ConcurrentHashMap<>();
 
     public WeatherDataServiceImplement(IWeatherDataRepository repository, OpenMeteoClient openMeteoClient) {
         this.repository = repository;
@@ -109,7 +116,14 @@ public class WeatherDataServiceImplement implements IWeatherDataService {
 
     @Override
     public List<OpenMeteoClient.DailyForecast> forecast(double latitude, double longitude, int days) {
-        return openMeteoClient.fetchForecast(latitude, longitude, days);
+        String key = Math.round(latitude * 100) + "," + Math.round(longitude * 100) + "," + days;
+        CachedForecast cached = forecastCache.get(key);
+        if (cached != null && System.currentTimeMillis() - cached.savedAt() < FORECAST_CACHE_MILLIS) {
+            return cached.days();
+        }
+        List<OpenMeteoClient.DailyForecast> result = openMeteoClient.fetchForecast(latitude, longitude, days);
+        forecastCache.put(key, new CachedForecast(System.currentTimeMillis(), result));
+        return result;
     }
 
     // Suma 1 punto si la humedad es 70% o mas, otro si es 80% o mas, otro si la temperatura media

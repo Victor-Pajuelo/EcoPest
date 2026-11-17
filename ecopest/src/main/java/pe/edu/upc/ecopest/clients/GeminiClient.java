@@ -16,12 +16,19 @@ public class GeminiClient {
     private final RestClient restClient;
     private final String apiKey;
     private final String model;
+    private final AiUsageLimiter limiter;
 
-    public GeminiClient(@Value("${gemini.api-key:}") String apiKey,
+    // Maximos para que una sola peticion no gaste demasiado: texto de 4000 caracteres e imagen de unos 2 MB
+    private static final int MAX_PROMPT_CHARS = 4000;
+    private static final int MAX_IMAGE_BASE64_CHARS = 3_000_000;
+
+    public GeminiClient(AiUsageLimiter limiter,
+                        @Value("${gemini.api-key:}") String apiKey,
                         @Value("${gemini.model:gemini-3.8-flash}") String model,
                         @Value("${gemini.base-url:https://generativelanguage.googleapis.com}") String baseUrl) {
         this.apiKey = apiKey;
         this.model = model;
+        this.limiter = limiter;
         this.restClient = RestClient.builder().baseUrl(baseUrl).build();
     }
 
@@ -38,6 +45,13 @@ public class GeminiClient {
         if (!isConfigured()) {
             throw new ExternalServiceException("AI is not configured: set the GEMINI_API_KEY environment variable");
         }
+        if (prompt != null && prompt.length() > MAX_PROMPT_CHARS) {
+            throw new IllegalArgumentException("The text is too long (maximum " + MAX_PROMPT_CHARS + " characters)");
+        }
+        if (imageBase64 != null && imageBase64.length() > MAX_IMAGE_BASE64_CHARS) {
+            throw new IllegalArgumentException("The image is too large (maximum 2 MB)");
+        }
+        limiter.acquire();
         List<Map<String, Object>> requestParts = new ArrayList<>();
         requestParts.add(Map.of("text", prompt));
         if (imageBase64 != null && !imageBase64.isBlank()) {
@@ -46,7 +60,7 @@ public class GeminiClient {
         Map<String, Object> request = Map.of(
                 "systemInstruction", Map.of("parts", List.of(Map.of("text", systemInstruction))),
                 "contents", List.of(Map.of("role", "user", "parts", requestParts)),
-                "generationConfig", Map.of("maxOutputTokens", 1024));
+                "generationConfig", Map.of("maxOutputTokens", 512));
         try {
             Map<String, Object> body = restClient.post()
                     .uri("/v1beta/models/{model}:generateContent", model)
