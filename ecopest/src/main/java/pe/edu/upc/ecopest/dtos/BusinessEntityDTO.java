@@ -25,3 +25,14 @@ public class BusinessEntityDTO {
     public Long getParentBusinessEntityId() { return parentBusinessEntityId; }
     public void setParentBusinessEntityId(Long parentBusinessEntityId) { this.parentBusinessEntityId = parentBusinessEntityId; }
 }
+ // corregir public class BusinessEntityDTO {
+ 
+ // corregir public class BusinessEntityDTO {
+ 
+ // corregir public class BusinessEntityDTO {
+ 
+ // corregir public class BusinessEntityDTO {
+ 
+ // corregir public class BusinessEntityDTO {
+ 
+ // corregir public class BusinessEntityDTO {
