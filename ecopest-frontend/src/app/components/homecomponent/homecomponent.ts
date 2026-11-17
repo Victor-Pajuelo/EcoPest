@@ -14,7 +14,7 @@ export class Homecomponent {
   integrantes: any[] = [
     { nombre: 'Victor Pajuelo', rol: 'Integrante' },
     { nombre: 'Nicolás Sarango', rol: 'Integrante' },
-    { nombre: 'Adriano', rol: 'Integrante' },
-    { nombre: 'Jordan', rol: 'Integrante' },
+    { nombre: 'Adriano Vergel', rol: 'Integrante' },
+    { nombre: 'Jordan Nieva', rol: 'Integrante' },
   ];
 }

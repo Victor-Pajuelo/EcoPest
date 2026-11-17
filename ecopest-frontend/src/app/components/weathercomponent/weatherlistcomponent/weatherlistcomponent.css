@@ -43,6 +43,25 @@ h2 {
     font-weight: 600;
 }
 
+/* Sincronizar clima */
+.sincronizar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.sincronizar mat-form-field {
+    width: 260px;
+}
+
+.btn-sincronizar {
+    background-color: #0369a1;
+    color: white;
+    font-weight: 600;
+}
+
 /* Mensaje */
 p {
     text-align: center;

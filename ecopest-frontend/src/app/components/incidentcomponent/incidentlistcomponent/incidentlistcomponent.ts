@@ -7,6 +7,7 @@ import { IncidentDTO } from '../../../models/IncidentDTO';
 import { Incidentservice } from '../../../services/incidentservice';
 import { Inspectionservice } from '../../../services/inspectionservice';
 import { Pestservice } from '../../../services/pestservice';
+import { Recommendationservice } from '../../../services/recommendationservice';
 
 @Component({
   selector: 'app-incidentlistcomponent',
@@ -26,7 +27,8 @@ export class Incidentlistcomponent implements OnInit {
     private s: Incidentservice,
     private cdr: ChangeDetectorRef,
     private inspectionS: Inspectionservice,
-    private pestS: Pestservice
+    private pestS: Pestservice,
+    private recommendationS: Recommendationservice
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +72,21 @@ export class Incidentlistcomponent implements OnInit {
       }, error: err => {
         console.log(err)
         this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+        this.cdr.detectChanges()
+      }
+    })
+  }
+
+  // Pide a la IA (Gemini) una recomendación para el incidente; el backend la guarda con origen IA
+  generarRecomendacion(id: number): void {
+    this.mensaje = 'Generando recomendación con IA...'
+    this.recommendationS.generateWithAI(id).subscribe({
+      next: () => {
+        this.mensaje = 'Recomendación generada con IA para el incidente #' + id + '. Puede verla en Recomendaciones.'
+        this.cdr.detectChanges()
+      }, error: err => {
+        console.log(err)
+        this.mensaje = 'No se pudo generar la recomendación con IA. Intente nuevamente en unos segundos.'
         this.cdr.detectChanges()
       }
     })

@@ -102,6 +102,10 @@ tr[mat-row]:hover {
     color: #0aae4e;
 }
 
+.btn-ia mat-icon {
+    color: #7c3aed;
+}
+
 .btn-editar mat-icon {
     color: #0369a1;
 }

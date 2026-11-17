@@ -36,6 +36,9 @@
       <ng-container matColumnDef="C7">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let element">
+          <button mat-icon-button class="btn-ia" (click)="generarRecomendacion(element.idIncident)" title="Generar recomendación con IA">
+            <mat-icon>auto_awesome</mat-icon>
+          </button>
           <a mat-icon-button class="btn-editar" [routerLink]="['/incidentes/editar', element.idIncident]" title="Editar">
             <mat-icon>edit</mat-icon>
           </a>

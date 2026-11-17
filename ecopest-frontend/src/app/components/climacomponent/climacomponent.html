@@ -3,7 +3,7 @@
   @if (cargado) {
   <p class="temperatura">{{ clima.current.temperature_2m }} °C</p>
   <p>Humedad: {{ clima.current.relative_humidity_2m }} %</p>
-  <p><mat-icon>place</mat-icon> Zona: {{ clima.timezone }}</p>
+  <p><mat-icon>place</mat-icon> Zona: {{ lugar || clima.timezone }}</p>
   <p class="coordenadas">Lat {{ clima.latitude }} · Lon {{ clima.longitude }}</p>
   } @else {
   <p>{{ mensaje || 'Cargando...' }}</p>
@@ -25,5 +25,6 @@
   <p class="nota">Máx/mín · humedad · riesgo según clima (Open-Meteo)</p>
   } @else {
   <p>{{ mensajePronostico }}</p>
+  <button class="reintentar" (click)="reintentarPronostico()"><mat-icon>refresh</mat-icon> Reintentar</button>
   }
 </div>
