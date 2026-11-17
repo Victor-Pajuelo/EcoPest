@@ -93,7 +93,7 @@ public class RecommendationServiceImplement implements IRecommendationService {
         Recommendation recommendation = new Recommendation();
         recommendation.setDescription(text);
         recommendation.setOrigin("IA");
-        recommendation.setStatus("PENDING");
+        recommendation.setStatus("PENDIENTE");
         recommendation.setGenerationDate(LocalDateTime.now());
         recommendation.setIncident(incident);
         repository.save(recommendation);
