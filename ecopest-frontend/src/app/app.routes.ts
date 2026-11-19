@@ -40,6 +40,7 @@ import { Weatherlistcomponent } from './components/weathercomponent/weatherlistc
 import { Weatherinsertcomponent } from './components/weathercomponent/weatherinsertcomponent/weatherinsertcomponent';
 import { Weatherupdatecomponent } from './components/weathercomponent/weatherupdatecomponent/weatherupdatecomponent';
 import { Dashboardcomponent } from './components/dashboardcomponent/dashboardcomponent';
+import { Graficoscomponent } from './components/graficoscomponent/graficoscomponent';
 export const routes: Routes = [
   {
     path: '',
@@ -48,6 +49,10 @@ export const routes: Routes = [
     {
     path: 'dashboard',
     component: Dashboardcomponent,
+  },
+  {
+    path: 'graficos',
+    component: Graficoscomponent,
   },
 
   {
