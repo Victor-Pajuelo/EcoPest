@@ -51,3 +51,14 @@ mat-toolbar mat-icon {
     margin-right: 0;
   }
 }
+
+/* Login: empuja el usuario y el boton de salir a la derecha */
+.spacer {
+  flex: 1 1 auto;
+}
+
+.usuario {
+  font-size: 13px;
+  white-space: nowrap;
+  opacity: 0.9;
+}
