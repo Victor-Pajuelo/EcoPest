@@ -62,3 +62,7 @@ mat-toolbar mat-icon {
   white-space: nowrap;
   opacity: 0.9;
 }
+
+.rol {
+  font-weight: 700;
+}

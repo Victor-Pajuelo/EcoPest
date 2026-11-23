@@ -85,7 +85,7 @@
     </mat-menu>
 
     <span class="spacer"></span>
-    <span class="usuario">{{ usuario() }}</span>
+    <span class="usuario">{{ usuario() }} · <span class="rol">{{ rol() }}</span></span>
     <button matIconButton (click)="cerrarSesion()" aria-label="Cerrar sesión">
       <mat-icon>logout</mat-icon>
     </button>

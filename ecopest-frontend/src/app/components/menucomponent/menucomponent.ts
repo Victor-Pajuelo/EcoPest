@@ -34,6 +34,18 @@ export class Menucomponent {
     return this.loginS.showUser();
   }
 
+  // Nombre amigable del rol para mostrarlo en el menu
+  rol(): string {
+    const nombres: Record<string, string> = {
+      ROLE_ADMIN: 'Administrador',
+      ROLE_SUPERVISOR: 'Supervisor',
+      ROLE_TESTER: 'Tester',
+      ROLE_CLIENTE: 'Cliente',
+    };
+    const rol = this.loginS.showRole().split(',')[0];
+    return nombres[rol] ?? rol;
+  }
+
   cerrarSesion(): void {
     this.loginS.logout();
   }
