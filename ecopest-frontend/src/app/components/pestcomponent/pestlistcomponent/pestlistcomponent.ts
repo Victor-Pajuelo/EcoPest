@@ -74,6 +74,10 @@ export class Pestlistcomponent implements OnInit {
   }
 
   eliminarPlaga(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar la plaga #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deletePest(id).subscribe({
       next: () => {
         this.mensaje = ''
