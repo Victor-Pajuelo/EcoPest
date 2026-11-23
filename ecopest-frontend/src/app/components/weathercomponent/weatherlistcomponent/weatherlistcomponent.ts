@@ -91,6 +91,10 @@ export class Weatherlistcomponent implements OnInit {
   }
 
   eliminarClima(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar el registro de clima #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteWeather(id).subscribe({
       next: () => {
         this.mensaje = ''
