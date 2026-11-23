@@ -26,6 +26,7 @@ export class Businesslistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
   dataSource: BusinessDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
 
   constructor(
@@ -48,6 +49,29 @@ export class Businesslistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): BusinessDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(empresa =>
+      [
+        empresa.idBusinessEntity,
+        empresa.name,
+        empresa.type,
+        empresa.companyName,
+        empresa.active ? 'sí' : 'no'
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   eliminarEmpresa(id: number): void {
