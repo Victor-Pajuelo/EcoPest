@@ -85,6 +85,10 @@ export class Userlistcomponent implements OnInit {
   }
 
   eliminarUsuario(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar al usuario #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteUser(id).subscribe({
       next: () => {
         this.mensaje = ''
