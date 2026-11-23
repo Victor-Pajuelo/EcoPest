@@ -97,6 +97,10 @@ export class Inspectionlistcomponent implements OnInit {
     }
   }
 
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
   get filasFiltradas(): InspectionDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
     if (!termino) {
