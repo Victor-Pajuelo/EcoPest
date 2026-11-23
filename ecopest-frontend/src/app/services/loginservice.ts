@@ -51,10 +51,16 @@ export class Loginservice {
     return roles.some((r) => mio.includes(r));
   }
 
-  logout(): void {
+  // Hay token guardado (aunque ya este vencido)
+  hayToken(): boolean {
+    return this.getToken() !== null;
+  }
+
+  // expirada = true cuando se cierra la sesion porque el token vencio
+  logout(expirada: boolean = false): void {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('username');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], expirada ? { queryParams: { expirada: 1 } } : {});
   }
 
   // El JWT tiene 3 partes separadas por "."; la del medio (payload) es JSON en base64

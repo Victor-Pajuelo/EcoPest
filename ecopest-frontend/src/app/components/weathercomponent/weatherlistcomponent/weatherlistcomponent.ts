@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +18,15 @@ import { Businessservice } from '../../../services/businessservice';
 })
 export class Weatherlistcomponent implements OnInit {
 
+  // ADMIN y SUPERVISOR pueden registrar y editar; solo ADMIN elimina
+  puedeEscribir(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN', 'ROLE_SUPERVISOR');
+  }
+
+  esAdmin(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN');
+  }
+
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: WeatherDataDTO[] = []
   mensaje: string = ''
@@ -25,6 +35,7 @@ export class Weatherlistcomponent implements OnInit {
   sincronizando: boolean = false
 
   constructor(
+    private loginS: Loginservice,
     private s: Weatherservice,
     private cdr: ChangeDetectorRef,
     private businessS: Businessservice

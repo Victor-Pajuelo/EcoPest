@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,11 +15,21 @@ import { Roleservice } from '../../../services/roleservice';
 })
 export class Rolelistcomponent implements OnInit {
 
+  // ADMIN y SUPERVISOR pueden registrar y editar; solo ADMIN elimina
+  puedeEscribir(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN', 'ROLE_SUPERVISOR');
+  }
+
+  esAdmin(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN');
+  }
+
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5']
   dataSource: RoleDTO[] = []
   mensaje: string = ''
 
   constructor(
+    private loginS: Loginservice,
     private s: Roleservice,
     private cdr: ChangeDetectorRef
   ) { }

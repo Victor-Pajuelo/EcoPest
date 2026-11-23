@@ -6,6 +6,13 @@
     </div>
     <p class="login-sub">Inicia sesión para continuar</p>
 
+    @if (sesionExpirada) {
+      <div class="aviso-expirada">
+        <mat-icon>schedule</mat-icon>
+        Tu sesión expiró. Vuelve a iniciar sesión.
+      </div>
+    }
+
     <mat-form-field appearance="outline">
       <mat-label>Correo</mat-label>
       <input matInput formControlName="username" type="email" autocomplete="username" />
