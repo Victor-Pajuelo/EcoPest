@@ -74,6 +74,10 @@ export class Rolelistcomponent implements OnInit {
   }
 
   eliminarRol(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar el rol #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteRole(id).subscribe({
       next: () => {
         this.mensaje = ''
