@@ -1,9 +1,11 @@
 <div class="container">
   <h2>Lista de Roles</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/roles/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/roles/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
@@ -28,12 +30,16 @@
       <ng-container matColumnDef="C5">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
-          <a mat-icon-button class="btn-editar" [routerLink]="['/roles/editar', element.idRole]" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button class="btn-eliminar" (click)="eliminarRol(element.idRole)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar" [routerLink]="['/roles/editar', element.idRole]" title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar" (click)="eliminarRol(element.idRole)" title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
