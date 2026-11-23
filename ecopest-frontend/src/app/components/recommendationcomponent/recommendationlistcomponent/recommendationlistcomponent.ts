@@ -99,6 +99,10 @@ export class Recommendationlistcomponent implements OnInit {
   }
 
   eliminarRecomendacion(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar la recomendación #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteRecommendation(id).subscribe({
       next: () => {
         this.mensaje = ''
