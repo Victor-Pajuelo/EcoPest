@@ -86,6 +86,10 @@ export class Evidencelistcomponent implements OnInit {
     }
   }
 
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
   get filasFiltradas(): EvidenceDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
     if (!termino) {
