@@ -75,6 +75,10 @@ export class Businesslistcomponent implements OnInit {
   }
 
   eliminarEmpresa(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar la empresa #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteBusiness(id).subscribe({
       next: () => {
         this.mensaje = ''
