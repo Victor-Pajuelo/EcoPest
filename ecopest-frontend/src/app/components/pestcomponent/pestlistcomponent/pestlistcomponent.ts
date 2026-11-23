@@ -26,6 +26,7 @@ export class Pestlistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5']
   dataSource: PestTypeDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
 
   constructor(
@@ -48,6 +49,28 @@ export class Pestlistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): PestTypeDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(plaga =>
+      [
+        plaga.idPestType,
+        plaga.name,
+        plaga.riskLevel,
+        plaga.description
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   eliminarPlaga(id: number): void {
