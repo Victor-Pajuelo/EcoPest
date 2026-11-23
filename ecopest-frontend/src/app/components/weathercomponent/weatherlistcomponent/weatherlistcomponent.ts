@@ -29,6 +29,7 @@ export class Weatherlistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: WeatherDataDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
   empresas: any[] = []
   empresaSeleccionada: number | null = null
@@ -63,6 +64,30 @@ export class Weatherlistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): WeatherDataDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(clima =>
+      [
+        clima.idWeatherData,
+        clima.date,
+        clima.temperature,
+        clima.humidity,
+        clima.source,
+        this.nombreEmpresa(clima.businessEntityId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   eliminarClima(id: number): void {

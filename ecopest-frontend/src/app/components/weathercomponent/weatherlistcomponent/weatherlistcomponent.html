@@ -24,8 +24,15 @@
   </div>
   <p>{{ mensaje }}</p>
   <div>
-    @if(dataSource.length>0){
-    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+    @if (dataSource.length > 0) {
+    <label class="busqueda">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" aria-label="Buscar registros de clima" placeholder="Buscar por fecha, fuente o empresa"
+        (input)="actualizarBusqueda($event)">
+    </label>
+    }
+    @if (filasFiltradas.length > 0) {
+    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idWeatherData }}</td>
@@ -69,7 +76,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    }@else {
+    } @else if (dataSource.length > 0) {
+    <p>No se encontraron registros de clima con ese texto.</p>
+    } @else {
     <p>No hay registros disponibles.</p>
     }
   </div>
