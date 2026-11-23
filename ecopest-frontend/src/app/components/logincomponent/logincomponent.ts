@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,11 +26,13 @@ export class Logincomponent implements OnInit {
   form: FormGroup;
   ocultar: boolean = true;
   cargando: boolean = false;
+  sesionExpirada: boolean = false;
 
   constructor(
     private loginS: Loginservice,
     private fb: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private snack: MatSnackBar
   ) {
     this.form = this.fb.group({
@@ -40,6 +42,8 @@ export class Logincomponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Llega con ?expirada=1 cuando el token vencio
+    this.sesionExpirada = this.route.snapshot.queryParamMap.has('expirada');
     // Si ya tiene sesion, no tiene sentido mostrar el login
     if (this.loginS.verificar()) {
       this.router.navigate(['/']);

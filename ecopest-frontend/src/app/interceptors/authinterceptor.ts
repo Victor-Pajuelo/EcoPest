@@ -20,7 +20,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err: HttpErrorResponse) => {
       // 401 = token vencido o invalido: cerramos sesion y vamos al login
       if (err.status === 401 && !req.url.endsWith('/login')) {
-        loginS.logout();
+        loginS.logout(true);
       }
       // 403 = el rol no tiene permiso para esa accion
       if (err.status === 403) {

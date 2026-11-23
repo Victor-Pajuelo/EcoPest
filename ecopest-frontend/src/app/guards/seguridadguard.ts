@@ -9,6 +9,12 @@ export const seguridadGuard: CanActivateFn = () => {
   if (loginS.verificar()) {
     return true;
   }
+  // Tenia token pero ya vencio: avisamos en el login
+  if (loginS.hayToken()) {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('username');
+    return router.createUrlTree(['/login'], { queryParams: { expirada: 1 } });
+  }
   return router.createUrlTree(['/login']);
 };
 
