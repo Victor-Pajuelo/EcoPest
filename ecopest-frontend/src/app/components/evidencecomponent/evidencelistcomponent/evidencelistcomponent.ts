@@ -27,6 +27,7 @@ export class Evidencelistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
   dataSource: EvidenceDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
   incidentes: any[] = []
 
@@ -62,6 +63,10 @@ export class Evidencelistcomponent implements OnInit {
   }
 
   eliminarEvidencia(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar la evidencia #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteEvidence(id).subscribe({
       next: () => {
         this.mensaje = ''
@@ -73,6 +78,29 @@ export class Evidencelistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): EvidenceDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(evidencia =>
+      [
+        evidencia.idEvidence,
+        evidencia.fileUrl,
+        evidencia.fileType,
+        evidencia.uploadDate,
+        this.nombreIncidente(evidencia.incidentId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   nombreIncidente(id: number | null): string {
