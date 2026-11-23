@@ -28,6 +28,7 @@ export class Recommendationlistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: RecommendationDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
   incidentes: any[] = []
   usuarios: any[] = []
@@ -70,6 +71,31 @@ export class Recommendationlistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): RecommendationDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(recomendacion =>
+      [
+        recomendacion.idRecommendation,
+        recomendacion.description,
+        recomendacion.origin,
+        recomendacion.status,
+        recomendacion.generationDate,
+        this.nombreIncidente(recomendacion.incidentId),
+        this.nombreUsuario(recomendacion.responsibleUserId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   eliminarRecomendacion(id: number): void {
