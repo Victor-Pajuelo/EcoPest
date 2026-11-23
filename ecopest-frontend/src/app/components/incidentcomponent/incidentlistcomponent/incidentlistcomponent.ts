@@ -29,6 +29,7 @@ export class Incidentlistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: IncidentDTO[] = []
+  terminoBusqueda: string = ''
   generando: boolean = false
   mensaje: string = ''
   inspecciones: any[] = []
@@ -76,6 +77,10 @@ export class Incidentlistcomponent implements OnInit {
   }
 
   eliminarIncidente(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar el incidente #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteIncident(id).subscribe({
       next: () => {
         this.mensaje = ''
@@ -87,6 +92,30 @@ export class Incidentlistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): IncidentDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(incidente =>
+      [
+        incidente.idIncident,
+        incidente.incidentDate,
+        incidente.description,
+        incidente.status,
+        this.nombreInspeccion(incidente.inspectionId),
+        this.nombrePlaga(incidente.pestTypeId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   // Pide a la IA (Gemini) una recomendación para el incidente; el backend la guarda con origen IA
