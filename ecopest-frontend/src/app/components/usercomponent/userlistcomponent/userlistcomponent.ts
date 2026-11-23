@@ -27,6 +27,7 @@ export class Userlistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4']
   dataSource: UserDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
   roles: any[] = []
 
@@ -59,6 +60,28 @@ export class Userlistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): UserDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(usuario =>
+      [
+        usuario.idUser,
+        usuario.name,
+        usuario.email,
+        this.nombreRol(usuario.roleId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   eliminarUsuario(id: number): void {
