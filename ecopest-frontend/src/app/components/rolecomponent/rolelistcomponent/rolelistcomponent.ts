@@ -26,6 +26,7 @@ export class Rolelistcomponent implements OnInit {
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5']
   dataSource: RoleDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
 
   constructor(
@@ -48,6 +49,28 @@ export class Rolelistcomponent implements OnInit {
         this.cdr.detectChanges()
       }
     })
+  }
+
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  get filasFiltradas(): RoleDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(rol =>
+      [
+        rol.idRole,
+        rol.name,
+        rol.description,
+        rol.active ? 'sí' : 'no'
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
   }
 
   eliminarRol(id: number): void {
