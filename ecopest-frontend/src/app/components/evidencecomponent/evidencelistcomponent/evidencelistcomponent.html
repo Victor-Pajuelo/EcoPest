@@ -1,9 +1,11 @@
 <div class="container">
   <h2>Lista de Evidencias</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/evidencias/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/evidencias/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
@@ -32,12 +34,16 @@
       <ng-container matColumnDef="C6">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
-          <a mat-icon-button class="btn-editar" [routerLink]="['/evidencias/editar', element.idEvidence]" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button class="btn-eliminar" (click)="eliminarEvidencia(element.idEvidence)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar" [routerLink]="['/evidencias/editar', element.idEvidence]" title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar" (click)="eliminarEvidencia(element.idEvidence)" title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
