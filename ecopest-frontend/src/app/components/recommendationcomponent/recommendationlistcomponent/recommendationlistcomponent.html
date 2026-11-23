@@ -10,11 +10,16 @@
   <p>{{ mensaje }}</p>
   <div>
     @if (dataSource.length > 0) {
-    <label class="busqueda">
+    <div class="busqueda">
       <mat-icon aria-hidden="true">search</mat-icon>
-      <input type="search" aria-label="Buscar recomendaciones" placeholder="Buscar por descripción, estado o responsable"
+      <input type="search" aria-label="Buscar recomendaciones" placeholder="Buscar por descripción, estado o responsable" [value]="terminoBusqueda"
         (input)="actualizarBusqueda($event)">
-    </label>
+      @if (terminoBusqueda) {
+      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
     }
     @if (filasFiltradas.length > 0) {
     <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">

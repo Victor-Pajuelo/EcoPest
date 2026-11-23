@@ -57,6 +57,10 @@ export class Pestlistcomponent implements OnInit {
     }
   }
 
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
   get filasFiltradas(): PestTypeDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
     if (!termino) {

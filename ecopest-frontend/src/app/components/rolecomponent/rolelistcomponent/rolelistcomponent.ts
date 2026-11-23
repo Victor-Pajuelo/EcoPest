@@ -57,6 +57,10 @@ export class Rolelistcomponent implements OnInit {
     }
   }
 
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
   get filasFiltradas(): RoleDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
     if (!termino) {

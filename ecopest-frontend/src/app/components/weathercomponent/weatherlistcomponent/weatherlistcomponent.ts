@@ -72,6 +72,10 @@ export class Weatherlistcomponent implements OnInit {
     }
   }
 
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
   get filasFiltradas(): WeatherDataDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
     if (!termino) {
