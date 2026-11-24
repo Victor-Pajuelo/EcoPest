@@ -28,6 +28,7 @@ import { Incidentcomponent } from './components/incidentcomponent/incidentcompon
 import { Incidentlistcomponent } from './components/incidentcomponent/incidentlistcomponent/incidentlistcomponent';
 import { Incidentinsertcomponent } from './components/incidentcomponent/incidentinsertcomponent/incidentinsertcomponent';
 import { Incidentupdatecomponent } from './components/incidentcomponent/incidentupdatecomponent/incidentupdatecomponent';
+import { Incidentviewcomponent } from './components/incidentcomponent/incidentviewcomponent/incidentviewcomponent';
 import { Evidencecomponent } from './components/evidencecomponent/evidencecomponent';
 import { Evidencelistcomponent } from './components/evidencecomponent/evidencelistcomponent/evidencelistcomponent';
 import { Evidenceinsertcomponent } from './components/evidencecomponent/evidenceinsertcomponent/evidenceinsertcomponent';
@@ -187,6 +188,7 @@ export const routes: Routes = [
     ],
   },
 
+  
   {
     path: 'incidentes',
     component: Incidentcomponent,
@@ -208,8 +210,13 @@ export const routes: Routes = [
         path: 'editar/:id',
         component: Incidentupdatecomponent,
       },
+      {
+        path: 'ver/:id',
+        component: Incidentviewcomponent,
+      },
     ],
   },
+
 
   {
     path: 'evidencias',
