@@ -1,14 +1,28 @@
 <div class="container">
   <h2>Lista de Evidencias</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/evidencias/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/evidencias/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
-    @if(dataSource.length>0){
-    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+    @if (dataSource.length > 0) {
+    <div class="busqueda">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" aria-label="Buscar evidencias" placeholder="Buscar por enlace, tipo o incidente" [value]="terminoBusqueda"
+        (input)="actualizarBusqueda($event)">
+      @if (terminoBusqueda) {
+      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
+    }
+    @if (filasFiltradas.length > 0) {
+    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idEvidence }}</td>
@@ -32,19 +46,25 @@
       <ng-container matColumnDef="C6">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
-          <a mat-icon-button class="btn-editar" [routerLink]="['/evidencias/editar', element.idEvidence]" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button class="btn-eliminar" (click)="eliminarEvidencia(element.idEvidence)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar" [routerLink]="['/evidencias/editar', element.idEvidence]" title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar" (click)="eliminarEvidencia(element.idEvidence)" title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    }@else {
+    } @else if (dataSource.length > 0) {
+    <p>No se encontraron evidencias con ese texto.</p>
+    } @else {
     <p>No hay registros disponibles.</p>
     }
   </div>

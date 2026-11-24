@@ -1,14 +1,28 @@
 <div class="container">
   <h2>Lista de Empresas</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/empresas/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/empresas/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
-    @if(dataSource.length>0){
-    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+    @if (dataSource.length > 0) {
+    <div class="busqueda">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" aria-label="Buscar empresas" placeholder="Buscar por nombre, tipo o empresa" [value]="terminoBusqueda"
+        (input)="actualizarBusqueda($event)">
+      @if (terminoBusqueda) {
+      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
+    }
+    @if (filasFiltradas.length > 0) {
+    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idBusinessEntity }}</td>
@@ -59,7 +73,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    }@else {
+    } @else if (dataSource.length > 0) {
+    <p>No se encontraron empresas con ese texto.</p>
+    } @else {
     <p>No hay registros disponibles.</p>
     }
   </div>

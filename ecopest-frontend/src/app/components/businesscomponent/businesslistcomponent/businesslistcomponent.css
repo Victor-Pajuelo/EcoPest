@@ -43,6 +43,41 @@ h2 {
     font-weight: 600;
 }
 
+.busqueda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 500px;
+    margin: 15px auto;
+    padding: 10px 12px;
+    border: 1px solid #cfe9da;
+    border-radius: 8px;
+    color: #0a7d38;
+}
+
+.busqueda input {
+    width: 100%;
+    border: 0;
+    outline: none;
+    font: inherit;
+}
+
+.limpiar-busqueda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 2px;
+    background: transparent;
+    color: #0a7d38;
+    cursor: pointer;
+}
+
+.limpiar-busqueda:focus-visible {
+    outline: 2px solid #0369a1;
+    outline-offset: 2px;
+}
+
 /* Mensaje */
 p {
     text-align: center;

@@ -1,14 +1,28 @@
 <div class="container">
   <h2>Lista de Plagas</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/plagas/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/plagas/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
-    @if(dataSource.length>0){
-    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+    @if (dataSource.length > 0) {
+    <div class="busqueda">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" aria-label="Buscar plagas" placeholder="Buscar por nombre, riesgo o descripción" [value]="terminoBusqueda"
+        (input)="actualizarBusqueda($event)">
+      @if (terminoBusqueda) {
+      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
+    }
+    @if (filasFiltradas.length > 0) {
+    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idPestType }}</td>
@@ -31,19 +45,25 @@
           <a mat-icon-button class="btn-ver" [routerLink]="['/plagas/ver', element.idPestType]" title="Ver">
             <mat-icon>visibility</mat-icon>
           </a>
-          <a mat-icon-button class="btn-editar" [routerLink]="['/plagas/editar', element.idPestType]" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button class="btn-eliminar" (click)="eliminarPlaga(element.idPestType)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar" [routerLink]="['/plagas/editar', element.idPestType]" title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar" (click)="eliminarPlaga(element.idPestType)" title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    }@else {
+    } @else if (dataSource.length > 0) {
+    <p>No se encontraron plagas con ese texto.</p>
+    } @else {
     <p>No hay registros disponibles.</p>
     }
   </div>

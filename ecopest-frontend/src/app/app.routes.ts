@@ -42,19 +42,38 @@ import { Weatherlistcomponent } from './components/weathercomponent/weatherlistc
 import { Weatherinsertcomponent } from './components/weathercomponent/weatherinsertcomponent/weatherinsertcomponent';
 import { Weatherupdatecomponent } from './components/weathercomponent/weatherupdatecomponent/weatherupdatecomponent';
 import { Dashboardcomponent } from './components/dashboardcomponent/dashboardcomponent';
+import { Graficoscomponent } from './components/graficoscomponent/graficoscomponent';
+import { Logincomponent } from './components/logincomponent/logincomponent';
+import { seguridadGuard, rolGuard } from './guards/seguridadguard';
+
+// Roles que pueden crear y editar (igual que SecurityConfig del back)
+const ESCRIBIR = ['ROLE_ADMIN', 'ROLE_SUPERVISOR'];
+const SOLO_ADMIN = ['ROLE_ADMIN'];
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: Logincomponent,
+  },
   {
     path: '',
     component: Homecomponent,
+    canActivate: [seguridadGuard],
   },
     {
     path: 'dashboard',
     component: Dashboardcomponent,
+    canActivate: [seguridadGuard],
+  },
+  {
+    path: 'graficos',
+    component: Graficoscomponent,
+    canActivate: [seguridadGuard],
   },
 
   {
     path: 'plagas',
     component: Pestcomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -68,10 +87,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Pestinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Pestupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'ver/:id',
@@ -87,6 +110,7 @@ export const routes: Routes = [
   {
     path: 'empresas',
     component: Businesscomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -100,10 +124,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Businessinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Businessupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
       path: 'ver/:id',
@@ -115,6 +143,8 @@ export const routes: Routes = [
   {
     path: 'roles',
     component: Rolecomponent,
+    canActivate: [seguridadGuard, rolGuard],
+    data: { roles: SOLO_ADMIN },
     children: [
       {
         path: '',
@@ -128,10 +158,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Roleinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Roleupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
     ],
   },
@@ -139,6 +173,8 @@ export const routes: Routes = [
   {
     path: 'usuarios',
     component: Usercomponent,
+    canActivate: [seguridadGuard, rolGuard],
+    data: { roles: SOLO_ADMIN },
     children: [
       {
         path: '',
@@ -152,10 +188,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Userinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Userupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'perfil/:id',
@@ -167,6 +207,7 @@ export const routes: Routes = [
   {
     path: 'inspecciones',
     component: Inspectioncomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -180,10 +221,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Inspectioninsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Inspectionupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
     ],
   },
@@ -192,6 +237,7 @@ export const routes: Routes = [
   {
     path: 'incidentes',
     component: Incidentcomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -205,10 +251,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Incidentinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Incidentupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'ver/:id',
@@ -221,6 +271,7 @@ export const routes: Routes = [
   {
     path: 'evidencias',
     component: Evidencecomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -234,10 +285,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Evidenceinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Evidenceupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
     ],
   },
@@ -245,6 +300,7 @@ export const routes: Routes = [
   {
     path: 'recomendaciones',
     component: Recommendationcomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -258,10 +314,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Recommendationinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Recommendationupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
     ],
   },
@@ -269,6 +329,7 @@ export const routes: Routes = [
   {
     path: 'clima',
     component: Weathercomponent,
+    canActivate: [seguridadGuard],
     children: [
       {
         path: '',
@@ -282,10 +343,14 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Weatherinsertcomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
       {
         path: 'editar/:id',
         component: Weatherupdatecomponent,
+        canActivate: [rolGuard],
+        data: { roles: ESCRIBIR },
       },
     ],
   },

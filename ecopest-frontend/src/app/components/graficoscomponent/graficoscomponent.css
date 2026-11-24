@@ -1,0 +1,150 @@
+/* Fondo de la pantalla */
+:host {
+    display: block;
+    background-color: #f5f7f5;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Tarjeta principal */
+.container {
+    max-width: 1200px;
+    margin: 25px auto;
+    padding: 30px 35px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.09);
+    box-sizing: border-box;
+}
+
+/* Titulo */
+h2 {
+    text-align: center;
+    color: #0aae4e;
+    font-size: 26px;
+    font-weight: bold;
+    margin: 5px 0 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #0aae4e;
+}
+
+/* Mensaje de carga o error */
+.mensaje {
+    text-align: center;
+    margin: 0 auto 20px;
+    padding: 12px;
+    background-color: #e2f1e8;
+    color: #0aae4e;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+/* Tarjetas de totales */
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 18px 10px;
+    background: linear-gradient(145deg, #ffffff, #e2f1e8);
+    border: 1px solid #94eab7;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta mat-icon {
+    color: #0aae4e;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.numero {
+    color: #14532d;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.texto {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Cuadricula de graficos: 2 columnas en pantalla grande, 1 en celular */
+.graficos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 20px;
+}
+
+.grafico {
+    padding: 18px;
+    background-color: white;
+    border: 1px solid #dcfce7;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* El grafico del clima ocupa todo el ancho */
+.ancho {
+    grid-column: 1 / -1;
+}
+
+.grafico h3 {
+    margin: 0 0 12px;
+    text-align: center;
+    color: #14532d;
+    font-size: 17px;
+}
+
+/* Alto del lienzo: necesario porque maintainAspectRatio esta en false */
+.lienzo {
+    position: relative;
+    height: 320px;
+}
+
+.vacio {
+    text-align: center;
+    margin-top: 130px;
+    color: #67ad87;
+    font-weight: 600;
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .container {
+        margin: 15px 10px;
+        padding: 20px 15px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+    .tarjetas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lienzo {
+        height: 280px;
+    }
+
+    .numero {
+        font-size: 26px;
+    }
+}

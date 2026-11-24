@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,11 +15,22 @@ import { Businessservice } from '../../../services/businessservice';
 })
 export class Businesslistcomponent implements OnInit {
 
+  // ADMIN y SUPERVISOR pueden registrar y editar; solo ADMIN elimina
+  puedeEscribir(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN', 'ROLE_SUPERVISOR');
+  }
+
+  esAdmin(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN');
+  }
+
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
   dataSource: BusinessDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
 
   constructor(
+    private loginS: Loginservice,
     private s: Businessservice,
     private cdr: ChangeDetectorRef
   ) { }
@@ -39,7 +51,38 @@ export class Businesslistcomponent implements OnInit {
     })
   }
 
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
+  get filasFiltradas(): BusinessDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(empresa =>
+      [
+        empresa.idBusinessEntity,
+        empresa.name,
+        empresa.type,
+        empresa.companyName,
+        empresa.active ? 'sí' : 'no'
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
+  }
+
   eliminarEmpresa(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar la empresa #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteBusiness(id).subscribe({
       next: () => {
         this.mensaje = ''

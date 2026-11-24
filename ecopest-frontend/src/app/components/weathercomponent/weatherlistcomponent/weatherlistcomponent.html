@@ -1,9 +1,11 @@
 <div class="container">
   <h2>Lista de Clima</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/clima/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/clima/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <div class="sincronizar">
     <mat-form-field appearance="outline">
@@ -14,14 +16,28 @@
         }
       </mat-select>
     </mat-form-field>
-    <button mat-flat-button class="btn-sincronizar" (click)="sincronizarClima()" [disabled]="sincronizando">
-      <mat-icon>sync</mat-icon> Sincronizar con Open-Meteo
-    </button>
+    @if (puedeEscribir()) {
+      <button mat-flat-button class="btn-sincronizar" (click)="sincronizarClima()" [disabled]="sincronizando">
+        <mat-icon>sync</mat-icon> Sincronizar con Open-Meteo
+      </button>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
-    @if(dataSource.length>0){
-    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+    @if (dataSource.length > 0) {
+    <div class="busqueda">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" aria-label="Buscar registros de clima" placeholder="Buscar por fecha, fuente o empresa" [value]="terminoBusqueda"
+        (input)="actualizarBusqueda($event)">
+      @if (terminoBusqueda) {
+      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
+    }
+    @if (filasFiltradas.length > 0) {
+    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idWeatherData }}</td>
@@ -49,19 +65,25 @@
       <ng-container matColumnDef="C7">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
-          <a mat-icon-button class="btn-editar" [routerLink]="['/clima/editar', element.idWeatherData]" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button class="btn-eliminar" (click)="eliminarClima(element.idWeatherData)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar" [routerLink]="['/clima/editar', element.idWeatherData]" title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar" (click)="eliminarClima(element.idWeatherData)" title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    }@else {
+    } @else if (dataSource.length > 0) {
+    <p>No se encontraron registros de clima con ese texto.</p>
+    } @else {
     <p>No hay registros disponibles.</p>
     }
   </div>

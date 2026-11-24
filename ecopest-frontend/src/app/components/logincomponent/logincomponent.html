@@ -1,0 +1,55 @@
+<div class="login-page">
+  <form class="login-card" [formGroup]="form" (ngSubmit)="ingresar()">
+    <div class="login-logo">
+      <mat-icon>eco</mat-icon>
+      <h1>EcoPest</h1>
+    </div>
+    <p class="login-sub">Inicia sesión para continuar</p>
+
+    @if (sesionExpirada) {
+      <div class="aviso-expirada">
+        <mat-icon>schedule</mat-icon>
+        Tu sesión expiró. Vuelve a iniciar sesión.
+      </div>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Correo</mat-label>
+      <input matInput formControlName="username" type="email" autocomplete="username" />
+      <mat-icon matSuffix>mail</mat-icon>
+      @if (form.get('username')?.hasError('required')) {
+        <mat-error>El correo es obligatorio</mat-error>
+      } @else if (form.get('username')?.hasError('email')) {
+        <mat-error>Ingresa un correo válido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Contraseña</mat-label>
+      <input
+        matInput
+        formControlName="password"
+        [type]="ocultar ? 'password' : 'text'"
+        autocomplete="current-password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="ocultar = !ocultar"
+        [attr.aria-label]="ocultar ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+      >
+        <mat-icon>{{ ocultar ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      @if (form.get('password')?.hasError('required')) {
+        <mat-error>La contraseña es obligatoria</mat-error>
+      } @else if (form.get('password')?.hasError('minlength')) {
+        <mat-error>Mínimo 8 caracteres</mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-flat-button class="btn-login" type="submit" [disabled]="cargando">
+      {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,133 @@
+:host {
+  display: block;
+  padding: 25px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f7f5;
+  min-height: 80vh;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 900px;
+  margin: 25px auto;
+  padding: 30px 35px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.09);
+  box-sizing: border-box;
+}
+
+h2 {
+  text-align: center;
+  color: #0aae4e;
+  font-size: 26px;
+  font-weight: bold;
+  margin: 5px 0 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #0aae4e;
+}
+
+h3 {
+  color: #0aae4e;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.etiqueta {
+  width: 160px;
+  font-size: 13px;
+  color: #444;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra-fondo {
+  flex: 1;
+  background-color: #e8ede8;
+  border-radius: 6px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  background-color: #0aae4e;
+  border-radius: 6px;
+  transition: width 0.5s ease, background-color 0.2s ease;
+}
+
+.fila:hover .barra {
+  background-color: #089043;
+}
+
+.valor {
+  width: 35px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+}
+
+.vacio {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 30px;
+  color: #c0392b;
+}
+
+.error mat-icon {
+  transform: scale(1.8);
+  margin-bottom: 8px;
+}
+
+.error p {
+  text-align: center;
+  margin: 0;
+}
+
+.btn-reintentar {
+  margin-top: 10px;
+  padding: 8px 18px;
+  background-color: #0aae4e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-reintentar:hover {
+  background-color: #089043;
+  transform: scale(1.05);
+}
+
+.btn-reintentar:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+  :host { padding: 12px; }
+  .container { padding: 20px 16px; }
+  .etiqueta { width: 90px; font-size: 12px; }
+}
+.segundo-titulo {
+  margin-top: 35px;
+}

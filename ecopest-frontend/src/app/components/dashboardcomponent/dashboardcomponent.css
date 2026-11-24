@@ -43,12 +43,24 @@ h2 {
   background-color: #f5f7f5;
   border-radius: 12px;
   border: 1px solid #e0e6e0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(10, 174, 78, 0.18);
+  border-color: #0aae4e;
 }
 
 .kpi mat-icon {
   color: #0aae4e;
   transform: scale(1.4);
   margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.kpi:hover mat-icon {
+  transform: scale(1.6);
 }
 
 .kpi .numero {
@@ -105,7 +117,11 @@ h2 {
   height: 100%;
   background-color: #0aae4e;
   border-radius: 6px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, background-color 0.2s ease;
+}
+
+.fila:hover .barra {
+  background-color: #089043;
 }
 
 .valor {
@@ -130,7 +146,17 @@ h2 {
   font-weight: 600;
 }
 
-@media (max-width: 600px) {
-  .etiqueta { width: 90px; }
+.tabla-clima tr:hover td {
+  background-color: #f1f8f3;
+}
+
+@media (max-width: 700px) {
+  :host { padding: 12px; }
+  .container { padding: 20px 16px; }
   .graficos { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .etiqueta { width: 90px; }
+  .kpi .numero { font-size: 26px; }
 }

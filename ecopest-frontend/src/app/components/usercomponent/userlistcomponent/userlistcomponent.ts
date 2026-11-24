@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,12 +16,23 @@ import { Roleservice } from '../../../services/roleservice';
 })
 export class Userlistcomponent implements OnInit {
 
+  // ADMIN y SUPERVISOR pueden registrar y editar; solo ADMIN elimina
+  puedeEscribir(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN', 'ROLE_SUPERVISOR');
+  }
+
+  esAdmin(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN');
+  }
+
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4']
   dataSource: UserDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
   roles: any[] = []
 
   constructor(
+    private loginS: Loginservice,
     private s: Userservice,
     private cdr: ChangeDetectorRef,
     private roleS: Roleservice
@@ -50,7 +62,37 @@ export class Userlistcomponent implements OnInit {
     })
   }
 
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
+  get filasFiltradas(): UserDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(usuario =>
+      [
+        usuario.idUser,
+        usuario.name,
+        usuario.email,
+        this.nombreRol(usuario.roleId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
+  }
+
   eliminarUsuario(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar al usuario #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteUser(id).subscribe({
       next: () => {
         this.mensaje = ''
