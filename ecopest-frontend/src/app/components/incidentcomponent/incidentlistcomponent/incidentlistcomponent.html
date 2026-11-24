@@ -47,9 +47,15 @@
         <th mat-header-cell *matHeaderCellDef>Plaga</th>
         <td mat-cell data-label="Plaga" *matCellDef="let element">{{ nombrePlaga(element.pestTypeId) }}</td>
       </ng-container>
+      
       <ng-container matColumnDef="C7">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
+          <a mat-icon-button class="btn-ver"
+            [routerLink]="['/incidentes/ver', element.idIncident]"
+            title="Ver detalle" aria-label="Ver detalle">
+            <mat-icon>visibility</mat-icon>
+          </a>
           @if (puedeEscribir()) {
             <button mat-icon-button class="btn-ia" [disabled]="generando" (click)="generarRecomendacion(element.idIncident)" title="Generar recomendación con IA">
               <mat-icon>auto_awesome</mat-icon>
@@ -67,6 +73,7 @@
           }
         </td>
       </ng-container>
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

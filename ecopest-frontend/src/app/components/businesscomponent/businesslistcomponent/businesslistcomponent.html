@@ -43,21 +43,32 @@
         <th mat-header-cell *matHeaderCellDef>Activo</th>
         <td mat-cell data-label="Activo" *matCellDef="let element">{{ element.active ? 'Sí' : 'No' }}</td>
       </ng-container>
+      
       <ng-container matColumnDef="C6">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
-          @if (puedeEscribir()) {
-            <a mat-icon-button class="btn-editar" [routerLink]="['/empresas/editar', element.idBusinessEntity]" title="Editar">
-              <mat-icon>edit</mat-icon>
-            </a>
-          }
-          @if (esAdmin()) {
-            <button mat-icon-button class="btn-eliminar" (click)="eliminarEmpresa(element.idBusinessEntity)" title="Eliminar">
-              <mat-icon>delete</mat-icon>
-            </button>
-          }
+
+          <a mat-icon-button class="btn-ver"
+            [routerLink]="['/empresas/ver', element.idBusinessEntity]"
+            title="Ver detalle" aria-label="Ver detalle">
+            <mat-icon>visibility</mat-icon>
+          </a>
+
+          <a mat-icon-button class="btn-editar"
+            [routerLink]="['/empresas/editar', element.idBusinessEntity]"
+            title="Editar">
+            <mat-icon>edit</mat-icon>
+          </a>
+
+          <button mat-icon-button class="btn-eliminar"
+                  (click)="eliminarEmpresa(element.idBusinessEntity)"
+                  title="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+
         </td>
       </ng-container>
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

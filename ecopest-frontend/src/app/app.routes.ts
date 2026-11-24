@@ -10,6 +10,7 @@ import { Businesscomponent } from './components/businesscomponent/businesscompon
 import { Businesslistcomponent } from './components/businesscomponent/businesslistcomponent/businesslistcomponent';
 import { Businessinsertcomponent } from './components/businesscomponent/businessinsertcomponent/businessinsertcomponent';
 import { Businessupdatecomponent } from './components/businesscomponent/businessupdatecomponent/businessupdatecomponent';
+import { Businessviewcomponent } from './components/businesscomponent/businessviewcomponent/businessviewcomponent';
 import { Rolecomponent } from './components/rolecomponent/rolecomponent';
 import { Rolelistcomponent } from './components/rolecomponent/rolelistcomponent/rolelistcomponent';
 import { Roleinsertcomponent } from './components/rolecomponent/roleinsertcomponent/roleinsertcomponent';
@@ -27,6 +28,7 @@ import { Incidentcomponent } from './components/incidentcomponent/incidentcompon
 import { Incidentlistcomponent } from './components/incidentcomponent/incidentlistcomponent/incidentlistcomponent';
 import { Incidentinsertcomponent } from './components/incidentcomponent/incidentinsertcomponent/incidentinsertcomponent';
 import { Incidentupdatecomponent } from './components/incidentcomponent/incidentupdatecomponent/incidentupdatecomponent';
+import { Incidentviewcomponent } from './components/incidentcomponent/incidentviewcomponent/incidentviewcomponent';
 import { Evidencecomponent } from './components/evidencecomponent/evidencecomponent';
 import { Evidencelistcomponent } from './components/evidencecomponent/evidencelistcomponent/evidencelistcomponent';
 import { Evidenceinsertcomponent } from './components/evidencecomponent/evidenceinsertcomponent/evidenceinsertcomponent';
@@ -131,6 +133,10 @@ export const routes: Routes = [
         canActivate: [rolGuard],
         data: { roles: ESCRIBIR },
       },
+      {
+      path: 'ver/:id',
+      component: Businessviewcomponent,
+      },
     ],
   },
 
@@ -227,6 +233,7 @@ export const routes: Routes = [
     ],
   },
 
+  
   {
     path: 'incidentes',
     component: Incidentcomponent,
@@ -253,8 +260,13 @@ export const routes: Routes = [
         canActivate: [rolGuard],
         data: { roles: ESCRIBIR },
       },
+      {
+        path: 'ver/:id',
+        component: Incidentviewcomponent,
+      },
     ],
   },
+
 
   {
     path: 'evidencias',
