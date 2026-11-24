@@ -33,6 +33,7 @@ import { Evidencecomponent } from './components/evidencecomponent/evidencecompon
 import { Evidencelistcomponent } from './components/evidencecomponent/evidencelistcomponent/evidencelistcomponent';
 import { Evidenceinsertcomponent } from './components/evidencecomponent/evidenceinsertcomponent/evidenceinsertcomponent';
 import { Evidenceupdatecomponent } from './components/evidencecomponent/evidenceupdatecomponent/evidenceupdatecomponent';
+import { Evidenceviewcomponent } from './components/evidencecomponent/evidenceviewcomponent/evidenceviewcomponent';
 import { Recommendationcomponent } from './components/recommendationcomponent/recommendationcomponent';
 import { Recommendationlistcomponent } from './components/recommendationcomponent/recommendationlistcomponent/recommendationlistcomponent';
 import { Recommendationinsertcomponent } from './components/recommendationcomponent/recommendationinsertcomponent/recommendationinsertcomponent';
@@ -293,6 +294,10 @@ export const routes: Routes = [
         component: Evidenceupdatecomponent,
         canActivate: [rolGuard],
         data: { roles: ESCRIBIR },
+      },
+      {
+        path: 'ver/:id',
+        component: Evidenceviewcomponent,
       },
     ],
   },

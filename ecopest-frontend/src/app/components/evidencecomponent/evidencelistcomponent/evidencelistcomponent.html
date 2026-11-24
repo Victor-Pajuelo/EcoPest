@@ -46,6 +46,11 @@
       <ng-container matColumnDef="C6">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
+          <a mat-icon-button class="btn-ver"
+            [routerLink]="['/evidencias/ver', element.idEvidence]"
+            title="Ver detalle" aria-label="Ver detalle">
+            <mat-icon>visibility</mat-icon>
+          </a>
           @if (puedeEscribir()) {
             <a mat-icon-button class="btn-editar" [routerLink]="['/evidencias/editar', element.idEvidence]" title="Editar">
               <mat-icon>edit</mat-icon>
