@@ -10,6 +10,7 @@ import { Businesscomponent } from './components/businesscomponent/businesscompon
 import { Businesslistcomponent } from './components/businesscomponent/businesslistcomponent/businesslistcomponent';
 import { Businessinsertcomponent } from './components/businesscomponent/businessinsertcomponent/businessinsertcomponent';
 import { Businessupdatecomponent } from './components/businesscomponent/businessupdatecomponent/businessupdatecomponent';
+import { Businessviewcomponent } from './components/businesscomponent/businessviewcomponent/businessviewcomponent';
 import { Rolecomponent } from './components/rolecomponent/rolecomponent';
 import { Rolelistcomponent } from './components/rolecomponent/rolelistcomponent/rolelistcomponent';
 import { Roleinsertcomponent } from './components/rolecomponent/roleinsertcomponent/roleinsertcomponent';
@@ -102,6 +103,10 @@ export const routes: Routes = [
       {
         path: 'editar/:id',
         component: Businessupdatecomponent,
+      },
+      {
+      path: 'ver/:id',
+      component: Businessviewcomponent,
       },
     ],
   },
