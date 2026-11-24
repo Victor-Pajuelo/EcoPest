@@ -1,0 +1,53 @@
+<app-menucomponent></app-menucomponent>
+
+<div class="container">
+  <h2>Reportes</h2>
+
+  <!-- HU81: Incidencias por tipo de plaga -->
+  <h3>Incidencias por tipo de plaga</h3>
+  @if (errorPlagas) {
+    <div class="error">
+      <mat-icon>error_outline</mat-icon>
+      <p>No se pudo cargar el reporte. El servidor puede estar iniciando; intenta de nuevo en unos segundos.</p>
+      <button class="btn-reintentar" (click)="obtenerIncidenciasPorPlaga()">Reintentar</button>
+    </div>
+  } @else if (cargadoPlagas && incidenciasPorPlaga.length === 0) {
+    <p class="vacio">No hay datos para mostrar</p>
+  } @else {
+    @for (item of incidenciasPorPlaga; track item.name) {
+      <div class="fila"
+           [matTooltip]="item.name + ': ' + item.quantity + ' incidencias'"
+           matTooltipPosition="above">
+        <span class="etiqueta">{{ item.name }}</span>
+        <div class="barra-fondo">
+          <div class="barra" [style.width.%]="porcentaje(item.quantity, incidenciasPorPlaga)"></div>
+        </div>
+        <span class="valor">{{ item.quantity }}</span>
+      </div>
+    }
+  }
+
+  <!-- HU82: Inspecciones por empresa -->
+  <h3 class="segundo-titulo">Inspecciones por empresa</h3>
+  @if (errorInspecciones) {
+    <div class="error">
+      <mat-icon>error_outline</mat-icon>
+      <p>No se pudo cargar el reporte. El servidor puede estar iniciando; intenta de nuevo en unos segundos.</p>
+      <button class="btn-reintentar" (click)="obtenerInspeccionesPorEmpresa()">Reintentar</button>
+    </div>
+  } @else if (cargadoInspecciones && inspeccionesPorEmpresa.length === 0) {
+    <p class="vacio">No hay datos para mostrar</p>
+  } @else {
+    @for (item of inspeccionesPorEmpresa; track item.name) {
+      <div class="fila"
+           [matTooltip]="item.name + ': ' + item.quantity + ' inspecciones'"
+           matTooltipPosition="above">
+        <span class="etiqueta">{{ item.name }}</span>
+        <div class="barra-fondo">
+          <div class="barra" [style.width.%]="porcentaje(item.quantity, inspeccionesPorEmpresa)"></div>
+        </div>
+        <span class="valor">{{ item.quantity }}</span>
+      </div>
+    }
+  }
+</div>

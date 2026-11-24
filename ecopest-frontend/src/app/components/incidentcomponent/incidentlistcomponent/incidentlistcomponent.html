@@ -1,14 +1,28 @@
 <div class="container">
   <h2>Lista de Incidentes</h2>
   <div class="cabecera">
-    <a mat-flat-button class="btn-registrar" routerLink="/incidentes/insertar">
-      <mat-icon>add</mat-icon> Registrar
-    </a>
+    @if (puedeEscribir()) {
+      <a mat-flat-button class="btn-registrar" routerLink="/incidentes/insertar">
+        <mat-icon>add</mat-icon> Registrar
+      </a>
+    }
   </div>
   <p>{{ mensaje }}</p>
   <div>
-    @if(dataSource.length>0){
-    <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
+    @if (dataSource.length > 0) {
+    <div class="busqueda">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="search" aria-label="Buscar incidentes" placeholder="Buscar por descripción, estado, plaga o inspección" [value]="terminoBusqueda"
+        (input)="actualizarBusqueda($event)">
+      @if (terminoBusqueda) {
+      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
+    }
+    @if (filasFiltradas.length > 0) {
+    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idIncident }}</td>
@@ -36,22 +50,30 @@
       <ng-container matColumnDef="C7">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell data-label="Acciones" *matCellDef="let element">
-          <button mat-icon-button class="btn-ia" [disabled]="generando" (click)="generarRecomendacion(element.idIncident)" title="Generar recomendación con IA">
-            <mat-icon>auto_awesome</mat-icon>
-          </button>
-          <a mat-icon-button class="btn-editar" [routerLink]="['/incidentes/editar', element.idIncident]" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button class="btn-eliminar" (click)="eliminarIncidente(element.idIncident)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (puedeEscribir()) {
+            <button mat-icon-button class="btn-ia" [disabled]="generando" (click)="generarRecomendacion(element.idIncident)" title="Generar recomendación con IA">
+              <mat-icon>auto_awesome</mat-icon>
+            </button>
+          }
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar" [routerLink]="['/incidentes/editar', element.idIncident]" title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar" (click)="eliminarIncidente(element.idIncident)" title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    }@else {
+    } @else if (dataSource.length > 0) {
+    <p>No se encontraron incidentes con ese texto.</p>
+    } @else {
     <p>No hay registros disponibles.</p>
     }
   </div>

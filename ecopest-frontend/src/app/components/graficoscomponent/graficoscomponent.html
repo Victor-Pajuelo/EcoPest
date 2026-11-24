@@ -1,0 +1,98 @@
+<app-menucomponent></app-menucomponent>
+
+<div class="container">
+  <h2>Gráficos de EcoPest</h2>
+
+  @if (mensaje) {
+  <p class="mensaje">{{ mensaje }}</p>
+  }
+
+  <!-- Tarjetas con los totales -->
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <mat-icon>business</mat-icon>
+      <span class="numero">{{ totalEmpresas }}</span>
+      <span class="texto">Empresas</span>
+    </div>
+    <div class="tarjeta">
+      <mat-icon>group</mat-icon>
+      <span class="numero">{{ totalUsuarios }}</span>
+      <span class="texto">Usuarios</span>
+    </div>
+    <div class="tarjeta">
+      <mat-icon>fact_check</mat-icon>
+      <span class="numero">{{ totalInspecciones }}</span>
+      <span class="texto">Inspecciones</span>
+    </div>
+    <div class="tarjeta">
+      <mat-icon>report_problem</mat-icon>
+      <span class="numero">{{ totalIncidentes }}</span>
+      <span class="texto">Incidentes</span>
+    </div>
+    <div class="tarjeta">
+      <mat-icon>lightbulb</mat-icon>
+      <span class="numero">{{ totalRecomendaciones }}</span>
+      <span class="texto">Recomendaciones</span>
+    </div>
+  </div>
+
+  <!-- Graficos -->
+  <div class="graficos">
+
+    <div class="grafico">
+      <h3>Incidentes por plaga</h3>
+      <div class="lienzo">
+        @if (plagaData.labels?.length) {
+        <canvas baseChart [type]="'bar'" [data]="plagaData" [options]="opcionesBarras"></canvas>
+        } @else {
+        <p class="vacio">Sin datos</p>
+        }
+      </div>
+    </div>
+
+    <div class="grafico">
+      <h3>Incidentes por nivel de riesgo</h3>
+      <div class="lienzo">
+        @if (riesgoData.labels?.length) {
+        <canvas baseChart [type]="'doughnut'" [data]="riesgoData" [options]="opcionesTorta"></canvas>
+        } @else {
+        <p class="vacio">Sin datos</p>
+        }
+      </div>
+    </div>
+
+    <div class="grafico">
+      <h3>Inspecciones por empresa</h3>
+      <div class="lienzo">
+        @if (inspeccionData.labels?.length) {
+        <canvas baseChart [type]="'bar'" [data]="inspeccionData" [options]="opcionesBarrasH"></canvas>
+        } @else {
+        <p class="vacio">Sin datos</p>
+        }
+      </div>
+    </div>
+
+    <div class="grafico">
+      <h3>Usuarios por rol</h3>
+      <div class="lienzo">
+        @if (rolData.labels?.length) {
+        <canvas baseChart [type]="'pie'" [data]="rolData" [options]="opcionesTorta"></canvas>
+        } @else {
+        <p class="vacio">Sin datos</p>
+        }
+      </div>
+    </div>
+
+    <div class="grafico ancho">
+      <h3>Promedio de temperatura y humedad por empresa</h3>
+      <div class="lienzo">
+        @if (climaData.labels?.length) {
+        <canvas baseChart [type]="'bar'" [data]="climaData" [options]="opcionesClima"></canvas>
+        } @else {
+        <p class="vacio">Sin datos</p>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,14 +18,25 @@ import { Businessservice } from '../../../services/businessservice';
 })
 export class Weatherlistcomponent implements OnInit {
 
+  // ADMIN y SUPERVISOR pueden registrar y editar; solo ADMIN elimina
+  puedeEscribir(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN', 'ROLE_SUPERVISOR');
+  }
+
+  esAdmin(): boolean {
+    return this.loginS.tieneRol('ROLE_ADMIN');
+  }
+
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: WeatherDataDTO[] = []
+  terminoBusqueda: string = ''
   mensaje: string = ''
   empresas: any[] = []
   empresaSeleccionada: number | null = null
   sincronizando: boolean = false
 
   constructor(
+    private loginS: Loginservice,
     private s: Weatherservice,
     private cdr: ChangeDetectorRef,
     private businessS: Businessservice
@@ -54,7 +66,39 @@ export class Weatherlistcomponent implements OnInit {
     })
   }
 
+  actualizarBusqueda(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.terminoBusqueda = event.target.value
+    }
+  }
+
+  limpiarBusqueda(): void {
+    this.terminoBusqueda = ''
+  }
+
+  get filasFiltradas(): WeatherDataDTO[] {
+    const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    if (!termino) {
+      return this.dataSource
+    }
+
+    return this.dataSource.filter(clima =>
+      [
+        clima.idWeatherData,
+        clima.date,
+        clima.temperature,
+        clima.humidity,
+        clima.source,
+        this.nombreEmpresa(clima.businessEntityId)
+      ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
+    )
+  }
+
   eliminarClima(id: number): void {
+    if (!window.confirm(`¿Seguro que deseas eliminar el registro de clima #${id}? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
     this.s.deleteWeather(id).subscribe({
       next: () => {
         this.mensaje = ''
