@@ -10,15 +10,23 @@
   <p>{{ mensaje }}</p>
   <div>
     @if (dataSource.length > 0) {
-    <div class="busqueda">
-      <mat-icon aria-hidden="true">search</mat-icon>
-      <input type="search" aria-label="Buscar incidentes" placeholder="Buscar por descripción, estado, plaga o inspección" [value]="terminoBusqueda"
-        (input)="actualizarBusqueda($event)">
-      @if (terminoBusqueda) {
-      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
-        <mat-icon>close</mat-icon>
-      </button>
-      }
+    <div class="controles">
+      <div class="busqueda">
+        <mat-icon aria-hidden="true">search</mat-icon>
+        <input type="search" aria-label="Buscar incidentes" placeholder="Buscar por descripción, estado, plaga o inspección" [value]="terminoBusqueda"
+          (input)="actualizarBusqueda($event)">
+        @if (terminoBusqueda) {
+        <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </div>
+      <select class="filtro" aria-label="Filtrar incidentes por empresa" [(ngModel)]="filtroEmpresa">
+        <option value="">Todas las empresas</option>
+        @for (empresa of empresas; track empresa.idBusinessEntity) {
+        <option [value]="empresa.idBusinessEntity">{{ empresa.name }}</option>
+        }
+      </select>
     </div>
     }
     @if (filasFiltradas.length > 0) {

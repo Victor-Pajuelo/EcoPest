@@ -78,6 +78,29 @@ h2 {
     outline-offset: 2px;
 }
 
+.controles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 650px;
+    margin: 15px auto;
+}
+
+.controles .busqueda {
+    flex: 1;
+    margin: 0;
+}
+
+.filtro {
+    min-width: 155px;
+    padding: 11px 10px;
+    border: 1px solid #cfe9da;
+    border-radius: 8px;
+    background: white;
+    color: #0a7d38;
+    font: inherit;
+}
+
 /* Mensaje */
 p {
     text-align: center;
@@ -153,6 +176,17 @@ tr[mat-row]:hover {
 @media (max-width: 600px) {
     :host {
         padding: 12px;
+    }
+
+    .controles {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controles .busqueda,
+    .filtro {
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .container {

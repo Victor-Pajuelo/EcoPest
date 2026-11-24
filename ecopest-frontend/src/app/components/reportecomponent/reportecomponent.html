@@ -50,4 +50,28 @@
       </div>
     }
   }
+
+  <!-- Promedio de temperatura por empresa -->
+  <h3 class="segundo-titulo">Temperatura promedio por empresa</h3>
+  @if (errorClima) {
+    <div class="error">
+      <mat-icon>error_outline</mat-icon>
+      <p>No se pudo cargar el promedio de temperatura.</p>
+      <button class="btn-reintentar" (click)="obtenerPromedioTemperatura()">Reintentar</button>
+    </div>
+  } @else if (cargadoClima && promediosClima.length === 0) {
+    <p class="vacio">No hay datos para mostrar</p>
+  } @else {
+    @for (item of promediosClima; track item.name) {
+      <div class="fila"
+           [matTooltip]="item.name + ': ' + (item.avgTemperature | number:'1.1-1') + ' °C'"
+           matTooltipPosition="above">
+        <span class="etiqueta">{{ item.name }}</span>
+        <div class="barra-fondo">
+          <div class="barra temperatura" [style.width.%]="porcentajeClima(item.avgTemperature)"></div>
+        </div>
+        <span class="valor temperatura-valor">{{ item.avgTemperature | number:'1.1-1' }} °C</span>
+      </div>
+    }
+  }
 </div>

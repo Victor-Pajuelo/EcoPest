@@ -136,8 +136,31 @@ h2 {
 
 /* Celulares */
 @media (max-width: 480px) {
+    :host {
+        overflow-x: hidden;
+    }
+
+    .container {
+        margin: 10px 6px;
+        padding: 16px 8px;
+    }
+
+    .graficos {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .grafico {
+        padding: 12px 8px;
+    }
+
+    .grafico h3 {
+        font-size: 15px;
+    }
+
     .tarjetas {
         grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
 
     .lienzo {

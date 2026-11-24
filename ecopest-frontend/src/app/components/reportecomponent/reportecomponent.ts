@@ -1,14 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DecimalPipe } from '@angular/common';
 import { Menucomponent } from '../menucomponent/menucomponent';
 import { Reportservice } from '../../services/reportservice';
 import { CountDTO } from '../../models/CountDTO';
+import { Weatherservice } from '../../services/weatherservice';
+import { AverageWeatherDTO } from '../../models/AverageWeatherDTO';
 
 /** HU82 (inspecciones por empresa) y HU81 (incidencias por tipo de plaga): reportes con graficos de barras. */
 @Component({
   selector: 'app-reportecomponent',
-  imports: [Menucomponent, MatIconModule, MatTooltipModule],
+  imports: [Menucomponent, MatIconModule, MatTooltipModule, DecimalPipe],
   templateUrl: './reportecomponent.html',
   styleUrl: './reportecomponent.css',
 })
@@ -23,12 +26,16 @@ export class Reportecomponent implements OnInit {
   incidenciasPorPlaga: CountDTO[] = [];
   cargadoPlagas: boolean = false;
   errorPlagas: boolean = false;
+  promediosClima: AverageWeatherDTO[] = [];
+  cargadoClima: boolean = false;
+  errorClima: boolean = false;
 
-  constructor(private reportS: Reportservice, private cdr: ChangeDetectorRef) { }
+  constructor(private reportS: Reportservice, private weatherS: Weatherservice, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.obtenerInspeccionesPorEmpresa();
     this.obtenerIncidenciasPorPlaga();
+    this.obtenerPromedioTemperatura();
   }
 
   obtenerInspeccionesPorEmpresa(): void {
@@ -67,9 +74,32 @@ export class Reportecomponent implements OnInit {
     });
   }
 
+  obtenerPromedioTemperatura(): void {
+    this.errorClima = false;
+    this.cargadoClima = false;
+    this.weatherS.getAverages().subscribe({
+      next: data => {
+        this.promediosClima = data;
+        this.cargadoClima = true;
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        console.log(err);
+        this.errorClima = true;
+        this.cargadoClima = true;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   /** Ancho en % de una barra, comparando contra el valor mas alto de su lista. */
   porcentaje(valor: number, lista: CountDTO[]): number {
     const max = Math.max(...lista.map(x => x.quantity), 1);
+    return Math.round((valor / max) * 100);
+  }
+
+  porcentajeClima(valor: number): number {
+    const max = Math.max(...this.promediosClima.map(x => x.avgTemperature), 1);
     return Math.round((valor / max) * 100);
   }
 }

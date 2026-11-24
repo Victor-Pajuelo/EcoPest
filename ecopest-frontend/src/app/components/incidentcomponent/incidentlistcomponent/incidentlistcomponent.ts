@@ -4,15 +4,17 @@ import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 import { IncidentDTO } from '../../../models/IncidentDTO';
 import { Incidentservice } from '../../../services/incidentservice';
 import { Inspectionservice } from '../../../services/inspectionservice';
 import { Pestservice } from '../../../services/pestservice';
 import { Recommendationservice } from '../../../services/recommendationservice';
+import { Businessservice } from '../../../services/businessservice';
 
 @Component({
   selector: 'app-incidentlistcomponent',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, RouterLink],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
   templateUrl: './incidentlistcomponent.html',
   styleUrl: './incidentlistcomponent.css',
 })
@@ -30,10 +32,12 @@ export class Incidentlistcomponent implements OnInit {
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: IncidentDTO[] = []
   terminoBusqueda: string = ''
+  filtroEmpresa: string = ''
   generando: boolean = false
   mensaje: string = ''
   inspecciones: any[] = []
   plagas: any[] = []
+  empresas: any[] = []
 
   constructor(
     private loginS: Loginservice,
@@ -41,7 +45,8 @@ export class Incidentlistcomponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private inspectionS: Inspectionservice,
     private pestS: Pestservice,
-    private recommendationS: Recommendationservice
+    private recommendationS: Recommendationservice,
+    private businessS: Businessservice
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +66,12 @@ export class Incidentlistcomponent implements OnInit {
       }, error: err => {
         console.log(err)
       }
+    })
+    this.businessS.getBusinesses().subscribe({
+      next: data => {
+        this.empresas = data
+        this.cdr.detectChanges()
+      }, error: err => console.log(err)
     })
   }
 
@@ -106,12 +117,11 @@ export class Incidentlistcomponent implements OnInit {
 
   get filasFiltradas(): IncidentDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
-    if (!termino) {
-      return this.dataSource
-    }
-
-    return this.dataSource.filter(incidente =>
-      [
+    return this.dataSource.filter(incidente => {
+      const inspeccion = this.inspecciones.find(item => item.idInspection === incidente.inspectionId)
+      const coincideEmpresa = !this.filtroEmpresa ||
+        String(inspeccion?.businessEntityId ?? '') === this.filtroEmpresa
+      const coincideTexto = !termino || [
         incidente.idIncident,
         incidente.incidentDate,
         incidente.description,
@@ -119,7 +129,8 @@ export class Incidentlistcomponent implements OnInit {
         this.nombreInspeccion(incidente.inspectionId),
         this.nombrePlaga(incidente.pestTypeId)
       ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
-    )
+      return coincideEmpresa && coincideTexto
+    })
   }
 
   // Pide a la IA (Gemini) una recomendación para el incidente; el backend la guarda con origen IA

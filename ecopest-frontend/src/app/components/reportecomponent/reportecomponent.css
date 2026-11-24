@@ -123,10 +123,28 @@ h3 {
   transform: scale(0.97);
 }
 
+.barra.temperatura {
+  background-color: #f5c542;
+}
+
+.fila:hover .barra.temperatura {
+  background-color: #d6a51f;
+}
+
+.temperatura-valor {
+  width: 90px;
+  white-space: nowrap;
+  text-align: right;
+}
+
 @media (max-width: 600px) {
   :host { padding: 12px; }
   .container { padding: 20px 16px; }
-  .etiqueta { width: 90px; font-size: 12px; }
+  .fila { display: grid; grid-template-columns: 1fr 90px; gap: 6px 8px; }
+  .etiqueta { grid-column: 1 / -1; width: 100%; text-align: left; }
+  .barra-fondo { width: 100%; }
+  .valor { width: auto; text-align: right; }
+  .temperatura-valor { width: auto; }
 }
 .segundo-titulo {
   margin-top: 35px;

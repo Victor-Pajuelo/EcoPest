@@ -4,12 +4,13 @@ import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 import { PestTypeDTO } from '../../../models/PestTypeDTO';
 import { Pestservice } from '../../../services/pestservice';
 
 @Component({
   selector: 'app-pestlistcomponent',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, RouterLink],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
   templateUrl: './pestlistcomponent.html',
   styleUrl: './pestlistcomponent.css',
 })
@@ -27,6 +28,7 @@ export class Pestlistcomponent implements OnInit {
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5']
   dataSource: PestTypeDTO[] = []
   terminoBusqueda: string = ''
+  filtroRiesgo: string = ''
   mensaje: string = ''
 
   constructor(
@@ -63,18 +65,19 @@ export class Pestlistcomponent implements OnInit {
 
   get filasFiltradas(): PestTypeDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
-    if (!termino) {
-      return this.dataSource
-    }
+    return this.dataSource.filter(plaga => {
+      const coincideRiesgo = !this.filtroRiesgo ||
+        String(plaga.riskLevel ?? '').toLocaleLowerCase() === this.filtroRiesgo.toLocaleLowerCase()
 
-    return this.dataSource.filter(plaga =>
-      [
+      const coincideTexto = !termino || [
         plaga.idPestType,
         plaga.name,
         plaga.riskLevel,
         plaga.description
       ].some(valor => String(valor ?? '').toLocaleLowerCase().includes(termino))
-    )
+
+      return coincideRiesgo && coincideTexto
+    })
   }
 
   eliminarPlaga(id: number): void {

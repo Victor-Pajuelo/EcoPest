@@ -47,8 +47,24 @@ mat-toolbar mat-icon {
 }
 
 @media (max-width: 600px) {
+  mat-toolbar {
+    padding: 6px 4px;
+  }
+
   .logo {
     margin-right: 0;
+    font-size: 17px;
+  }
+
+  mat-toolbar button {
+    min-width: 44px;
+    padding: 0 8px;
+  }
+
+  .usuario {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

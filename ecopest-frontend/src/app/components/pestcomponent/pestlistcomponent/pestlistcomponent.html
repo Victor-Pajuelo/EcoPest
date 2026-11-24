@@ -10,15 +10,23 @@
   <p>{{ mensaje }}</p>
   <div>
     @if (dataSource.length > 0) {
-    <div class="busqueda">
-      <mat-icon aria-hidden="true">search</mat-icon>
-      <input type="search" aria-label="Buscar plagas" placeholder="Buscar por nombre, riesgo o descripción" [value]="terminoBusqueda"
-        (input)="actualizarBusqueda($event)">
-      @if (terminoBusqueda) {
-      <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
-        <mat-icon>close</mat-icon>
-      </button>
-      }
+    <div class="controles">
+      <div class="busqueda">
+        <mat-icon aria-hidden="true">search</mat-icon>
+        <input type="search" aria-label="Buscar plagas" placeholder="Buscar por nombre, riesgo o descripción" [value]="terminoBusqueda"
+          (input)="actualizarBusqueda($event)">
+        @if (terminoBusqueda) {
+        <button type="button" class="limpiar-busqueda" aria-label="Limpiar búsqueda" (click)="limpiarBusqueda()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </div>
+      <select class="filtro" aria-label="Filtrar plagas por nivel de riesgo" [(ngModel)]="filtroRiesgo">
+        <option value="">Todos los riesgos</option>
+        <option value="BAJO">Riesgo bajo</option>
+        <option value="MEDIO">Riesgo medio</option>
+        <option value="ALTO">Riesgo alto</option>
+      </select>
     </div>
     }
     @if (filasFiltradas.length > 0) {
