@@ -10,9 +10,8 @@
     } @else {
       <div class="avatar"><mat-icon>description</mat-icon></div>
     }
-    <div class="dato"><span>ID</span><strong>{{ evidencia.idEvidence }}</strong></div>
     <div class="dato"><span>Tipo</span><strong>{{ evidencia.fileType }}</strong></div>
-    <div class="dato"><span>Fecha de carga</span><strong>{{ evidencia.uploadDate }}</strong></div>
+    <div class="dato"><span>Fecha de carga</span><strong>{{ evidencia.uploadDate | date:'dd/MM/yyyy HH:mm' }}</strong></div>
     <div class="dato"><span>Incidente</span><strong>{{ incidente || '-' }}</strong></div>
     <div class="dato"><span>Archivo</span>
       <strong>

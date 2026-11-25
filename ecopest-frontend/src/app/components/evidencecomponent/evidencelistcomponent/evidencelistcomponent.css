@@ -22,12 +22,12 @@
 /* Título */
 h2 {
     text-align: center;
-    color: #0aae4e;
+    color: #067a37;
     font-size: 26px;
     font-weight: bold;
     margin: 5px 0 20px;
     padding-bottom: 15px;
-    border-bottom: 2px solid #0aae4e;
+    border-bottom: 2px solid #067a37;
 }
 
 /* Botón registrar */
@@ -38,7 +38,7 @@ h2 {
 }
 
 .btn-registrar {
-    background-color: #0aae4e;
+    background-color: #067a37;
     color: white;
     font-weight: 600;
 }
@@ -82,7 +82,7 @@ h2 {
 p {
     text-align: center;
     margin: 10px auto;
-    color: #0aae4e;
+    color: #067a37;
     font-size: 15px;
     font-weight: 600;
 }
@@ -108,7 +108,7 @@ th[mat-header-cell] {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    border-bottom: 3px solid #0aae4e;
+    border-bottom: 3px solid #067a37;
     white-space: nowrap;
 }
 
@@ -135,7 +135,7 @@ tr[mat-row]:hover {
 
 /* Iconos de las acciones */
 .btn-ver mat-icon {
-    color: #0aae4e;
+    color: #067a37;
 }
 
 .btn-editar mat-icon {
@@ -226,7 +226,7 @@ tr[mat-row]:hover {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: #0aae4e;
+    color: #067a37;
     font-weight: 600;
     text-decoration: none;
 }

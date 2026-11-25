@@ -7,16 +7,19 @@
       <mat-form-field class="example-full-width">
         <mat-label>Nombre</mat-label>
         <input matInput type="text" formControlName="name">
+              <mat-error>@if (form.get('name')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Correo electrónico</mat-label>
         <input matInput type="email" formControlName="email">
+              <mat-error>@if (form.get('email')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Contraseña</mat-label>
         <input matInput type="password" formControlName="password">
+              <mat-error>@if (form.get('password')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -26,6 +29,7 @@
           <mat-option [value]="o.idRole">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('roleId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -35,6 +39,7 @@
           <mat-option [value]="o.idBusinessEntity">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('businessEntityId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <section class="example-section">

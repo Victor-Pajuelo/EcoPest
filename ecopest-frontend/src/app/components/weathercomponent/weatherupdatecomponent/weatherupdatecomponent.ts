@@ -56,7 +56,6 @@ export class Weatherupdatecomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
 
@@ -77,7 +76,6 @@ export class Weatherupdatecomponent implements OnInit {
         this.cdr.detectChanges()
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'No se encontró el registro!!'
         this.cdr.detectChanges()
       }
@@ -86,6 +84,7 @@ export class Weatherupdatecomponent implements OnInit {
 
   actualizarClima(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -107,7 +106,6 @@ export class Weatherupdatecomponent implements OnInit {
         this.router.navigate(['/clima/listar'])
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'Error al actualizar!!'
         this.cdr.detectChanges()
       }

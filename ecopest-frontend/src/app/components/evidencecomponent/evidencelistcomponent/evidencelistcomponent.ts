@@ -1,3 +1,5 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -11,7 +13,7 @@ import { Incidentservice } from '../../../services/incidentservice';
 
 @Component({
   selector: 'app-evidencelistcomponent',
-  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink],
+  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './evidencelistcomponent.html',
   styleUrl: './evidencelistcomponent.css',
 })
@@ -26,10 +28,11 @@ export class Evidencelistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6']
   // Evidencias cuya imagen no se pudo cargar (enlace roto): se muestra un icono en su lugar
   imagenRota: Record<number, boolean> = {}
   dataSource: EvidenceDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -41,6 +44,7 @@ export class Evidencelistcomponent implements OnInit {
     private loginS: Loginservice,
     private s: Evidenceservice,
     private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice,
     private incidentS: Incidentservice
   ) { }
 
@@ -51,7 +55,6 @@ export class Evidencelistcomponent implements OnInit {
         this.incidentes = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
@@ -59,30 +62,32 @@ export class Evidencelistcomponent implements OnInit {
   obtenerEvidencias(): void {
     this.s.getEvidences().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
   }
 
   eliminarEvidencia(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar la evidencia #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteEvidence(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerEvidencias()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar la evidencia #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteEvidence(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerEvidencias()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 

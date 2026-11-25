@@ -10,11 +10,13 @@
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker_incidentDate"></mat-datepicker-toggle>
         <mat-datepicker #picker_incidentDate></mat-datepicker>
+              <mat-error>@if (form.get('incidentDate')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Descripción</mat-label>
         <textarea matInput rows="3" formControlName="description"></textarea>
+              <mat-error>@if (form.get('description')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -24,6 +26,7 @@
           <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('status')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -33,6 +36,7 @@
           <mat-option [value]="o.idInspection">{{ '#' + o.idInspection + ' - ' + o.inspectionDate }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('inspectionId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -42,6 +46,7 @@
           <mat-option [value]="o.idPestType">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('pestTypeId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
 

@@ -5,4 +5,6 @@ export class BusinessDTO {
   companyName: string = '';
   parentBusinessEntityId: number | null = null;
   active: boolean = true;
+  latitude: number | null = null;
+  longitude: number | null = null;
 }

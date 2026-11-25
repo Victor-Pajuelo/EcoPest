@@ -1,0 +1,61 @@
+<main class="container">
+  <h1><mat-icon>lightbulb</mat-icon> Recomendaciones por empresa</h1>
+  <p class="ayuda">Cada empresa muestra sus incidentes y las recomendaciones de cada uno. Usa el botón de IA dentro del incidente para generar una nueva.</p>
+  <div class="acciones">
+    <a mat-stroked-button routerLink="/recomendaciones/listar"><mat-icon>list</mat-icon> Ver como lista</a>
+  </div>
+  <p class="mensaje" aria-live="polite">{{ mensaje }}</p>
+
+  @if (cargando) {
+    <p class="estado">Cargando…</p>
+  } @else if (empresas.length === 0) {
+    <p class="estado">No hay empresas registradas.</p>
+  } @else {
+    <mat-accordion multi>
+      @for (e of empresas; track e.idBusinessEntity) {
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title><mat-icon>business</mat-icon>&nbsp;{{ e.name }}</mat-panel-title>
+            <mat-panel-description>
+              {{ incidentesDe(e.idBusinessEntity).length }} incidentes · {{ totalRecomendaciones(e.idBusinessEntity) }} recomendaciones
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          @for (inc of incidentesDe(e.idBusinessEntity); track inc.idIncident) {
+            <section class="incidente">
+              <div class="incidente-cab">
+                <div>
+                  <strong>{{ nombrePlaga(inc.pestTypeId) }}</strong>
+                  <span class="meta"> · {{ inc.incidentDate | date:'dd/MM/yyyy' }} · {{ inc.status }}</span>
+                  <p class="descripcion">{{ inc.description }}</p>
+                </div>
+                @if (puedeEscribir()) {
+                  <button mat-flat-button class="btn-ia" (click)="generar(inc.idIncident)" [disabled]="generandoId != null">
+                    <mat-icon>auto_awesome</mat-icon>
+                    {{ generandoId === inc.idIncident ? 'Generando…' : 'Generar recomendación con IA' }}
+                  </button>
+                }
+              </div>
+
+              @for (r of recomendacionesDe(inc.idIncident); track r.idRecommendation) {
+                <article class="recomendacion" [class.nueva]="r.idRecommendation === nuevaId">
+                  <div class="rec-cab">
+                    <span class="chip" [class.ia]="r.origin === 'IA'">{{ r.origin }}</span>
+                    <span class="chip estado-chip">{{ r.status }}</span>
+                    <span class="meta">{{ r.generationDate | date:'dd/MM/yyyy HH:mm' }}</span>
+                    @if (r.idRecommendation === nuevaId) { <span class="etiqueta-nueva">Nueva</span> }
+                  </div>
+                  <p>{{ r.description }}</p>
+                </article>
+              } @empty {
+                <p class="vacio">Este incidente aún no tiene recomendaciones.</p>
+              }
+            </section>
+          } @empty {
+            <p class="vacio">Esta empresa no tiene incidentes registrados.</p>
+          }
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
+</main>

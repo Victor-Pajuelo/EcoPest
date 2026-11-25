@@ -22,12 +22,12 @@
 /* Título */
 h2 {
     text-align: center;
-    color: #0aae4e;
+    color: #067a37;
     font-size: 26px;
     font-weight: bold;
     margin: 5px 0 20px;
     padding-bottom: 15px;
-    border-bottom: 2px solid #0aae4e;
+    border-bottom: 2px solid #067a37;
 }
 
 /* Botón registrar */
@@ -38,7 +38,7 @@ h2 {
 }
 
 .btn-registrar {
-    background-color: #0aae4e;
+    background-color: #067a37;
     color: white;
     font-weight: 600;
 }
@@ -57,7 +57,7 @@ h2 {
 }
 
 .btn-sincronizar {
-    background-color: #0369a1;
+    background-color: #067a37;
     color: white;
     font-weight: 600;
 }
@@ -101,7 +101,7 @@ h2 {
 p {
     text-align: center;
     margin: 10px auto;
-    color: #0aae4e;
+    color: #067a37;
     font-size: 15px;
     font-weight: 600;
 }
@@ -127,7 +127,7 @@ th[mat-header-cell] {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    border-bottom: 3px solid #0aae4e;
+    border-bottom: 3px solid #067a37;
     white-space: nowrap;
 }
 
@@ -153,7 +153,7 @@ tr[mat-row]:hover {
 
 /* Iconos de las acciones */
 .btn-ver mat-icon {
-    color: #0aae4e;
+    color: #067a37;
 }
 
 .btn-editar mat-icon {
@@ -235,4 +235,85 @@ tr[mat-row]:hover {
 mat-paginator {
     margin-top: 10px;
     background: transparent;
+}
+
+/* Panel de clima: selector a la izquierda, tarjeta con el clima a la derecha */
+.ayuda {
+  color: #3b4a3f;
+  margin-top: 0;
+}
+
+.panel-clima {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 8px;
+}
+
+.selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.tarjeta-clima {
+  background: #ffffff;
+  border: 1px solid #cfd9d0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  min-height: 140px;
+}
+
+.titulo-tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ubicacion {
+  color: #4d5b50;
+  font-size: 13px;
+}
+
+.valores {
+  display: flex;
+  gap: 24px;
+  margin: 12px 0 4px;
+}
+
+.valor {
+  display: grid;
+  justify-items: start;
+}
+
+.valor strong {
+  font-size: 28px;
+  color: #067a37;
+}
+
+.valor span,
+.pie {
+  color: #4d5b50;
+  font-size: 13px;
+}
+
+.sin-dato {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3b4a3f;
+}
+
+@media (max-width: 700px) {
+  .panel-clima {
+    grid-template-columns: 1fr;
+  }
+}
+
+.valor mat-icon {
+  color: #067a37;
 }

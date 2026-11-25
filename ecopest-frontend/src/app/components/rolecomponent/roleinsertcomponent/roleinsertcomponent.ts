@@ -32,6 +32,7 @@ export class Roleinsertcomponent {
 
   insertarRol(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -50,7 +51,6 @@ export class Roleinsertcomponent {
       },
       error: (error) => {
         this.mensaje = 'Error al registrar!!'
-        console.log(error)
         this.cdr.detectChanges()
       }
     })

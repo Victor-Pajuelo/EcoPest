@@ -31,6 +31,10 @@
         <th mat-header-cell *matHeaderCellDef>Rol</th>
         <td mat-cell data-label="Rol" *matCellDef="let element">{{ nombreRol(element.roleId) }}</td>
       </ng-container>
+      <ng-container matColumnDef="C5">
+        <th mat-header-cell *matHeaderCellDef>Activo</th>
+        <td mat-cell data-label="Activo" *matCellDef="let element">{{ element.active ? 'Sí' : 'No' }}</td>
+      </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Ver perfil</th>
         <td mat-cell data-label="Ver perfil" *matCellDef="let element"><a mat-icon-button class="btn-ver" [routerLink]="['/usuarios/perfil', element.idUser]" title="Ver perfil">
@@ -61,6 +65,8 @@
       aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron usuarios con ese texto.</p>
+    } @else if (cargando) {
+    <p>Cargando…</p>
     } @else {
     <p>No hay registros disponibles.</p>
     }

@@ -14,13 +14,13 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  color: #0aae4e;
+  color: #067a37;
   margin-top: 0;
 }
 
 mat-icon {
   vertical-align: middle;
-  color: #0aae4e;
+  color: #067a37;
 }
 
 .temperatura {
@@ -60,7 +60,7 @@ mat-icon {
 }
 
 .riesgo.bajo {
-  background-color: #0aae4e;
+  background-color: #067a37;
 }
 
 .riesgo.medio {
@@ -101,10 +101,10 @@ h4 {
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  border: 1px solid #0aae4e;
+  border: 1px solid #067a37;
   border-radius: 6px;
   background: white;
-  color: #0aae4e;
+  color: #067a37;
   font-weight: 600;
   cursor: pointer;
 }

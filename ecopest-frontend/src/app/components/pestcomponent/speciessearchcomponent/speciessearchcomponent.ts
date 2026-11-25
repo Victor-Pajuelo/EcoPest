@@ -39,7 +39,6 @@ export class Speciessearchcomponent {
         }
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.buscando = false
         this.mensaje = 'No se pudo consultar iNaturalist'
         this.cdr.detectChanges()

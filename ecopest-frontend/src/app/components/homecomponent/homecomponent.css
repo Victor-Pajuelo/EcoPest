@@ -24,13 +24,13 @@
 }
 
 h2 {
-  color: #0aae4e;
+  color: #067a37;
   margin-top: 0;
 }
 
 h3 {
   color: #212320;
-  border-bottom: 2px solid #0aae4e;
+  border-bottom: 2px solid #067a37;
   padding-bottom: 8px;
   margin-top: 30px;
 }
@@ -55,7 +55,7 @@ h3 {
   width: 56px;
   height: 56px;
   font-size: 56px;
-  color: #0aae4e;
+  color: #067a37;
 }
 
 .integrante span {
@@ -75,7 +75,7 @@ h3 {
   align-items: center;
   gap: 6px;
   padding: 10px 18px;
-  background-color: #0aae4e;
+  background-color: #067a37;
   color: white;
   text-decoration: none;
   font-weight: 600;

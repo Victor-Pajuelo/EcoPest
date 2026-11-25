@@ -24,17 +24,17 @@
   gap: 6px;
   font-size: 22px;
   font-weight: bold;
-  color: #0aae4e;
+  color: #067a37;
 }
 
 .btn-principal {
-  background-color: #0aae4e;
+  background-color: #067a37;
   color: #ffffff;
 }
 
 .btn-secundario {
-  color: #0aae4e;
-  border-color: #0aae4e;
+  color: #067a37;
+  border-color: #067a37;
 }
 
 /* Portada */
@@ -53,7 +53,7 @@
 }
 
 .etiqueta {
-  color: #0aae4e;
+  color: #067a37;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -95,7 +95,7 @@ h1 {
   width: 150px;
   height: 150px;
   font-size: 150px;
-  color: #0aae4e;
+  color: #067a37;
 }
 
 /* Secciones */
@@ -117,7 +117,7 @@ h1 {
 
 h2 {
   text-align: center;
-  color: #0aae4e;
+  color: #067a37;
   font-size: 28px;
   margin: 0 0 30px;
 }
@@ -142,7 +142,7 @@ h2 {
 }
 
 .tarjeta mat-icon {
-  color: #0aae4e;
+  color: #067a37;
   font-size: 34px;
   width: 34px;
   height: 34px;
@@ -173,7 +173,7 @@ h2 {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background-color: #0aae4e;
+  background-color: #067a37;
   color: #ffffff;
   font-size: 20px;
   font-weight: bold;
@@ -201,7 +201,7 @@ h2 {
 }
 
 .integrante mat-icon {
-  color: #0aae4e;
+  color: #067a37;
 }
 
 /* Pie de pagina */

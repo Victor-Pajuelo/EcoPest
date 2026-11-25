@@ -19,12 +19,12 @@
 
 h2 {
   text-align: center;
-  color: #0aae4e;
+  color: #067a37;
   font-size: 26px;
   font-weight: bold;
   margin: 5px 0 25px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #0aae4e;
+  border-bottom: 2px solid #067a37;
 }
 
 .kpis {
@@ -49,11 +49,11 @@ h2 {
 .kpi:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 18px rgba(10, 174, 78, 0.18);
-  border-color: #0aae4e;
+  border-color: #067a37;
 }
 
 .kpi mat-icon {
-  color: #0aae4e;
+  color: #067a37;
   transform: scale(1.4);
   margin-bottom: 8px;
   transition: transform 0.2s ease;
@@ -83,7 +83,7 @@ h2 {
 
 .grafico h3,
 .tabla-clima h3 {
-  color: #0aae4e;
+  color: #067a37;
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -115,7 +115,7 @@ h2 {
 
 .barra {
   height: 100%;
-  background-color: #0aae4e;
+  background-color: #067a37;
   border-radius: 6px;
   transition: width 0.5s ease, background-color 0.2s ease;
 }
@@ -142,7 +142,7 @@ h2 {
 }
 
 .tabla-clima th {
-  color: #0aae4e;
+  color: #067a37;
   font-weight: 600;
 }
 

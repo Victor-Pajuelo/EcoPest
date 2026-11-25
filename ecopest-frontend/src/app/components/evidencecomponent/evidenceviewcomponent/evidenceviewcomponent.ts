@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +9,7 @@ import { Incidentservice } from '../../../services/incidentservice';
 
 @Component({
   selector: 'app-evidenceviewcomponent',
-  imports: [MatIconModule, MatButtonModule, RouterLink],
+  imports: [DatePipe, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './evidenceviewcomponent.html',
   styleUrl: './evidenceviewcomponent.css',
 })
@@ -40,7 +41,6 @@ export class Evidenceviewcomponent implements OnInit {
         }
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensaje = 'No se encontró la evidencia!!'
         this.cdr.detectChanges()
       }

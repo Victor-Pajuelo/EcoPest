@@ -15,14 +15,14 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #0aae4e;
+  color: #067a37;
   font-size: 28px;
   margin: 0 0 15px 0;
 }
 
 p {
   text-align: center;
-  color: #0aae4e;
+  color: #067a37;
   font-weight: 600;
 }
 
@@ -34,7 +34,7 @@ p {
   width: 90px;
   height: 90px;
   font-size: 90px;
-  color: #0aae4e;
+  color: #067a37;
 }
 
 .dato {
@@ -59,7 +59,7 @@ p {
   display: flex;
   margin: 20px auto 0;
   width: 160px;
-  background-color: #0aae4e;
+  background-color: #067a37;
   color: #ffffff;
 }
 
@@ -88,7 +88,7 @@ p {
 }
 
 a {
-  color: #0aae4e;
+  color: #067a37;
 }
 
 .aviso {

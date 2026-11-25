@@ -5,7 +5,7 @@
   justify-content: center;
   padding: 16px;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #0aae4e 0%, #e8f5e9 100%);
+  background: linear-gradient(135deg, #067a37 0%, #e8f5e9 100%);
 }
 
 .login-card {
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #0aae4e;
+  color: #067a37;
 }
 
 .login-logo h1 {
@@ -47,7 +47,7 @@
 .btn-login {
   margin-top: 8px;
   height: 44px;
-  background-color: #0aae4e;
+  background-color: #067a37;
   color: #ffffff;
 }
 
@@ -69,7 +69,7 @@
   justify-content: center;
   gap: 4px;
   margin-top: 16px;
-  color: #0aae4e;
+  color: #067a37;
   font-size: 14px;
   text-decoration: none;
 }

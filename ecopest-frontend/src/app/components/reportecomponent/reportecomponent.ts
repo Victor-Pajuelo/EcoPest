@@ -48,7 +48,6 @@ export class Reportecomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: err => {
-        console.log(err);
         this.errorInspecciones = true;
         this.cargadoInspecciones = true;
         this.cdr.detectChanges();
@@ -66,7 +65,6 @@ export class Reportecomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: err => {
-        console.log(err);
         this.errorPlagas = true;
         this.cargadoPlagas = true;
         this.cdr.detectChanges();
@@ -84,7 +82,6 @@ export class Reportecomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: err => {
-        console.log(err);
         this.errorClima = true;
         this.cargadoClima = true;
         this.cdr.detectChanges();

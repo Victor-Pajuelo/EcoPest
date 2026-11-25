@@ -3,8 +3,7 @@
   <p>{{ mensaje }}</p>
   <div class="perfil">
     <div class="avatar"><mat-icon>warning</mat-icon></div>
-    <div class="dato"><span>ID</span><strong>{{ incidente.idIncident }}</strong></div>
-    <div class="dato"><span>Fecha</span><strong>{{ incidente.incidentDate }}</strong></div>
+    <div class="dato"><span>Fecha</span><strong>{{ incidente.incidentDate | date:'dd/MM/yyyy' }}</strong></div>
     <div class="dato"><span>Descripción</span><strong>{{ incidente.description }}</strong></div>
     <div class="dato"><span>Estado</span><strong>{{ incidente.status }}</strong></div>
     <div class="dato"><span>Plaga</span><strong>{{ plaga || '-' }}</strong></div>

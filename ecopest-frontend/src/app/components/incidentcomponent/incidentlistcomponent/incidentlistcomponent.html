@@ -33,7 +33,7 @@
     <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Fecha</th>
-        <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.incidentDate }}</td>
+        <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.incidentDate | date:'dd/MM/yyyy' }}</td>
       </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Descripción</th>
@@ -87,6 +87,8 @@
       aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron incidentes con ese texto.</p>
+    } @else if (cargando) {
+    <p>Cargando…</p>
     } @else {
     <p>No hay registros disponibles.</p>
     }

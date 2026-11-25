@@ -68,7 +68,6 @@ export class Recommendationupdatecomponent implements OnInit {
         this.incidentes = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.userS.getUsers().subscribe({
@@ -76,7 +75,6 @@ export class Recommendationupdatecomponent implements OnInit {
         this.usuarios = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
 
@@ -97,7 +95,6 @@ export class Recommendationupdatecomponent implements OnInit {
         this.cdr.detectChanges()
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'No se encontró el registro!!'
         this.cdr.detectChanges()
       }
@@ -106,6 +103,7 @@ export class Recommendationupdatecomponent implements OnInit {
 
   actualizarRecomendacion(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -126,7 +124,6 @@ export class Recommendationupdatecomponent implements OnInit {
         this.router.navigate(['/recomendaciones/listar'])
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'Error al actualizar!!'
         this.cdr.detectChanges()
       }

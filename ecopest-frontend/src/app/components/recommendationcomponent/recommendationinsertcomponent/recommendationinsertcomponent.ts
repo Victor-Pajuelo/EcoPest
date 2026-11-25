@@ -56,7 +56,6 @@ export class Recommendationinsertcomponent implements OnInit {
         this.incidentes = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.userS.getUsers().subscribe({
@@ -64,13 +63,13 @@ export class Recommendationinsertcomponent implements OnInit {
         this.usuarios = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
 
   insertarRecomendacion(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -92,7 +91,6 @@ export class Recommendationinsertcomponent implements OnInit {
       },
       error: (error) => {
         this.mensaje = 'Error al registrar!!'
-        console.log(error)
         this.cdr.detectChanges()
       }
     })

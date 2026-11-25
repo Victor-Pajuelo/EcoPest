@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BusinessDTO } from '../../../models/BusinessDTO';
+import { UBICACIONES } from '../../../models/ubicaciones';
 import { Businessservice } from '../../../services/businessservice';
 
 @Component({
@@ -21,6 +22,7 @@ export class Businessupdatecomponent implements OnInit {
   item: any
   form: any
   mensaje: string = ''
+  ubicaciones = UBICACIONES
   empresas: any[] = []
 
   constructor(
@@ -34,6 +36,8 @@ export class Businessupdatecomponent implements OnInit {
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
       parentBusinessEntityId: [null, []],
+      latitude: [null, [Validators.min(-90), Validators.max(90)]],
+      longitude: [null, [Validators.min(-180), Validators.max(180)]],
       active: [true, []]
     })
   }
@@ -51,7 +55,6 @@ export class Businessupdatecomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
 
@@ -66,12 +69,13 @@ export class Businessupdatecomponent implements OnInit {
           name: data.name,
           type: data.type,
           parentBusinessEntityId: data.parentBusinessEntityId,
-          active: data.active
+          active: data.active,
+          latitude: data.latitude,
+          longitude: data.longitude
         })
         this.cdr.detectChanges()
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'No se encontró el registro!!'
         this.cdr.detectChanges()
       }
@@ -80,6 +84,7 @@ export class Businessupdatecomponent implements OnInit {
 
   actualizarEmpresa(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -89,6 +94,8 @@ export class Businessupdatecomponent implements OnInit {
       type: this.form.value.type,
       parentBusinessEntityId: this.form.value.parentBusinessEntityId,
       active: this.form.value.active,
+      latitude: this.form.value.latitude === '' ? null : this.form.value.latitude,
+      longitude: this.form.value.longitude === '' ? null : this.form.value.longitude,
       companyName: this.item.companyName,
     }
 
@@ -99,10 +106,14 @@ export class Businessupdatecomponent implements OnInit {
         this.router.navigate(['/empresas/listar'])
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'Error al actualizar!!'
         this.cdr.detectChanges()
       }
     })
+  }
+
+  // Al elegir una ciudad se llenan la latitud y la longitud
+  elegirUbicacion(u: { latitude: number; longitude: number } | null): void {
+    if (u) this.form.patchValue({ latitude: u.latitude, longitude: u.longitude })
   }
 }

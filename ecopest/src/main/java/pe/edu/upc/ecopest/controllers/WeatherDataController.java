@@ -96,14 +96,17 @@ public class WeatherDataController {
         return ResponseEntity.status(HttpStatus.CREATED).body(items);
     }
 
-    @Operation(summary = "Sincronizar clima real (Open-Meteo)", description = "Consulta la API externa Open-Meteo con las coordenadas indicadas (por defecto Lima) y guarda la temperatura y humedad actuales como un registro con source OPEN-METEO.")
+    @Operation(summary = "Sincronizar clima real (Open-Meteo)", description = "Consulta la API externa Open-Meteo y guarda la temperatura y humedad actuales como un registro con source OPEN-METEO. Si no se envian latitud y longitud, usa la ubicacion guardada en la empresa (o Lima si la empresa no tiene).")
     @PostMapping("/sync")
     public ResponseEntity<WeatherDataDTO> sync(@RequestParam Long businessEntityId,
-                                               @RequestParam(defaultValue = "-12.0464") double latitude,
-                                               @RequestParam(defaultValue = "-77.0428") double longitude) {
+                                               @RequestParam(required = false) Double latitude,
+                                               @RequestParam(required = false) Double longitude) {
         BusinessEntity businessEntity = businessEntityService.findById(businessEntityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Business entity not found"));
-        WeatherData weatherData = weatherDataService.syncCurrent(businessEntity, latitude, longitude);
+        // La ubicacion sale de la empresa; si no tiene, se usa Lima
+        double lat = latitude != null ? latitude : (businessEntity.getLatitude() != null ? businessEntity.getLatitude() : -12.0464);
+        double lon = longitude != null ? longitude : (businessEntity.getLongitude() != null ? businessEntity.getLongitude() : -77.0428);
+        WeatherData weatherData = weatherDataService.syncCurrent(businessEntity, lat, lon);
         return ResponseEntity.ok(modelMapper.map(weatherData, WeatherDataDTO.class));
     }
 

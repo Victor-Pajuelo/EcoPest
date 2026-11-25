@@ -63,6 +63,8 @@ public class BusinessEntityController {
         existing.setName(dto.getName());
         existing.setType(dto.getType());
         existing.setActive(dto.isActive());
+        existing.setLatitude(dto.getLatitude());
+        existing.setLongitude(dto.getLongitude());
         service.update(existing);
         return ResponseEntity.ok(modelMapper.map(existing, BusinessEntityDTO.class));
     }

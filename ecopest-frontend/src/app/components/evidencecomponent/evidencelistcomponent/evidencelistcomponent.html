@@ -23,10 +23,6 @@
     }
     @if (filasFiltradas.length > 0) {
     <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
-      <ng-container matColumnDef="C1">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idEvidence }}</td>
-      </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Archivo</th>
         <td mat-cell data-label="Archivo" *matCellDef="let element">
@@ -47,7 +43,7 @@
       </ng-container>
       <ng-container matColumnDef="C4">
         <th mat-header-cell *matHeaderCellDef>Fecha de carga</th>
-        <td mat-cell data-label="Fecha de carga" *matCellDef="let element">{{ element.uploadDate }}</td>
+        <td mat-cell data-label="Fecha de carga" *matCellDef="let element">{{ element.uploadDate | date:'dd/MM/yyyy HH:mm' }}</td>
       </ng-container>
       <ng-container matColumnDef="C5">
         <th mat-header-cell *matHeaderCellDef>Incidente</th>
@@ -82,6 +78,8 @@
       aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron evidencias con ese texto.</p>
+    } @else if (cargando) {
+    <p>Cargando…</p>
     } @else {
     <p>No hay registros disponibles.</p>
     }

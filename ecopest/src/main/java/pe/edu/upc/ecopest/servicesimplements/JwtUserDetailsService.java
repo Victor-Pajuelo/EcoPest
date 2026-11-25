@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .authorities(user.getRole().getName())
-                .disabled(!user.isActive())
+                .disabled(!user.isActive() || !user.getRole().isActive()) // usuario o rol inactivo: no puede iniciar sesion
                 .build();
     }
 }

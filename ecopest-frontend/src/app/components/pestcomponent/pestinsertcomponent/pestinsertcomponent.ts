@@ -41,6 +41,7 @@ export class Pestinsertcomponent {
 
   insertarPlaga(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -59,7 +60,6 @@ export class Pestinsertcomponent {
       },
       error: (error) => {
         this.mensaje = 'Error al registrar!!'
-        console.log(error)
         this.cdr.detectChanges()
       }
     })

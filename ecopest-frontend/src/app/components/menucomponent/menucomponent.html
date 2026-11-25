@@ -4,11 +4,13 @@
       <mat-icon>home</mat-icon>
     </button>
     <span class="logo"><mat-icon>eco</mat-icon> EcoPest</span>
-    <button matButton routerLink="/dashboard"><mat-icon>dashboard</mat-icon> Dashboard</button>
-    <button matButton routerLink="/graficos"><mat-icon>insights</mat-icon> Gráficos</button>
-    <button matButton routerLink="/reportes"><mat-icon>bar_chart</mat-icon> Reportes</button>
-    <button matButton [matMenuTriggerFor]="menuPest"><mat-icon>bug_report</mat-icon> Plagas</button>
+
+    <button matButton routerLink="/dashboard"><mat-icon>dashboard</mat-icon><span class="txt">Dashboard</span></button>
+    <button matButton routerLink="/graficos"><mat-icon>insights</mat-icon><span class="txt">Gráficos</span></button>
+
+    <button matButton [matMenuTriggerFor]="menuPest"><mat-icon>bug_report</mat-icon><span class="txt">Plagas</span></button>
     <mat-menu #menuPest="matMenu">
+      <button mat-menu-item routerLink="/plagas/catalogo"><mat-icon>grid_view</mat-icon> Catálogo</button>
       <button mat-menu-item routerLink="/plagas/listar"><mat-icon>list</mat-icon> Listar</button>
       @if (puedeEscribir()) {
         <button mat-menu-item routerLink="/plagas/insertar"><mat-icon>add</mat-icon> Registrar</button>
@@ -16,77 +18,76 @@
       <button mat-menu-item routerLink="/plagas/identificar"><mat-icon>search</mat-icon> Identificar</button>
     </mat-menu>
 
-    <button matButton [matMenuTriggerFor]="menuBusiness"><mat-icon>business</mat-icon> Empresas</button>
+    <button matButton [matMenuTriggerFor]="menuBusiness"><mat-icon>business</mat-icon><span class="txt">Empresas</span></button>
     <mat-menu #menuBusiness="matMenu">
       <button mat-menu-item routerLink="/empresas/listar"><mat-icon>list</mat-icon> Listar</button>
-      @if (puedeEscribir()) {
+      @if (esAdmin()) {
         <button mat-menu-item routerLink="/empresas/insertar"><mat-icon>add</mat-icon> Registrar</button>
       }
     </mat-menu>
 
-    @if (esAdmin()) {
-      <button matButton [matMenuTriggerFor]="menuRole"><mat-icon>admin_panel_settings</mat-icon> Roles</button>
-      <mat-menu #menuRole="matMenu">
-        <button mat-menu-item routerLink="/roles/listar"><mat-icon>list</mat-icon> Listar</button>
-        @if (puedeEscribir()) {
-          <button mat-menu-item routerLink="/roles/insertar"><mat-icon>add</mat-icon> Registrar</button>
-        }
-      </mat-menu>
-    }
+    <!-- Operacion: agrupa los modulos del dia a dia para que el menu no se salga de la pantalla -->
+    <button matButton [matMenuTriggerFor]="menuOperacion"><mat-icon>fact_check</mat-icon><span class="txt">Operación</span></button>
+    <mat-menu #menuOperacion="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="subInspection"><mat-icon>fact_check</mat-icon> Inspecciones</button>
+      <button mat-menu-item [matMenuTriggerFor]="subIncident"><mat-icon>report_problem</mat-icon> Incidentes</button>
+      <button mat-menu-item [matMenuTriggerFor]="subEvidence"><mat-icon>photo_library</mat-icon> Evidencias</button>
+      <button mat-menu-item [matMenuTriggerFor]="subRecommendation"><mat-icon>lightbulb</mat-icon> Recomendaciones</button>
+      <button mat-menu-item [matMenuTriggerFor]="subWeather"><mat-icon>cloud</mat-icon> Clima</button>
+    </mat-menu>
 
-    @if (esAdmin()) {
-      <button matButton [matMenuTriggerFor]="menuUser"><mat-icon>group</mat-icon> Usuarios</button>
-      <mat-menu #menuUser="matMenu">
-        <button mat-menu-item routerLink="/usuarios/listar"><mat-icon>list</mat-icon> Listar</button>
-        @if (puedeEscribir()) {
-          <button mat-menu-item routerLink="/usuarios/insertar"><mat-icon>add</mat-icon> Registrar</button>
-        }
-      </mat-menu>
-    }
-
-    <button matButton [matMenuTriggerFor]="menuInspection"><mat-icon>fact_check</mat-icon> Inspecciones</button>
-    <mat-menu #menuInspection="matMenu">
+    <mat-menu #subInspection="matMenu">
       <button mat-menu-item routerLink="/inspecciones/listar"><mat-icon>list</mat-icon> Listar</button>
       @if (puedeEscribir()) {
         <button mat-menu-item routerLink="/inspecciones/insertar"><mat-icon>add</mat-icon> Registrar</button>
       }
     </mat-menu>
-
-    <button matButton [matMenuTriggerFor]="menuIncident"><mat-icon>report_problem</mat-icon> Incidentes</button>
-    <mat-menu #menuIncident="matMenu">
+    <mat-menu #subIncident="matMenu">
       <button mat-menu-item routerLink="/incidentes/listar"><mat-icon>list</mat-icon> Listar</button>
       @if (puedeEscribir()) {
         <button mat-menu-item routerLink="/incidentes/insertar"><mat-icon>add</mat-icon> Registrar</button>
       }
     </mat-menu>
-
-    <button matButton [matMenuTriggerFor]="menuEvidence"><mat-icon>photo_library</mat-icon> Evidencias</button>
-    <mat-menu #menuEvidence="matMenu">
+    <mat-menu #subEvidence="matMenu">
       <button mat-menu-item routerLink="/evidencias/listar"><mat-icon>list</mat-icon> Listar</button>
       @if (puedeEscribir()) {
         <button mat-menu-item routerLink="/evidencias/insertar"><mat-icon>add</mat-icon> Registrar</button>
       }
     </mat-menu>
-
-    <button matButton [matMenuTriggerFor]="menuRecommendation"><mat-icon>lightbulb</mat-icon> Recomendaciones</button>
-    <mat-menu #menuRecommendation="matMenu">
+    <mat-menu #subRecommendation="matMenu">
+      <button mat-menu-item routerLink="/recomendaciones/empresas"><mat-icon>business</mat-icon> Por empresa</button>
       <button mat-menu-item routerLink="/recomendaciones/listar"><mat-icon>list</mat-icon> Listar</button>
       @if (puedeEscribir()) {
         <button mat-menu-item routerLink="/recomendaciones/insertar"><mat-icon>add</mat-icon> Registrar</button>
       }
     </mat-menu>
-
-    <button matButton [matMenuTriggerFor]="menuWeather"><mat-icon>cloud</mat-icon> Clima</button>
-    <mat-menu #menuWeather="matMenu">
+    <mat-menu #subWeather="matMenu">
       <button mat-menu-item routerLink="/clima/listar"><mat-icon>list</mat-icon> Listar</button>
       @if (puedeEscribir()) {
         <button mat-menu-item routerLink="/clima/insertar"><mat-icon>add</mat-icon> Registrar</button>
       }
     </mat-menu>
 
+    <!-- Administracion: solo ADMIN -->
+    @if (esAdmin()) {
+      <button matButton [matMenuTriggerFor]="menuAdmin"><mat-icon>admin_panel_settings</mat-icon><span class="txt">Administración</span></button>
+      <mat-menu #menuAdmin="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="subRole"><mat-icon>admin_panel_settings</mat-icon> Roles</button>
+        <button mat-menu-item [matMenuTriggerFor]="subUser"><mat-icon>group</mat-icon> Usuarios</button>
+      </mat-menu>
+      <mat-menu #subRole="matMenu">
+        <button mat-menu-item routerLink="/roles/listar"><mat-icon>list</mat-icon> Listar</button>
+        <button mat-menu-item routerLink="/roles/insertar"><mat-icon>add</mat-icon> Registrar</button>
+      </mat-menu>
+      <mat-menu #subUser="matMenu">
+        <button mat-menu-item routerLink="/usuarios/listar"><mat-icon>list</mat-icon> Listar</button>
+        <button mat-menu-item routerLink="/usuarios/insertar"><mat-icon>add</mat-icon> Registrar</button>
+      </mat-menu>
+    }
+
     <span class="spacer"></span>
     <span class="usuario">{{ usuario() }} · <span class="rol">{{ rol() }}</span></span>
-    <button matIconButton (click)="cerrarSesion()" aria-label="Cerrar sesión">
+    <button matIconButton (click)="cerrarSesion()" aria-label="Cerrar sesión" title="Cerrar sesión">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>

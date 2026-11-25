@@ -46,7 +46,6 @@ export class Userinsertcomponent implements OnInit {
         this.roles = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.businessS.getBusinesses().subscribe({
@@ -54,7 +53,6 @@ export class Userinsertcomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
@@ -65,6 +63,7 @@ export class Userinsertcomponent implements OnInit {
       return
     }
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -86,7 +85,6 @@ export class Userinsertcomponent implements OnInit {
       },
       error: (error) => {
         this.mensaje = 'Error al registrar!!'
-        console.log(error)
         this.cdr.detectChanges()
       }
     })
