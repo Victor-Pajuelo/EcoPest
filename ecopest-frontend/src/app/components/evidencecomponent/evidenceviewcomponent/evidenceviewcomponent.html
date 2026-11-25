@@ -1,1 +1,25 @@
-<p>evidenceviewcomponent works!</p>
+<div class="container">
+  <h2><mat-icon>visibility</mat-icon> Detalle de la evidencia</h2>
+  <p>{{ mensaje }}</p>
+  <div class="perfil">
+    @if (esImagen()) {
+      <img class="preview" [src]="evidencia.fileUrl" alt="Evidencia">
+    } @else {
+      <div class="avatar"><mat-icon>description</mat-icon></div>
+    }
+    <div class="dato"><span>ID</span><strong>{{ evidencia.idEvidence }}</strong></div>
+    <div class="dato"><span>Tipo</span><strong>{{ evidencia.fileType }}</strong></div>
+    <div class="dato"><span>Fecha de carga</span><strong>{{ evidencia.uploadDate }}</strong></div>
+    <div class="dato"><span>Incidente</span><strong>{{ incidente || '-' }}</strong></div>
+    <div class="dato"><span>Archivo</span>
+      <strong>
+        @if (evidencia.fileUrl) {
+          <a [href]="evidencia.fileUrl" target="_blank" rel="noopener">Abrir archivo</a>
+        } @else { - }
+      </strong>
+    </div>
+  </div>
+  <a mat-flat-button class="btn-volver" routerLink="/evidencias/listar">
+    <mat-icon>arrow_back</mat-icon> Volver
+  </a>
+</div>

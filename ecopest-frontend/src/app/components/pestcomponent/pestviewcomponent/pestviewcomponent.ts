@@ -15,6 +15,7 @@ export class Pestviewcomponent implements OnInit {
 
   plaga: PestTypeDTO = new PestTypeDTO()
   mensaje: string = ''
+  foto: string = ''
 
   constructor(
     private s: Pestservice,
@@ -28,11 +29,26 @@ export class Pestviewcomponent implements OnInit {
     this.s.getPestById(id).subscribe({
       next: data => {
         this.plaga = data
+        this.buscarFoto()
         this.cdr.detectChanges()
       }, error: err => {
         console.log(err)
         this.mensaje = 'No se encontró la plaga!!'
         this.cdr.detectChanges()
+      }
+    })
+  }
+
+  // La tabla de plagas no guarda foto: se busca la especie por nombre en iNaturalist y se usa la primera con foto
+  buscarFoto(): void {
+    if (!this.plaga.name) return
+    this.s.searchSpecies(this.plaga.name).subscribe({
+      next: especies => {
+        const conFoto = especies.find(e => e.photoUrl)
+        this.foto = conFoto?.photoUrl ?? ''
+        this.cdr.detectChanges()
+      }, error: () => {
+        this.foto = ''
       }
     })
   }
