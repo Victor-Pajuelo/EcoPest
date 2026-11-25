@@ -51,5 +51,9 @@
     <button mat-flat-button class="btn-login" type="submit" [disabled]="cargando">
       {{ cargando ? 'Ingresando...' : 'Ingresar' }}
     </button>
+
+    <a class="volver-inicio" routerLink="/inicio">
+      <mat-icon>arrow_back</mat-icon> Volver al inicio
+    </a>
   </form>
 </div>

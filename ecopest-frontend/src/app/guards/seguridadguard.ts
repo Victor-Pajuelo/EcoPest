@@ -15,7 +15,8 @@ export const seguridadGuard: CanActivateFn = () => {
     sessionStorage.removeItem('username');
     return router.createUrlTree(['/login'], { queryParams: { expirada: 1 } });
   }
-  return router.createUrlTree(['/login']);
+  // Sin sesion: se muestra la landing page publica
+  return router.createUrlTree(['/inicio']);
 };
 
 // 2) Solo deja entrar si el rol esta en data: { roles: [...] } de la ruta

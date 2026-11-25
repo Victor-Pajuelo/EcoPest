@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,7 @@ import { LoginRequestDTO } from '../../models/LoginRequestDTO';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
+    RouterLink,
   ],
   templateUrl: './logincomponent.html',
   styleUrl: './logincomponent.css',

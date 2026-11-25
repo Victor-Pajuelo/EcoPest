@@ -1,0 +1,68 @@
+<header class="barra">
+  <div class="marca"><mat-icon>eco</mat-icon> EcoPest</div>
+  @if (haySesion()) {
+    <a mat-flat-button class="btn-principal" routerLink="/">Ir al sistema</a>
+  } @else {
+    <a mat-flat-button class="btn-principal" routerLink="/login">Iniciar sesión</a>
+  }
+</header>
+
+<section class="hero">
+  <div class="hero-texto">
+    <p class="etiqueta">Control integrado de plagas</p>
+    <h1>Detecta, registra y controla plagas en un solo lugar</h1>
+    <p class="lead">EcoPest ayuda a las empresas de control de plagas a organizar sus inspecciones,
+      reportar incidentes con evidencias y decidir qué hacer con apoyo del clima y de la IA.</p>
+    <div class="acciones">
+      @if (haySesion()) {
+        <a mat-flat-button class="btn-principal" routerLink="/">Ir al sistema</a>
+      } @else {
+        <a mat-flat-button class="btn-principal" routerLink="/login">Iniciar sesión</a>
+      }
+      <a mat-stroked-button class="btn-secundario" href="#funciones">Ver funciones</a>
+    </div>
+  </div>
+  <div class="hero-icono" aria-hidden="true">
+    <mat-icon>bug_report</mat-icon>
+  </div>
+</section>
+
+<section class="seccion" id="funciones">
+  <h2>¿Qué puedes hacer?</h2>
+  <div class="tarjetas">
+    @for (f of funciones; track f.titulo) {
+      <div class="tarjeta">
+        <mat-icon>{{ f.icono }}</mat-icon>
+        <h3>{{ f.titulo }}</h3>
+        <p>{{ f.texto }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="seccion alterna">
+  <h2>¿Cómo funciona?</h2>
+  <div class="pasos">
+    @for (p of pasos; track p.numero) {
+      <div class="paso">
+        <span class="numero">{{ p.numero }}</span>
+        <h3>{{ p.titulo }}</h3>
+        <p>{{ p.texto }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="seccion">
+  <h2>Nuestro equipo</h2>
+  <div class="equipo">
+    @for (i of integrantes; track i) {
+      <div class="integrante"><mat-icon>account_circle</mat-icon> {{ i }}</div>
+    }
+  </div>
+</section>
+
+<footer class="pie">
+  <p>EcoPest · Arquitectura de Aplicaciones Web · UPC</p>
+  <a href="https://github.com/Victor-Pajuelo/EcoPest" target="_blank" rel="noopener"><mat-icon>code</mat-icon> GitHub</a>
+</footer>
