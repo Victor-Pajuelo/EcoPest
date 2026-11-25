@@ -54,17 +54,21 @@
             <mat-icon>visibility</mat-icon>
           </a>
 
-          <a mat-icon-button class="btn-editar"
-            [routerLink]="['/empresas/editar', element.idBusinessEntity]"
-            title="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
+          @if (puedeEscribir()) {
+            <a mat-icon-button class="btn-editar"
+              [routerLink]="['/empresas/editar', element.idBusinessEntity]"
+              title="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+          }
 
-          <button mat-icon-button class="btn-eliminar"
-                  (click)="eliminarEmpresa(element.idBusinessEntity)"
-                  title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (esAdmin()) {
+            <button mat-icon-button class="btn-eliminar"
+                    (click)="eliminarEmpresa(element.idBusinessEntity)"
+                    title="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
 
         </td>
       </ng-container>
