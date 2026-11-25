@@ -35,11 +35,12 @@ export class Weatherservice {
   }
 
   /** Clima real desde Open-Meteo (el backend llama a la API externa y lo guarda). */
-  syncWeather(businessEntityId: number, latitude: number, longitude: number): Observable<WeatherDataDTO> {
-    const params = new HttpParams()
-      .set('businessEntityId', businessEntityId)
-      .set('latitude', latitude)
-      .set('longitude', longitude);
+  syncWeather(businessEntityId: number, latitude?: number, longitude?: number): Observable<WeatherDataDTO> {
+    // Sin latitud y longitud, el backend usa la ubicacion guardada en la empresa
+    let params = new HttpParams().set('businessEntityId', businessEntityId);
+    if (latitude != null && longitude != null) {
+      params = params.set('latitude', latitude).set('longitude', longitude);
+    }
     return this.http.post<WeatherDataDTO>(`${this.apiURL}/sync`, null, { params });
   }
 

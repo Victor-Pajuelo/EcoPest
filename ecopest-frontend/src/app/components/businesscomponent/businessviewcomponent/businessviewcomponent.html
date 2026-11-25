@@ -3,11 +3,11 @@
   <p>{{ mensaje }}</p>
   <div class="perfil">
     <div class="avatar"><mat-icon>business</mat-icon></div>
-    <div class="dato"><span>ID</span><strong>{{ empresa.idBusinessEntity }}</strong></div>
     <div class="dato"><span>Nombre</span><strong>{{ empresa.name }}</strong></div>
     <div class="dato"><span>Tipo</span><strong>{{ empresa.type }}</strong></div>
     <div class="dato"><span>Razón social</span><strong>{{ empresa.companyName }}</strong></div>
     <div class="dato"><span>Pertenece a</span><strong>{{ empresaPadre || '-' }}</strong></div>
+    <div class="dato"><span>Ubicación</span><strong>{{ empresa.latitude != null ? empresa.latitude + ', ' + empresa.longitude : 'Lima (por defecto)' }}</strong></div>
     <div class="dato"><span>Activo</span><strong>{{ empresa.active ? 'Sí' : 'No' }}</strong></div>
   </div>
   <a mat-flat-button class="btn-volver" routerLink="/empresas/listar">

@@ -31,10 +31,10 @@ export class Graficoscomponent implements OnInit {
   totalRecomendaciones: number = 0
 
   // Colores verdes de EcoPest para las porciones y las barras
-  colores: string[] = ['#0aae4e', '#5df160', '#8df9c0', '#67ad87', '#bbf580', '#f5c542', '#f28b82']
+  colores: string[] = ['#067a37', '#5df160', '#8df9c0', '#67ad87', '#bbf580', '#f5c542', '#f28b82']
 
   // Colores por nivel de riesgo: verde = bajo, amarillo = medio, rojo = alto
-  coloresRiesgo: any = { BAJO: '#0aae4e', MEDIO: '#f5c542', ALTO: '#f28b82' }
+  coloresRiesgo: any = { BAJO: '#067a37', MEDIO: '#f5c542', ALTO: '#f28b82' }
 
   // Grafico 1: incidentes por plaga (barras)
   plagaData: ChartData<'bar'> = {
@@ -51,7 +51,7 @@ export class Graficoscomponent implements OnInit {
   // Grafico 3: inspecciones por empresa (barras horizontales)
   inspeccionData: ChartData<'bar'> = {
     labels: [],
-    datasets: [{ label: 'Inspecciones', data: [], backgroundColor: '#0aae4e', borderWidth: 1 }],
+    datasets: [{ label: 'Inspecciones', data: [], backgroundColor: '#067a37', borderWidth: 1 }],
   }
 
   // Grafico 4: usuarios por rol (torta)
@@ -194,7 +194,7 @@ export class Graficoscomponent implements OnInit {
       next: (data: CountDTO[]) => {
         this.inspeccionData = {
           labels: data.map(item => item.name),
-          datasets: [{ label: 'Inspecciones', data: data.map(item => item.quantity), backgroundColor: '#0aae4e', borderWidth: 1 }],
+          datasets: [{ label: 'Inspecciones', data: data.map(item => item.quantity), backgroundColor: '#067a37', borderWidth: 1 }],
         }
         this.mensaje = ''
         this.cdr.detectChanges()
@@ -230,7 +230,6 @@ export class Graficoscomponent implements OnInit {
   }
 
   mostrarError(err: any): void {
-    console.log(err)
     this.mensaje = 'No se pudieron cargar algunos datos. Revise que el servidor esté activo.'
     this.cdr.detectChanges()
   }

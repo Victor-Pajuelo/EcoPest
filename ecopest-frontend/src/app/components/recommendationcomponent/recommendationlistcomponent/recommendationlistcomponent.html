@@ -23,10 +23,6 @@
     }
     @if (filasFiltradas.length > 0) {
     <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
-      <ng-container matColumnDef="C1">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idRecommendation }}</td>
-      </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Descripción</th>
         <td mat-cell data-label="Descripción" *matCellDef="let element">{{ element.description }}</td>
@@ -71,6 +67,8 @@
       aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron recomendaciones con ese texto.</p>
+    } @else if (cargando) {
+    <p>Cargando…</p>
     } @else {
     <p>No hay registros disponibles.</p>
     }

@@ -1,3 +1,5 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -12,7 +14,7 @@ import { Userservice } from '../../../services/userservice';
 
 @Component({
   selector: 'app-inspectionlistcomponent',
-  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink],
+  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './inspectionlistcomponent.html',
   styleUrl: './inspectionlistcomponent.css',
 })
@@ -27,14 +29,15 @@ export class Inspectionlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  // Tester y Cliente solo leen: no ven la columna ID ni la de Acciones (quedaria vacia)
+  // Tester y Cliente solo leen: no ven la columna de Acciones (quedaria vacia)
   get displayedColumns(): string[] {
     if (this.puedeEscribir()) {
-      return ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+      return ['C2', 'C3', 'C4', 'C5', 'C6', 'C7']
     }
     return ['C2', 'C3', 'C4', 'C5', 'C6']
   }
   dataSource: InspectionDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -47,6 +50,7 @@ export class Inspectionlistcomponent implements OnInit {
     private loginS: Loginservice,
     private s: Inspectionservice,
     private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice,
     private businessS: Businessservice,
     private userS: Userservice
   ) { }
@@ -58,7 +62,6 @@ export class Inspectionlistcomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.userS.getUsers().subscribe({
@@ -66,7 +69,6 @@ export class Inspectionlistcomponent implements OnInit {
         this.usuarios = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
@@ -74,30 +76,32 @@ export class Inspectionlistcomponent implements OnInit {
   obtenerInspecciones(): void {
     this.s.getInspections().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
   }
 
   eliminarInspeccion(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar la inspección #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteInspection(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerInspecciones()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar la inspección #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteInspection(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerInspecciones()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 

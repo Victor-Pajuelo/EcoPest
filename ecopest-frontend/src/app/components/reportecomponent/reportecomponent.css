@@ -19,16 +19,16 @@
 
 h2 {
   text-align: center;
-  color: #0aae4e;
+  color: #067a37;
   font-size: 26px;
   font-weight: bold;
   margin: 5px 0 20px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #0aae4e;
+  border-bottom: 2px solid #067a37;
 }
 
 h3 {
-  color: #0aae4e;
+  color: #067a37;
   font-size: 18px;
   margin-bottom: 20px;
 }
@@ -61,7 +61,7 @@ h3 {
 
 .barra {
   height: 100%;
-  background-color: #0aae4e;
+  background-color: #067a37;
   border-radius: 6px;
   transition: width 0.5s ease, background-color 0.2s ease;
 }
@@ -105,7 +105,7 @@ h3 {
 .btn-reintentar {
   margin-top: 10px;
   padding: 8px 18px;
-  background-color: #0aae4e;
+  background-color: #067a37;
   color: white;
   border: none;
   border-radius: 6px;

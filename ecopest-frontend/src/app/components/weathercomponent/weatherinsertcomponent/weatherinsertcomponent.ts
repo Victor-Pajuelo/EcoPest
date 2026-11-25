@@ -44,13 +44,13 @@ export class Weatherinsertcomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
 
   insertarClima(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -73,7 +73,6 @@ export class Weatherinsertcomponent implements OnInit {
       },
       error: (error) => {
         this.mensaje = 'Error al registrar!!'
-        console.log(error)
         this.cdr.detectChanges()
       }
     })

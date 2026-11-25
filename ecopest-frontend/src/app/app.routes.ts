@@ -5,6 +5,7 @@ import { Pestlistcomponent } from './components/pestcomponent/pestlistcomponent/
 import { Pestinsertcomponent } from './components/pestcomponent/pestinsertcomponent/pestinsertcomponent';
 import { Pestupdatecomponent } from './components/pestcomponent/pestupdatecomponent/pestupdatecomponent';
 import { Pestidentifycomponent } from './components/pestcomponent/pestidentifycomponent/pestidentifycomponent';
+import { Pestcatalogcomponent } from './components/pestcomponent/pestcatalogcomponent/pestcatalogcomponent';
 import { Pestviewcomponent } from './components/pestcomponent/pestviewcomponent/pestviewcomponent';
 import { Businesscomponent } from './components/businesscomponent/businesscomponent';
 import { Businesslistcomponent } from './components/businesscomponent/businesslistcomponent/businesslistcomponent';
@@ -35,6 +36,7 @@ import { Evidenceinsertcomponent } from './components/evidencecomponent/evidence
 import { Evidenceupdatecomponent } from './components/evidencecomponent/evidenceupdatecomponent/evidenceupdatecomponent';
 import { Evidenceviewcomponent } from './components/evidencecomponent/evidenceviewcomponent/evidenceviewcomponent';
 import { Recommendationcomponent } from './components/recommendationcomponent/recommendationcomponent';
+import { Recommendationbybusinesscomponent } from './components/recommendationcomponent/recommendationbybusinesscomponent/recommendationbybusinesscomponent';
 import { Recommendationlistcomponent } from './components/recommendationcomponent/recommendationlistcomponent/recommendationlistcomponent';
 import { Recommendationinsertcomponent } from './components/recommendationcomponent/recommendationinsertcomponent/recommendationinsertcomponent';
 import { Recommendationupdatecomponent } from './components/recommendationcomponent/recommendationupdatecomponent/recommendationupdatecomponent';
@@ -46,6 +48,7 @@ import { Dashboardcomponent } from './components/dashboardcomponent/dashboardcom
 import { Graficoscomponent } from './components/graficoscomponent/graficoscomponent';
 import { Logincomponent } from './components/logincomponent/logincomponent';
 import { Landingcomponent } from './components/landingcomponent/landingcomponent';
+import { Terminoscomponent } from './components/terminoscomponent/terminoscomponent';
 import { seguridadGuard, rolGuard } from './guards/seguridadguard';
 
 // Roles que pueden crear y editar (igual que SecurityConfig del back)
@@ -53,12 +56,19 @@ const ESCRIBIR = ['ROLE_ADMIN', 'ROLE_SUPERVISOR'];
 const SOLO_ADMIN = ['ROLE_ADMIN'];
 export const routes: Routes = [
   {
+    path: 'terminos',
+    title: 'Términos y condiciones · EcoPest',
+    component: Terminoscomponent,
+  },
+  {
     path: 'login',
+    title: 'Iniciar sesión · EcoPest',
     component: Logincomponent,
   },
   {
     // Landing page publica (sin iniciar sesion)
     path: 'inicio',
+    title: 'EcoPest · Control de plagas',
     component: Landingcomponent,
   },
   {
@@ -68,17 +78,20 @@ export const routes: Routes = [
   },
     {
     path: 'dashboard',
+    title: 'Dashboard · EcoPest',
     component: Dashboardcomponent,
     canActivate: [seguridadGuard],
   },
   {
     path: 'graficos',
+    title: 'Gráficos · EcoPest',
     component: Graficoscomponent,
     canActivate: [seguridadGuard],
   },
 
   {
     path: 'plagas',
+    title: 'Plagas · EcoPest',
     component: Pestcomponent,
     canActivate: [seguridadGuard],
     children: [
@@ -108,7 +121,13 @@ export const routes: Routes = [
         component: Pestviewcomponent,
       },
       {
+        path: 'catalogo',
+        title: 'Catálogo de plagas · EcoPest',
+        component: Pestcatalogcomponent,
+      },
+      {
         path: 'identificar',
+        title: 'Identificar plaga · EcoPest',
         component: Pestidentifycomponent,
       },
     ],
@@ -116,6 +135,7 @@ export const routes: Routes = [
 
   {
     path: 'empresas',
+    title: 'Empresas · EcoPest',
     component: Businesscomponent,
     canActivate: [seguridadGuard],
     children: [
@@ -132,13 +152,13 @@ export const routes: Routes = [
         path: 'insertar',
         component: Businessinsertcomponent,
         canActivate: [rolGuard],
-        data: { roles: ESCRIBIR },
+        data: { roles: SOLO_ADMIN },
       },
       {
         path: 'editar/:id',
         component: Businessupdatecomponent,
         canActivate: [rolGuard],
-        data: { roles: ESCRIBIR },
+        data: { roles: SOLO_ADMIN },
       },
       {
       path: 'ver/:id',
@@ -149,6 +169,7 @@ export const routes: Routes = [
 
   {
     path: 'roles',
+    title: 'Roles · EcoPest',
     component: Rolecomponent,
     canActivate: [seguridadGuard, rolGuard],
     data: { roles: SOLO_ADMIN },
@@ -179,6 +200,7 @@ export const routes: Routes = [
 
   {
     path: 'usuarios',
+    title: 'Usuarios · EcoPest',
     component: Usercomponent,
     canActivate: [seguridadGuard, rolGuard],
     data: { roles: SOLO_ADMIN },
@@ -213,6 +235,7 @@ export const routes: Routes = [
 
   {
     path: 'inspecciones',
+    title: 'Inspecciones · EcoPest',
     component: Inspectioncomponent,
     canActivate: [seguridadGuard],
     children: [
@@ -243,6 +266,7 @@ export const routes: Routes = [
   
   {
     path: 'incidentes',
+    title: 'Incidentes · EcoPest',
     component: Incidentcomponent,
     canActivate: [seguridadGuard],
     children: [
@@ -277,6 +301,7 @@ export const routes: Routes = [
 
   {
     path: 'evidencias',
+    title: 'Evidencias · EcoPest',
     component: Evidencecomponent,
     canActivate: [seguridadGuard],
     children: [
@@ -310,6 +335,7 @@ export const routes: Routes = [
 
   {
     path: 'recomendaciones',
+    title: 'Recomendaciones · EcoPest',
     component: Recommendationcomponent,
     canActivate: [seguridadGuard],
     children: [
@@ -317,6 +343,10 @@ export const routes: Routes = [
         path: '',
         redirectTo: 'listar',
         pathMatch: 'full',
+      },
+      {
+        path: 'empresas',
+        component: Recommendationbybusinesscomponent,
       },
       {
         path: 'listar',
@@ -339,6 +369,7 @@ export const routes: Routes = [
 
   {
     path: 'clima',
+    title: 'Clima · EcoPest',
     component: Weathercomponent,
     canActivate: [seguridadGuard],
     children: [

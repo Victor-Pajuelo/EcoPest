@@ -57,7 +57,6 @@ export class Evidenceupdatecomponent implements OnInit {
         this.incidentes = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
 
@@ -76,7 +75,6 @@ export class Evidenceupdatecomponent implements OnInit {
         this.cdr.detectChanges()
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'No se encontró el registro!!'
         this.cdr.detectChanges()
       }
@@ -85,6 +83,7 @@ export class Evidenceupdatecomponent implements OnInit {
 
   actualizarEvidencia(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -103,7 +102,6 @@ export class Evidenceupdatecomponent implements OnInit {
         this.router.navigate(['/evidencias/listar'])
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'Error al actualizar!!'
         this.cdr.detectChanges()
       }

@@ -16,7 +16,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Ecopest API")
                         .version("1.0")
-                        .description("API REST con Spring Security y JWT"))
+                        .description("API REST con Spring Security y JWT. Para probar los endpoints: 1) ejecuta POST /login con tu correo y contraseña, 2) copia el token de la respuesta, 3) pulsa Authorize y pegalo. Sin token, la API responde 401."))
                 .components(new Components()
                         .addSecuritySchemes(
                                 "bearerAuth",

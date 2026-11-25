@@ -1,28 +1,50 @@
 <div class="container">
-  <h2>Lista de Clima</h2>
-  <div class="cabecera">
-    @if (puedeEscribir()) {
-      <a mat-flat-button class="btn-registrar" routerLink="/clima/insertar">
-        <mat-icon>add</mat-icon> Registrar
-      </a>
-    }
-  </div>
-  <div class="sincronizar">
-    <mat-form-field appearance="outline">
-      <mat-label>Empresa</mat-label>
-      <mat-select (selectionChange)="empresaSeleccionada = $event.value">
-        @for (e of empresas; track e.idBusinessEntity) {
-        <mat-option [value]="e.idBusinessEntity">{{ e.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    @if (puedeEscribir()) {
-      <button mat-flat-button class="btn-sincronizar" (click)="sincronizarClima()" [disabled]="sincronizando">
-        <mat-icon>sync</mat-icon> Sincronizar con Open-Meteo
-      </button>
-    }
+  <h2>Clima por empresa</h2>
+  <p class="ayuda">Elige una empresa para ver su clima actual y su historial.</p>
+
+  <div class="panel-clima">
+    <div class="selector">
+      <mat-form-field appearance="outline">
+        <mat-label>Empresa</mat-label>
+        <mat-select [value]="empresaSeleccionada" (selectionChange)="elegirEmpresa($event.value)">
+          <mat-option [value]="null">Todas las empresas</mat-option>
+          @for (e of empresas; track e.idBusinessEntity) {
+          <mat-option [value]="e.idBusinessEntity">{{ e.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      @if (puedeEscribir()) {
+        <button mat-flat-button class="btn-sincronizar" (click)="sincronizarClima()" [disabled]="sincronizando">
+          <mat-icon>cloud_sync</mat-icon> {{ sincronizando ? 'Consultando…' : 'Ver clima' }}
+        </button>
+        <a mat-stroked-button class="btn-manual" routerLink="/clima/insertar">
+          <mat-icon>add</mat-icon> Agregar registro manual
+        </a>
+      }
+    </div>
+
+    <div class="tarjeta-clima" aria-live="polite">
+      @if (empresaSeleccionada == null) {
+        <p class="sin-dato"><mat-icon>touch_app</mat-icon> Selecciona una empresa para ver su clima.</p>
+      } @else if (ultimo) {
+        <div class="titulo-tarjeta">
+          <mat-icon>location_on</mat-icon>
+          <strong>{{ nombreEmpresa(empresaSeleccionada) }}</strong>
+          <span class="ubicacion">{{ ubicacionEmpresa() }}</span>
+        </div>
+        <div class="valores">
+          <div class="valor"><mat-icon>thermostat</mat-icon><strong>{{ ultimo.temperature }} °C</strong><span>Temperatura</span></div>
+          <div class="valor"><mat-icon>water_drop</mat-icon><strong>{{ ultimo.humidity }} %</strong><span>Humedad</span></div>
+        </div>
+        <p class="pie">Dato del {{ ultimo.date | date:'dd/MM/yyyy' }} · Fuente: {{ ultimo.source }}</p>
+      } @else {
+        <p class="sin-dato"><mat-icon>cloud_off</mat-icon> Esta empresa aún no tiene registros de clima.
+          @if (puedeEscribir()) { Pulsa «Ver clima» para traer el clima de hoy. }</p>
+      }
+    </div>
   </div>
   <p>{{ mensaje }}</p>
+  <h3>Historial</h3>
   <div>
     @if (dataSource.length > 0) {
     <div class="busqueda">
@@ -38,13 +60,9 @@
     }
     @if (filasFiltradas.length > 0) {
     <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
-      <ng-container matColumnDef="C1">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idWeatherData }}</td>
-      </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Fecha</th>
-        <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.date }}</td>
+        <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.date | date:'dd/MM/yyyy' }}</td>
       </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Temperatura</th>
@@ -86,6 +104,8 @@
       aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron registros de clima con ese texto.</p>
+    } @else if (cargando) {
+    <p>Cargando…</p>
     } @else {
     <p>No hay registros disponibles.</p>
     }

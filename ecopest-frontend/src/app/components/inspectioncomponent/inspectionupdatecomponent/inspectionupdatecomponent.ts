@@ -64,7 +64,6 @@ export class Inspectionupdatecomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.userS.getUsers().subscribe({
@@ -72,7 +71,6 @@ export class Inspectionupdatecomponent implements OnInit {
         this.usuarios = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
 
@@ -93,7 +91,6 @@ export class Inspectionupdatecomponent implements OnInit {
         this.cdr.detectChanges()
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'No se encontró el registro!!'
         this.cdr.detectChanges()
       }
@@ -102,6 +99,7 @@ export class Inspectionupdatecomponent implements OnInit {
 
   actualizarInspeccion(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -123,7 +121,6 @@ export class Inspectionupdatecomponent implements OnInit {
         this.router.navigate(['/inspecciones/listar'])
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'Error al actualizar!!'
         this.cdr.detectChanges()
       }

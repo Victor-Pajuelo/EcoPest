@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +10,7 @@ import { Inspectionservice } from '../../../services/inspectionservice';
 
 @Component({
   selector: 'app-incidentviewcomponent',
-  imports: [MatIconModule, MatButtonModule, RouterLink],
+  imports: [DatePipe, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './incidentviewcomponent.html',
   styleUrl: './incidentviewcomponent.css',
 })
@@ -37,7 +38,6 @@ export class Incidentviewcomponent implements OnInit {
         this.cargarRelacionados()
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensaje = 'No se encontró el incidente!!'
         this.cdr.detectChanges()
       }

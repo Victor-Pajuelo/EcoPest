@@ -22,6 +22,13 @@ public class BusinessEntity {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    // Ubicacion de la empresa: se usa para consultar el clima real de ese lugar (null = Lima)
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     @ManyToOne
     @JoinColumn(name = "parent_business_entity_id")
     private BusinessEntity parentBusinessEntity;
@@ -38,6 +45,10 @@ public class BusinessEntity {
     public void setCompanyName(String companyName) { this.companyName = companyName; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
     public BusinessEntity getParentBusinessEntity() { return parentBusinessEntity; }
     public void setParentBusinessEntity(BusinessEntity parentBusinessEntity) { this.parentBusinessEntity = parentBusinessEntity; }
 }

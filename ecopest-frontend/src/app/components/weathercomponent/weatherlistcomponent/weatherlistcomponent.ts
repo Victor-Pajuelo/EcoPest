@@ -1,3 +1,5 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -13,7 +15,7 @@ import { Businessservice } from '../../../services/businessservice';
 
 @Component({
   selector: 'app-weatherlistcomponent',
-  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, RouterLink],
+  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, RouterLink],
   templateUrl: './weatherlistcomponent.html',
   styleUrl: './weatherlistcomponent.css',
 })
@@ -28,8 +30,9 @@ export class Weatherlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: WeatherDataDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -43,6 +46,7 @@ export class Weatherlistcomponent implements OnInit {
     private loginS: Loginservice,
     private s: Weatherservice,
     private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice,
     private businessS: Businessservice
   ) { }
 
@@ -53,7 +57,6 @@ export class Weatherlistcomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
@@ -61,10 +64,11 @@ export class Weatherlistcomponent implements OnInit {
   obtenerClima(): void {
     this.s.getWeatherRecords().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
@@ -99,11 +103,14 @@ export class Weatherlistcomponent implements OnInit {
 
   get filasFiltradas(): WeatherDataDTO[] {
     const termino = this.terminoBusqueda.trim().toLocaleLowerCase()
+    const deEmpresa = this.dataSource
+      .filter(c => this.empresaSeleccionada == null || c.businessEntityId === this.empresaSeleccionada)
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)))
     if (!termino) {
-      return this.dataSource
+      return deEmpresa
     }
 
-    return this.dataSource.filter(clima =>
+    return deEmpresa.filter(clima =>
       [
         clima.idWeatherData,
         clima.date,
@@ -116,44 +123,65 @@ export class Weatherlistcomponent implements OnInit {
   }
 
   eliminarClima(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar el registro de clima #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteWeather(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerClima()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar el registro de clima #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteWeather(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerClima()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 
-  // Trae el clima actual de Lima desde Open-Meteo (a través del backend) y lo guarda para la empresa elegida
+  // Trae el clima actual del lugar de la empresa (Open-Meteo a través del backend) y lo guarda
   sincronizarClima(): void {
     if (this.empresaSeleccionada == null) {
-      this.mensaje = 'Seleccione una empresa para sincronizar el clima'
+      this.mensaje = 'Seleccione una empresa para ver su clima'
       return
     }
     this.sincronizando = true
-    this.mensaje = 'Consultando Open-Meteo...'
-    this.s.syncWeather(this.empresaSeleccionada, -12.0464, -77.0428).subscribe({
+    this.mensaje = 'Consultando el clima…'
+    // El backend usa la ubicacion guardada en la empresa
+    this.s.syncWeather(this.empresaSeleccionada).subscribe({
       next: () => {
         this.sincronizando = false
-        this.mensaje = 'Clima sincronizado correctamente con Open-Meteo'
+        this.mensaje = 'Clima actualizado correctamente'
         this.obtenerClima()
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.sincronizando = false
         this.mensaje = 'No se pudo sincronizar el clima. Intente nuevamente en unos segundos.'
         this.cdr.detectChanges()
       }
     })
+  }
+
+  elegirEmpresa(id: number | null): void {
+    this.empresaSeleccionada = id
+    this.pagina = 0
+    this.mensaje = ''
+  }
+
+  // Registro mas reciente de la empresa elegida (se muestra en la tarjeta)
+  get ultimo(): WeatherDataDTO | null {
+    if (this.empresaSeleccionada == null) return null
+    const lista = this.dataSource
+      .filter(c => c.businessEntityId === this.empresaSeleccionada)
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+    return lista[0] ?? null
+  }
+
+  ubicacionEmpresa(): string {
+    const e = this.empresas.find(item => item.idBusinessEntity === this.empresaSeleccionada)
+    return e && e.latitude != null ? `${e.latitude}, ${e.longitude}` : 'Lima (ubicación por defecto)'
   }
 
   nombreEmpresa(id: number | null): string {

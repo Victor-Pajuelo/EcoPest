@@ -23,13 +23,9 @@
     }
     @if (filasFiltradas.length > 0) {
     <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
-      <ng-container matColumnDef="C1">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idInspection }}</td>
-      </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Fecha</th>
-        <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.inspectionDate }}</td>
+        <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.inspectionDate | date:'dd/MM/yyyy' }}</td>
       </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Estado</th>
@@ -71,6 +67,8 @@
       aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron inspecciones con ese texto.</p>
+    } @else if (cargando) {
+    <p>Cargando…</p>
     } @else {
     <p>No hay registros disponibles.</p>
     }

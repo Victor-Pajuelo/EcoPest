@@ -38,7 +38,6 @@ export class Userprofilecomponent implements OnInit {
         this.buscarEmpresa()
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensaje = 'No se encontró el usuario!!'
         this.cdr.detectChanges()
       }

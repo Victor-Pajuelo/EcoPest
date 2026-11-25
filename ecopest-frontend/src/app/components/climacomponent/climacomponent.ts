@@ -48,7 +48,6 @@ export class Climacomponent implements OnInit {
         this.cargado = true
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensaje = 'No se pudo obtener el clima'
         this.cdr.detectChanges()
       }
@@ -65,7 +64,6 @@ export class Climacomponent implements OnInit {
         this.lugar = [distrito, ciudad].filter(x => x).join(', ')
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
@@ -82,7 +80,6 @@ export class Climacomponent implements OnInit {
         this.pronostico = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensajePronostico = 'No se pudo obtener el pronóstico. El servidor gratuito tarda en iniciar; vuelva a intentar en unos segundos.'
         this.cdr.detectChanges()
       }

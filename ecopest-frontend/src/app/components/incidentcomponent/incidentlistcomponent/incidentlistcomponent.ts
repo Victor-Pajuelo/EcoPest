@@ -1,3 +1,5 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -15,7 +17,7 @@ import { Businessservice } from '../../../services/businessservice';
 
 @Component({
   selector: 'app-incidentlistcomponent',
-  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
+  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
   templateUrl: './incidentlistcomponent.html',
   styleUrl: './incidentlistcomponent.css',
 })
@@ -33,6 +35,7 @@ export class Incidentlistcomponent implements OnInit {
   // La columna ID (C1) no se muestra; el ID se ve en el detalle del incidente
   displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: IncidentDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -48,6 +51,7 @@ export class Incidentlistcomponent implements OnInit {
     private loginS: Loginservice,
     private s: Incidentservice,
     private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice,
     private inspectionS: Inspectionservice,
     private pestS: Pestservice,
     private recommendationS: Recommendationservice,
@@ -61,7 +65,6 @@ export class Incidentlistcomponent implements OnInit {
         this.inspecciones = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.pestS.getPests().subscribe({
@@ -69,7 +72,6 @@ export class Incidentlistcomponent implements OnInit {
         this.plagas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.businessS.getBusinesses().subscribe({
@@ -83,30 +85,32 @@ export class Incidentlistcomponent implements OnInit {
   obtenerIncidentes(): void {
     this.s.getIncidents().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
   }
 
   eliminarIncidente(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar el incidente #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteIncident(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerIncidentes()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar el incidente #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteIncident(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerIncidentes()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 
@@ -165,10 +169,9 @@ export class Incidentlistcomponent implements OnInit {
     this.recommendationS.generateWithAI(id).subscribe({
       next: () => {
         this.generando = false
-        this.mensaje = 'Recomendación generada con IA para el incidente #' + id + '. Puede verla en Recomendaciones.'
+        this.mensaje = 'Recomendación generada con IA para el incidente #' + id + '. Puede verla en Recomendaciones > Por empresa.'
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.generando = false
         if (err.status == 429) {
           this.mensaje = 'Se alcanzó el límite de uso de la IA (es gratuita y tiene tope). Intente de nuevo en un minuto o mañana.'

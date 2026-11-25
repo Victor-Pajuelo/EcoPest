@@ -1,0 +1,65 @@
+<main class="container">
+  <h1><mat-icon>bug_report</mat-icon> Catálogo de plagas</h1>
+  <p class="ayuda">Toca una plaga para ver su ficha: foto, riesgo y control recomendado.</p>
+  @if (puedeEscribir()) {
+    <div class="acciones">
+      <a mat-stroked-button routerLink="/plagas/identificar"><mat-icon>photo_camera</mat-icon> Identificar por foto</a>
+      <a mat-stroked-button routerLink="/plagas/listar"><mat-icon>list</mat-icon> Ver como lista</a>
+    </div>
+  }
+  <p class="mensaje" aria-live="polite">{{ mensaje }}</p>
+
+  @if (cargando) {
+    <p class="estado">Cargando…</p>
+  } @else if (plagas.length === 0) {
+    <p class="estado">No hay plagas registradas.</p>
+  } @else {
+    <div class="rejilla">
+      @for (p of plagas; track p.idPestType) {
+        <button type="button" class="tarjeta" [class.activa]="seleccionada?.idPestType === p.idPestType"
+          (click)="elegir(p)" [attr.aria-pressed]="seleccionada?.idPestType === p.idPestType">
+          @if (fotos[p.idPestType!]) {
+            <img [src]="fotos[p.idPestType!]" [alt]="p.name" loading="lazy">
+          } @else {
+            <span class="sin-foto"><mat-icon>bug_report</mat-icon></span>
+          }
+          <strong>{{ p.name }}</strong>
+          <span class="chip" [class]="'chip ' + claseRiesgo(p.riskLevel)">{{ p.riskLevel }}</span>
+        </button>
+      }
+    </div>
+  }
+
+  @if (seleccionada; as p) {
+    <section class="ficha" aria-live="polite">
+      <div class="ficha-foto">
+        @if (fotos[p.idPestType!]) {
+          <img [src]="fotos[p.idPestType!]" [alt]="p.name">
+          <small>Foto referencial de iNaturalist</small>
+        } @else {
+          <span class="sin-foto grande"><mat-icon>bug_report</mat-icon></span>
+        }
+      </div>
+      <div class="ficha-datos">
+        <h2>{{ p.name }}</h2>
+        <p><span class="chip" [class]="'chip ' + claseRiesgo(p.riskLevel)">Riesgo {{ p.riskLevel }}</span></p>
+        <h3>Descripción</h3>
+        <p>{{ p.description }}</p>
+        <h3>Control recomendado</h3>
+        @if (controles[p.idPestType!]) {
+          <p class="control">{{ controles[p.idPestType!] }}</p>
+          <small>Respuesta generada por IA (Gemini). Verifique con un técnico antes de aplicar.</small>
+        } @else if (puedeEscribir()) {
+          <button mat-flat-button class="btn-control" (click)="verControl()" [disabled]="consultando">
+            <mat-icon>auto_awesome</mat-icon> {{ consultando ? 'Consultando IA…' : 'Ver control recomendado' }}
+          </button>
+        } @else {
+          <p>La consulta de control con IA está disponible para supervisores y administradores.</p>
+        }
+        <div class="acciones">
+          <a mat-stroked-button [routerLink]="['/plagas/ver', p.idPestType]"><mat-icon>visibility</mat-icon> Ver detalle</a>
+        </div>
+      </div>
+    </section>
+  }
+</main>

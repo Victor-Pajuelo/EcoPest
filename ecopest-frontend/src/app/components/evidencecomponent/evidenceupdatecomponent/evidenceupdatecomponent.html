@@ -7,6 +7,7 @@
       <mat-form-field class="example-full-width">
         <mat-label>Enlace del archivo</mat-label>
         <input matInput type="text" formControlName="fileUrl">
+              <mat-error>@if (form.get('fileUrl')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -16,6 +17,7 @@
           <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('fileType')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -25,6 +27,7 @@
           <mat-option [value]="o.idIncident">{{ '#' + o.idIncident + ' - ' + o.description }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('incidentId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
 

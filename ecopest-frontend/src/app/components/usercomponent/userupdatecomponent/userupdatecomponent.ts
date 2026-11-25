@@ -58,7 +58,6 @@ export class Userupdatecomponent implements OnInit {
         this.roles = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.businessS.getBusinesses().subscribe({
@@ -66,7 +65,6 @@ export class Userupdatecomponent implements OnInit {
         this.empresas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
 
@@ -87,7 +85,6 @@ export class Userupdatecomponent implements OnInit {
         this.cdr.detectChanges()
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'No se encontró el registro!!'
         this.cdr.detectChanges()
       }
@@ -100,6 +97,7 @@ export class Userupdatecomponent implements OnInit {
       return
     }
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -120,7 +118,6 @@ export class Userupdatecomponent implements OnInit {
         this.router.navigate(['/usuarios/listar'])
       },
       error: (error) => {
-        console.log(error)
         this.mensaje = 'Error al actualizar!!'
         this.cdr.detectChanges()
       }

@@ -7,11 +7,13 @@
       <mat-form-field class="example-full-width">
         <mat-label>Nombre</mat-label>
         <input matInput type="text" formControlName="name">
+              <mat-error>@if (form.get('name')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Tipo</mat-label>
         <input matInput type="text" formControlName="type">
+              <mat-error>@if (form.get('type')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -22,6 +24,28 @@
           <mat-option [value]="o.idBusinessEntity">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('parentBusinessEntityId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Ubicación (para el clima)</mat-label>
+        <mat-select (selectionChange)="elegirUbicacion($event.value)">
+          <mat-option [value]="null">Elegir una ciudad…</mat-option>
+          @for (u of ubicaciones; track u.nombre) {
+          <mat-option [value]="u">{{ u.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Latitud</mat-label>
+        <input matInput type="number" step="any" formControlName="latitude">
+              <mat-error>@if (form.get('latitude')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Longitud</mat-label>
+        <input matInput type="number" step="any" formControlName="longitude">
+              <mat-error>@if (form.get('longitude')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <section class="example-section">

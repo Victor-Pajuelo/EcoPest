@@ -65,6 +65,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Usuarios y roles: solo ADMIN
                         .requestMatchers("/api/users/**", "/api/roles/**").hasRole("ADMIN")
+                        // Empresas: crear y editar solo ADMIN (HU61, "Como administrador")
+                        .requestMatchers(HttpMethod.POST, "/api/business-entities/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/business-entities/**").hasRole("ADMIN")
                         // Lectura: todos los roles
                         .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "SUPERVISOR", "TESTER", "CLIENTE")
                         // Crear y actualizar: ADMIN y SUPERVISOR

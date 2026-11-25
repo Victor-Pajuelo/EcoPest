@@ -1,3 +1,4 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -27,8 +28,9 @@ export class Recommendationlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: RecommendationDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -41,6 +43,7 @@ export class Recommendationlistcomponent implements OnInit {
     private loginS: Loginservice,
     private s: Recommendationservice,
     private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice,
     private incidentS: Incidentservice,
     private userS: Userservice
   ) { }
@@ -52,7 +55,6 @@ export class Recommendationlistcomponent implements OnInit {
         this.incidentes = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.userS.getUsers().subscribe({
@@ -60,7 +62,6 @@ export class Recommendationlistcomponent implements OnInit {
         this.usuarios = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
@@ -68,10 +69,11 @@ export class Recommendationlistcomponent implements OnInit {
   obtenerRecomendaciones(): void {
     this.s.getRecommendations().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
@@ -124,20 +126,21 @@ export class Recommendationlistcomponent implements OnInit {
   }
 
   eliminarRecomendacion(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar la recomendación #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteRecommendation(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerRecomendaciones()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar la recomendación #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteRecommendation(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerRecomendaciones()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 

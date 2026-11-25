@@ -38,7 +38,6 @@ export class Businessviewcomponent implements OnInit {
         }
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensaje = 'No se encontró la empresa!!'
         this.cdr.detectChanges()
       }

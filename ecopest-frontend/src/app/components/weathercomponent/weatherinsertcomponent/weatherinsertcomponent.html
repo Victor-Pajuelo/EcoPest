@@ -10,21 +10,25 @@
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker_date"></mat-datepicker-toggle>
         <mat-datepicker #picker_date></mat-datepicker>
+              <mat-error>@if (form.get('date')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Temperatura (°C)</mat-label>
         <input matInput type="number" step="0.1" formControlName="temperature">
+              <mat-error>@if (form.get('temperature')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Humedad (%)</mat-label>
         <input matInput type="number" step="0.1" formControlName="humidity">
+              <mat-error>@if (form.get('humidity')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Fuente</mat-label>
         <input matInput type="text" formControlName="source">
+              <mat-error>@if (form.get('source')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -34,6 +38,7 @@
           <mat-option [value]="o.idBusinessEntity">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('businessEntityId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
 

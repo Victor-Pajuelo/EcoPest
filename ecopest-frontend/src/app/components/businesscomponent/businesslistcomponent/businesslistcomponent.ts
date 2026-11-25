@@ -1,3 +1,4 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -16,17 +17,18 @@ import { Businessservice } from '../../../services/businessservice';
 })
 export class Businesslistcomponent implements OnInit {
 
-  // ADMIN y SUPERVISOR pueden registrar y editar; solo ADMIN elimina
+  // Empresas: solo el ADMIN registra, edita y elimina (HU61 "Como administrador")
   puedeEscribir(): boolean {
-    return this.loginS.tieneRol('ROLE_ADMIN', 'ROLE_SUPERVISOR');
+    return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
   esAdmin(): boolean {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6']
   dataSource: BusinessDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -36,7 +38,8 @@ export class Businesslistcomponent implements OnInit {
   constructor(
     private loginS: Loginservice,
     private s: Businessservice,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice
   ) { }
 
   ngOnInit(): void {
@@ -46,10 +49,11 @@ export class Businesslistcomponent implements OnInit {
   obtenerEmpresas(): void {
     this.s.getBusinesses().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
@@ -100,20 +104,21 @@ export class Businesslistcomponent implements OnInit {
   }
 
   eliminarEmpresa(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar la empresa #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteBusiness(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerEmpresas()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar la empresa #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteBusiness(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerEmpresas()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 }

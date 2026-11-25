@@ -8,6 +8,7 @@
       <mat-form-field class="example-full-width">
         <mat-label>Nombre</mat-label>
         <input matInput type="text" formControlName="name">
+              <mat-error>@if (form.get('name')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -17,11 +18,13 @@
           <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('riskLevel')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Descripción</mat-label>
         <textarea matInput rows="3" formControlName="description"></textarea>
+              <mat-error>@if (form.get('description')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
 

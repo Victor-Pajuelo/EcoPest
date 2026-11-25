@@ -53,7 +53,6 @@ export class Incidentinsertcomponent implements OnInit {
         this.inspecciones = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
     this.pestS.getPests().subscribe({
@@ -61,13 +60,13 @@ export class Incidentinsertcomponent implements OnInit {
         this.plagas = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
       }
     })
   }
 
   insertarIncidente(): void {
     if (this.form.invalid) {
+      this.form.markAllAsTouched()
       this.mensaje = 'Por favor, complete todos los campos correctamente!!'
       return
     }
@@ -90,7 +89,6 @@ export class Incidentinsertcomponent implements OnInit {
       },
       error: (error) => {
         this.mensaje = 'Error al registrar!!'
-        console.log(error)
         this.cdr.detectChanges()
       }
     })

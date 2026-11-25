@@ -1,3 +1,4 @@
+import { Confirmservice } from '../../confirmdialog/confirmdialog'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
@@ -25,8 +26,9 @@ export class Rolelistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5']
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5']
   dataSource: RoleDTO[] = []
+  cargando: boolean = true
   terminoBusqueda: string = ''
   // Paginacion: 5 registros por pagina
   readonly tamPagina: number = 5
@@ -36,7 +38,8 @@ export class Rolelistcomponent implements OnInit {
   constructor(
     private loginS: Loginservice,
     private s: Roleservice,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private confirmS: Confirmservice
   ) { }
 
   ngOnInit(): void {
@@ -46,10 +49,11 @@ export class Rolelistcomponent implements OnInit {
   obtenerRoles(): void {
     this.s.getRoles().subscribe({
       next: data => {
+        this.cargando = false
         this.dataSource = data
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
+        this.cargando = false
         this.cdr.detectChanges()
       }
     })
@@ -99,20 +103,21 @@ export class Rolelistcomponent implements OnInit {
   }
 
   eliminarRol(id: number): void {
-    if (!window.confirm(`¿Seguro que deseas eliminar el rol #${id}? Esta acción no se puede deshacer.`)) {
-      return
-    }
-
-    this.s.deleteRole(id).subscribe({
-      next: () => {
-        this.mensaje = ''
-        this.obtenerRoles()
-        this.cdr.detectChanges()
-      }, error: err => {
-        console.log(err)
-        this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
-        this.cdr.detectChanges()
+    this.confirmS.preguntar(`¿Seguro que deseas eliminar el rol #${id}? Esta acción no se puede deshacer.`).subscribe(ok => {
+      if (!ok) {
+        return
       }
+
+      this.s.deleteRole(id).subscribe({
+        next: () => {
+          this.mensaje = ''
+          this.obtenerRoles()
+          this.cdr.detectChanges()
+        }, error: err => {
+          this.mensaje = 'No se pudo eliminar: el registro está siendo usado por otro.'
+          this.cdr.detectChanges()
+        }
+      })
     })
   }
 }

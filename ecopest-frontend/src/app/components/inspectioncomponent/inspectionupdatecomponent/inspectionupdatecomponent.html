@@ -10,6 +10,7 @@
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker_inspectionDate"></mat-datepicker-toggle>
         <mat-datepicker #picker_inspectionDate></mat-datepicker>
+              <mat-error>@if (form.get('inspectionDate')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -19,11 +20,13 @@
           <mat-option [value]="o.value">{{ o.viewValue }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('status')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Observaciones</mat-label>
         <textarea matInput rows="3" formControlName="observations"></textarea>
+              <mat-error>@if (form.get('observations')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -33,6 +36,7 @@
           <mat-option [value]="o.idBusinessEntity">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('businessEntityId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -42,6 +46,7 @@
           <mat-option [value]="o.idUser">{{ o.name }}</mat-option>
           }
         </mat-select>
+              <mat-error>@if (form.get('userId')?.hasError('required')) { Este campo es obligatorio } @else { El formato no es válido }</mat-error>
       </mat-form-field>
       <br>
 

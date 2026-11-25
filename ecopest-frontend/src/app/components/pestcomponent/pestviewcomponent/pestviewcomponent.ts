@@ -32,7 +32,6 @@ export class Pestviewcomponent implements OnInit {
         this.buscarFoto()
         this.cdr.detectChanges()
       }, error: err => {
-        console.log(err)
         this.mensaje = 'No se encontró la plaga!!'
         this.cdr.detectChanges()
       }
