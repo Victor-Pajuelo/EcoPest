@@ -22,7 +22,7 @@
     </div>
     }
     @if (filasFiltradas.length > 0) {
-    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
+    <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
       <ng-container matColumnDef="C1">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idRole }}</td>
@@ -58,6 +58,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <mat-paginator [length]="filasFiltradas.length" [pageSize]="tamPagina" [pageIndex]="paginaActual"
+      [hidePageSize]="true" [showFirstLastButtons]="true" (page)="cambiarPagina($event)"
+      aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron roles con ese texto.</p>
     } @else {

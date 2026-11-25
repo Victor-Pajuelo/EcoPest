@@ -230,3 +230,9 @@ tr[mat-row]:hover {
     font-weight: 600;
     text-decoration: none;
 }
+
+/* Paginador debajo de la tabla */
+mat-paginator {
+    margin-top: 10px;
+    background: transparent;
+}
