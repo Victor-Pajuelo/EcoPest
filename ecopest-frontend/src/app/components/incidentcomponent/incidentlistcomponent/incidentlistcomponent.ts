@@ -29,7 +29,8 @@ export class Incidentlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+  // La columna ID (C1) no se muestra; el ID se ve en el detalle del incidente
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: IncidentDTO[] = []
   terminoBusqueda: string = ''
   filtroEmpresa: string = ''

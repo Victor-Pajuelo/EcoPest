@@ -31,10 +31,6 @@
     }
     @if (filasFiltradas.length > 0) {
     <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
-      <ng-container matColumnDef="C1">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idIncident }}</td>
-      </ng-container>
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Fecha</th>
         <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.incidentDate }}</td>
