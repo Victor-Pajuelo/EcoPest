@@ -212,3 +212,21 @@ tr[mat-row]:hover {
         text-align: left;
     }
 }
+
+/* Miniatura de la evidencia en la tabla */
+.miniatura {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.archivo {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #0aae4e;
+    font-weight: 600;
+    text-decoration: none;
+}

@@ -17,6 +17,7 @@ export class Evidenceviewcomponent implements OnInit {
   evidencia: EvidenceDTO = new EvidenceDTO()
   incidente: string = ''
   mensaje: string = ''
+  imagenRota: boolean = false
 
   constructor(
     private s: Evidenceservice,
@@ -46,10 +47,16 @@ export class Evidenceviewcomponent implements OnInit {
     })
   }
 
+  // Si el enlace de la imagen no carga, se muestra un aviso en lugar de la imagen rota
+  marcarRota(): void {
+    this.imagenRota = true
+    this.cdr.detectChanges()
+  }
+
   // Muestra la vista previa solo si el archivo es una imagen
   esImagen(): boolean {
     const tipo = (this.evidencia.fileType || '').toLowerCase()
     const url = (this.evidencia.fileUrl || '').toLowerCase()
-    return tipo.includes('image') || tipo.includes('imagen') || /\.(jpg|jpeg|png|gif|webp)$/.test(url)
+    return tipo.includes('imag') || /\.(jpg|jpeg|png|gif|webp)$/.test(url)
   }
 }

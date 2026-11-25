@@ -90,3 +90,9 @@ p {
 a {
   color: #0aae4e;
 }
+
+.aviso {
+  color: #b4501a;
+  font-weight: 500;
+  font-size: 14px;
+}

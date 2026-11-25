@@ -26,6 +26,8 @@ export class Evidencelistcomponent implements OnInit {
   }
 
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
+  // Evidencias cuya imagen no se pudo cargar (enlace roto): se muestra un icono en su lugar
+  imagenRota: Record<number, boolean> = {}
   dataSource: EvidenceDTO[] = []
   terminoBusqueda: string = ''
   mensaje: string = ''
@@ -110,5 +112,25 @@ export class Evidencelistcomponent implements OnInit {
   nombreIncidente(id: number | null): string {
     const x = this.incidentes.find(item => item.idIncident === id)
     return x ? '#' + x.idIncident + ' - ' + x.description : ''
+  }
+
+  esImagen(e: EvidenceDTO): boolean {
+    const tipo = (e.fileType || '').toLowerCase()
+    const url = (e.fileUrl || '').toLowerCase()
+    return tipo.includes('imag') || /\.(jpg|jpeg|png|gif|webp)$/.test(url)
+  }
+
+  marcarRota(id: number | null): void {
+    if (id == null) return
+    this.imagenRota[id] = true
+    this.cdr.detectChanges()
+  }
+
+  iconoArchivo(e: EvidenceDTO): string {
+    const tipo = (e.fileType || '').toLowerCase()
+    if (tipo.includes('imag')) return 'broken_image'
+    if (tipo.includes('pdf')) return 'picture_as_pdf'
+    if (tipo.includes('video')) return 'videocam'
+    return 'description'
   }
 }

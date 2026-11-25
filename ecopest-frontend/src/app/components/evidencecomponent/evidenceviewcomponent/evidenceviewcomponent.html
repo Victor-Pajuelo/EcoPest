@@ -2,8 +2,11 @@
   <h2><mat-icon>visibility</mat-icon> Detalle de la evidencia</h2>
   <p>{{ mensaje }}</p>
   <div class="perfil">
-    @if (esImagen()) {
-      <img class="preview" [src]="evidencia.fileUrl" alt="Evidencia">
+    @if (esImagen() && !imagenRota) {
+      <img class="preview" [src]="evidencia.fileUrl" alt="Evidencia" (error)="marcarRota()">
+    } @else if (esImagen()) {
+      <div class="avatar"><mat-icon>broken_image</mat-icon></div>
+      <p class="aviso">No se pudo cargar la imagen. Revisa que el enlace sea correcto.</p>
     } @else {
       <div class="avatar"><mat-icon>description</mat-icon></div>
     }

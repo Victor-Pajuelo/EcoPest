@@ -28,8 +28,18 @@
         <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idEvidence }}</td>
       </ng-container>
       <ng-container matColumnDef="C2">
-        <th mat-header-cell *matHeaderCellDef>Enlace</th>
-        <td mat-cell data-label="Enlace" *matCellDef="let element">{{ element.fileUrl }}</td>
+        <th mat-header-cell *matHeaderCellDef>Archivo</th>
+        <td mat-cell data-label="Archivo" *matCellDef="let element">
+          @if (esImagen(element) && !imagenRota[element.idEvidence]) {
+            <a [href]="element.fileUrl" target="_blank" rel="noopener" [title]="element.fileUrl">
+              <img class="miniatura" [src]="element.fileUrl" alt="Evidencia" (error)="marcarRota(element.idEvidence)">
+            </a>
+          } @else {
+            <a class="archivo" [href]="element.fileUrl" target="_blank" rel="noopener" [title]="element.fileUrl">
+              <mat-icon>{{ iconoArchivo(element) }}</mat-icon> Abrir
+            </a>
+          }
+        </td>
       </ng-container>
       <ng-container matColumnDef="C3">
         <th mat-header-cell *matHeaderCellDef>Tipo</th>
