@@ -211,3 +211,9 @@ tr[mat-row]:hover {
         text-align: left;
     }
 }
+
+/* Paginador debajo de la tabla */
+mat-paginator {
+    margin-top: 10px;
+    background: transparent;
+}

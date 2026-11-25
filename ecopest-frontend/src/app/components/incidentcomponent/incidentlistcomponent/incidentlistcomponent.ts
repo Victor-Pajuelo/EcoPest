@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +15,7 @@ import { Businessservice } from '../../../services/businessservice';
 
 @Component({
   selector: 'app-incidentlistcomponent',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
+  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink, FormsModule],
   templateUrl: './incidentlistcomponent.html',
   styleUrl: './incidentlistcomponent.css',
 })
@@ -29,9 +30,13 @@ export class Incidentlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+  // La columna ID (C1) no se muestra; el ID se ve en el detalle del incidente
+  displayedColumns: string[] = ['C2', 'C3', 'C4', 'C5', 'C6', 'C7']
   dataSource: IncidentDTO[] = []
   terminoBusqueda: string = ''
+  // Paginacion: 5 registros por pagina
+  readonly tamPagina: number = 5
+  pagina: number = 0
   filtroEmpresa: string = ''
   generando: boolean = false
   mensaje: string = ''
@@ -108,11 +113,28 @@ export class Incidentlistcomponent implements OnInit {
   actualizarBusqueda(event: Event): void {
     if (event.target instanceof HTMLInputElement) {
       this.terminoBusqueda = event.target.value
+      this.pagina = 0
     }
   }
 
   limpiarBusqueda(): void {
     this.terminoBusqueda = ''
+    this.pagina = 0
+  }
+
+  // Si se borra o filtra y la pagina queda vacia, se muestra la ultima pagina con datos
+  get paginaActual(): number {
+    const ultima = Math.max(0, Math.ceil(this.filasFiltradas.length / this.tamPagina) - 1)
+    return Math.min(this.pagina, ultima)
+  }
+
+  get filasPagina() {
+    const inicio = this.paginaActual * this.tamPagina
+    return this.filasFiltradas.slice(inicio, inicio + this.tamPagina)
+  }
+
+  cambiarPagina(event: PageEvent): void {
+    this.pagina = event.pageIndex
   }
 
   get filasFiltradas(): IncidentDTO[] {

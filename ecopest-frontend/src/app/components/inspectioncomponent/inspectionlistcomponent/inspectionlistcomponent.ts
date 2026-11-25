@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loginservice } from '../../../services/loginservice';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { InspectionDTO } from '../../../models/InspectionDTO';
@@ -11,7 +12,7 @@ import { Userservice } from '../../../services/userservice';
 
 @Component({
   selector: 'app-inspectionlistcomponent',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, RouterLink],
+  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './inspectionlistcomponent.html',
   styleUrl: './inspectionlistcomponent.css',
 })
@@ -26,9 +27,18 @@ export class Inspectionlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+  // Tester y Cliente solo leen: no ven la columna ID ni la de Acciones (quedaria vacia)
+  get displayedColumns(): string[] {
+    if (this.puedeEscribir()) {
+      return ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+    }
+    return ['C2', 'C3', 'C4', 'C5', 'C6']
+  }
   dataSource: InspectionDTO[] = []
   terminoBusqueda: string = ''
+  // Paginacion: 5 registros por pagina
+  readonly tamPagina: number = 5
+  pagina: number = 0
   mensaje: string = ''
   empresas: any[] = []
   usuarios: any[] = []
@@ -94,11 +104,28 @@ export class Inspectionlistcomponent implements OnInit {
   actualizarBusqueda(event: Event): void {
     if (event.target instanceof HTMLInputElement) {
       this.terminoBusqueda = event.target.value
+      this.pagina = 0
     }
   }
 
   limpiarBusqueda(): void {
     this.terminoBusqueda = ''
+    this.pagina = 0
+  }
+
+  // Si se borra o filtra y la pagina queda vacia, se muestra la ultima pagina con datos
+  get paginaActual(): number {
+    const ultima = Math.max(0, Math.ceil(this.filasFiltradas.length / this.tamPagina) - 1)
+    return Math.min(this.pagina, ultima)
+  }
+
+  get filasPagina() {
+    const inicio = this.paginaActual * this.tamPagina
+    return this.filasFiltradas.slice(inicio, inicio + this.tamPagina)
+  }
+
+  cambiarPagina(event: PageEvent): void {
+    this.pagina = event.pageIndex
   }
 
   get filasFiltradas(): InspectionDTO[] {

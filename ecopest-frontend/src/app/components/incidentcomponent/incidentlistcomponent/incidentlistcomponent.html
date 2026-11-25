@@ -30,11 +30,7 @@
     </div>
     }
     @if (filasFiltradas.length > 0) {
-    <table mat-table [dataSource]="filasFiltradas" class="mat-shadow-2">
-      <ng-container matColumnDef="C1">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell data-label="ID" *matCellDef="let element">{{ element.idIncident }}</td>
-      </ng-container>
+    <table mat-table [dataSource]="filasPagina" class="mat-shadow-2">
       <ng-container matColumnDef="C2">
         <th mat-header-cell *matHeaderCellDef>Fecha</th>
         <td mat-cell data-label="Fecha" *matCellDef="let element">{{ element.incidentDate }}</td>
@@ -86,6 +82,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <mat-paginator [length]="filasFiltradas.length" [pageSize]="tamPagina" [pageIndex]="paginaActual"
+      [hidePageSize]="true" [showFirstLastButtons]="true" (page)="cambiarPagina($event)"
+      aria-label="Cambiar de página"></mat-paginator>
     } @else if (dataSource.length > 0) {
     <p>No se encontraron incidentes con ese texto.</p>
     } @else {

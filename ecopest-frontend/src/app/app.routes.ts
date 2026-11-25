@@ -45,6 +45,7 @@ import { Weatherupdatecomponent } from './components/weathercomponent/weatherupd
 import { Dashboardcomponent } from './components/dashboardcomponent/dashboardcomponent';
 import { Graficoscomponent } from './components/graficoscomponent/graficoscomponent';
 import { Logincomponent } from './components/logincomponent/logincomponent';
+import { Landingcomponent } from './components/landingcomponent/landingcomponent';
 import { seguridadGuard, rolGuard } from './guards/seguridadguard';
 
 // Roles que pueden crear y editar (igual que SecurityConfig del back)
@@ -54,6 +55,11 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Logincomponent,
+  },
+  {
+    // Landing page publica (sin iniciar sesion)
+    path: 'inicio',
+    component: Landingcomponent,
   },
   {
     path: '',

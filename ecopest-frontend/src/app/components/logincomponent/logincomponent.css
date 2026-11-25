@@ -62,3 +62,14 @@
   margin-bottom: 16px;
   font-size: 14px;
 }
+
+.volver-inicio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 16px;
+  color: #0aae4e;
+  font-size: 14px;
+  text-decoration: none;
+}
