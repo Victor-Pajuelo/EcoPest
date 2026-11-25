@@ -26,7 +26,13 @@ export class Inspectionlistcomponent implements OnInit {
     return this.loginS.tieneRol('ROLE_ADMIN');
   }
 
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+  // Tester y Cliente solo leen: no ven la columna ID ni la de Acciones (quedaria vacia)
+  get displayedColumns(): string[] {
+    if (this.puedeEscribir()) {
+      return ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']
+    }
+    return ['C2', 'C3', 'C4', 'C5', 'C6']
+  }
   dataSource: InspectionDTO[] = []
   terminoBusqueda: string = ''
   mensaje: string = ''
